@@ -1,0 +1,50 @@
+[
+  {
+    "Id": "1444466",
+    "ThreadId": "644979",
+    "Html": "I have a few commands that were working great, and then all of a sudden everything started failing and I can't figure out why.  I've been working in a VM, so I eventually got to a point where I decided to just roll back to an earlier Snapshot and start over, but now I can't seem to get to a point where anything is working at all again.<br />\n<br />\nFor example, why isn't the following working anymore?:<br />\n<pre><code>Get-UiaEdit -AutomationId '1613' -Class 'Edit' | SetUiaControlText 'test';</code></pre>\n\nOutput is:<br />\n<pre><code>Get-UiaEdit : failed to get control in 2000 milliseconds by: title: '', automationId: '1613', className: \n'Edit', value: ''.\nAt line:1 char:1\n• Get-UiaEdit -AutomationId '1613' -Class 'Edit' | Set-UiaControlText 'test';\n• ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n    • CategoryInfo          : OperationTimeout: (:) [Get-UiaEdit], Exception\n    • FullyQualifiedErrorId : ControlIsNull,UIAutomation.Commands.GetUiaEditCommand</code></pre>\n\nand here is a screenshot proving that this should be working:<br />\n<br />\n<img src=\"http://i.imgur.com/YMWPmWQ.png?1\" alt=\"Image\" /><br />\n<br />\nFull Size Image Link: <a href=\"http://i.imgur.com/YMWPmWQ.png?1\" rel=\"nofollow\">http://i.imgur.com/YMWPmWQ.png?1</a><br />\n<br />\nLikewise, the thread I made here is no longer working either when it was once working perfectly:<br />\n<br />\n<a href=\"https://uiautomation.codeplex.com/discussions/644953\" rel=\"nofollow\">https://uiautomation.codeplex.com/discussions/644953</a><br />\n<br />\nAnybody have any ideas what has gone wrong?  Am I overlooking something simple?<br />\n<br />\nThanks!!<br />\n",
+    "PostedDate": "2015-09-15T06:28:10.187-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1444469",
+    "ThreadId": "644979",
+    "Html": "Hi xevilrobotx,\r<br />\ncould it be that 2000 milliseconds used in the thread you mentioned in no longer enough? Could it be something that slows down your VM? Additional software on the VM, another VM consuming the host's CPU, etc.<br />\n",
+    "PostedDate": "2015-09-15T06:55:22.79-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1444471",
+    "ThreadId": "644979",
+    "Html": "I should have mentioned that I also tried it on my Host machine with the same results and tried setting -Seconds 30, and then -Seconds 60 with no luck either.<br />\n",
+    "PostedDate": "2015-09-15T06:58:59.877-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1444476",
+    "ThreadId": "644979",
+    "Html": "I tried the same app on my Windows 8.1 x64 and the following works:<br />\n<pre><code>Get-UiaWindow -Name *mic*drive*bus* | Get-UiaEdit</code></pre>\n\nSetting value also works:<br />\n<pre><code>Get-UiaWindow -Name *mic*drive*bus* | Get-UiaEdit | Set-UiaControlText &quot;aaa&quot;</code></pre>\n\nCould it be that you have gotten another window and now you are trying to get an Edit starting your search from another window?<br />\n",
+    "PostedDate": "2015-09-15T07:28:24.663-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1444479",
+    "ThreadId": "644979",
+    "Html": "<blockquote>\nCould it be that you have gotten another window and now you are trying to get an Edit starting your search from another window?<br />\n</blockquote>\nI wasn't getting another window first, <strong>BUT</strong> I think you saying this has made me understand what I'm doing wrong!<br />\n<br />\nI didn't realize that you needed to select a window <strong>at all</strong> to begin with, I thought it would just grab the UiaEdit with the automationId id and class if it was open and existed.  So yeah, user error by not understanding completely how this is supposed to work :)<br />\n<br />\nI was just trying to use something like: <br />\n<pre><code>Get-UiaEdit -AutomationId '1613' -Class 'Edit' | Set-UiaControlText &quot;aaa&quot;</code></pre>\n\nwhen I needed to do something like:<br />\n<pre><code>Get-UiaWindow -Name *mic*drive*bus* | Get-UiaEdit | Set-UiaControlText &quot;aaa&quot;</code></pre>\n\nIn the other thread I linked to (<a href=\"https://uiautomation.codeplex.com/discussions/644953\" rel=\"nofollow\">https://uiautomation.codeplex.com/discussions/644953</a>), I must have selected the window at some point before I did that because I just started using this yesterday and had been trying a bunch of examples to learn.<br />\n<br />\nThank you so much!!<br />\n",
+    "PostedDate": "2015-09-15T07:40:25.497-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1444487",
+    "ThreadId": "644979",
+    "Html": "Just as good practice:<br />\n<ul>\n<li>\nbe sure using the right root. This could be something you get using Get-UiaWindow, or a variable like $my_wnd_root = Get-UiaWindow, or event a menu or a pane that could also exist under the Desktop (Get-UiaWindow consider them as windows automatically)<br />\n</li>\n<li>\nuse only right 'hops': if the spy offers you something like that: Get-UiaWindows -name -class -automationid | Get-UiaPane -Class -Name -AutomationId | Get-UiaEdit -Name -Class -AutomationId, the recommended way is to throw out unnecessary parts of the path and use the shortest minimum: Get-UiaWindow -Name | Get-UiaEdit<br />\nIn case one works in software development where ids and names are going to be changed on a weekly or daily basis, there would be less to change in scripts.<br />\nThe spy honestly offers the full path, it can't think, unfortunately, fortunately we can.<br />\n</li>\n<li>\nsometines MS UI Automation puzzles us with such a strange thing: a control could be given with hovering over it, but the search fails. Well, in this case we need to change search arguments.<br />\n</li>\n<li>\nsometimes your search takes too long or gets a control but fails with timeout thereafter. Probably there is in you app a control with the same id or name deeper in the hierarchy or in a neighboring pane. And search honestly tries to achieve all controls with the id or name you have chosen.<br />\n</li>\n</ul>\nUpd: in the future versions the timeout exception will be more verbose:<br />\nGet-UiaButton : failed to get control in 5000 milliseconds by: title: 'Close', automationId: '', className: '', value:<br />\n''. Search was performed from <a href=\"mailto:@{IsContentElement=True;ControlType=ControlType.Window;Name=Windows\" rel=\"nofollow\">@{IsContentElement=True;ControlType=ControlType.Window;Name=Windows</a> PowerShell;IsRequired<br />\nForForm=False;AutomationId=;IsPassword=False;IsEnabled=True;BoundingRectangle=372,255,877,643;HelpText=;ItemStatus=;Pro<br />\ncessId=20692;AccessKey=;HasKeyboardFocus=True;IsOffscreen=False;NativeWindowHandle=14485510;ItemType=;Class=ConsoleWind<br />\nowClass;IsKeyboardFocusable=True;LocalizedControlType=ventana;AcceleratorKey=;FrameworkId=Win32;IsControlElement=True;O<br />\nrientation=None;}<br />\n",
+    "PostedDate": "2015-09-15T08:18:36.62-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": "2015-09-15T08:31:00.393-07:00"
+  }
+]

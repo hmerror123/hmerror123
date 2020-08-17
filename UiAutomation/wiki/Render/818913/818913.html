@@ -1,0 +1,31 @@
+<div class="wikidoc">The Control property consolidates several clicks and invocations, the following table provides code samples and mapping to cmdlets:<br /><br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:Green;"># $element | Invoke-UiaControlClick;</span>
+<span style="color:OrangeRed;">$element</span>.Control.Click();
+
+<span style="color:Green;"># $element | Invoke-UiaControlClick -X 10 -Y 10;</span>
+<span style="color:OrangeRed;">$element</span>.Control.Click(10, 10);
+
+<span style="color:Green;"># $element | Invoke-UiaControlClick -DoubleClick;</span>
+<span style="color:OrangeRed;">$element</span>.Control.DoubleClick();
+
+<span style="color:Green;"># $element | Invoke-UiaControlClick -DoubleClick -X 10 -Y 10;</span>
+<span style="color:OrangeRed;">$element</span>.Control.DoubleClick(10, 10);
+
+<span style="color:Green;"># $element | Invoke-UiaControlClick -RightClick;</span>
+<span style="color:OrangeRed;">$element</span>.Control.RightClick();
+
+<span style="color:Green;"># $element | Invoke-UiaControlClick -Alt;</span>
+<span style="color:OrangeRed;">$element</span>.Control.AltClick();
+
+<span style="color:Green;"># $element | Invoke-UiaControlClick -Shift;</span>
+<span style="color:OrangeRed;">$element</span>.Control.ShiftClick();
+
+<span style="color:Green;"># $element | Invoke-UiaControlClick -Ctrl;</span>
+<span style="color:OrangeRed;">$element</span>.Control.CtrlClick();
+
+<span style="color:Green;"># $element | Invoke-UiaControlContextMenu;</span>
+<span style="color:OrangeRed;">$element</span>.Control.InvokeContextMenu();
+
+<span style="color:Green;"># $element | Invoke-UiaControlContextMenu -X 10 -Y 10;</span>
+<span style="color:OrangeRed;">$element</span>.Control.InvokeContextMenu(10, 10);
+</pre></div></div><div class="ClearBoth"></div>

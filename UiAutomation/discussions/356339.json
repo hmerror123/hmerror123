@@ -1,0 +1,98 @@
+[
+  {
+    "Id": "838277",
+    "ThreadId": "356339",
+    "Html": "\r\n<p>Hey,</p>\r\n<p>this may sound extremly nooby (which I exspect I am) but i can&acute;t send a Keystroke ( Enter)</p>\r\n<p>If i do:</p>\r\n<p>Get-UIAWindow -Name 'CSPSPServer' | Get-UIATextBox | set-uiacontroltext -text &quot;i want enter {ENTER} &quot;</p>\r\n<p>it set the Text with the Enter.</p>\r\n<p>Anyone has an idea?</p>\r\n<p>Thanks</p>\r\n",
+    "PostedDate": "2012-05-18T13:50:26.883-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "838454",
+    "ThreadId": "356339",
+    "Html": "<p>Hello,</p>\r\n<p>The Set-UIAControlText cmdlet is not an equivalent to the SendKeys call.<br /> What do you expect sending a text with the {Enter} sign? the text box  will be given the text and the control with the focus, most likely a  button, will react to Enter.<br /> SendKeys code is shorter, but the code that follows is pretty more reliable.<br /> 1. Remove {Enter} from your string<br /> 2. Add something like (next line of code) Get-UIAButton -Name 'your default button' | Invoke-UIAButtonClick<br /> Or activate a control that should be the next in your test sequence.<br /> <br /> You usually don't need to use Get-UIAWindow each time, the current window is stored in the [UIAutomation.CurrentData]::CurrentWindow.<br /> <br /> Hope it helps</p>",
+    "PostedDate": "2012-05-19T12:42:18.517-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "839341",
+    "ThreadId": "356339",
+    "Html": "<p>Hey,</p>\r\n<p>thanks for your reply.</p>\r\n<p>With {ENTER} i exspect to send a button (in this case ENTER) to the selected Box.</p>\r\n<p>My problem is that i cant use an UIAButtonClick because there is no button for that.</p>\r\n<p>Here is&nbsp; a screenshot which may help you to understand my problem:</p>\r\n<p>http://s.gullipics.com/image/3/i/y/6tzkgh-j7wpbv-rzpf/enter.png</p>\r\n<p>&nbsp;</p>\r\n<p>Thanks a lot for your help!</p>",
+    "PostedDate": "2012-05-22T04:57:22.31-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "839525",
+    "ThreadId": "356339",
+    "Html": "<p>It's quite unusual to use a text box as a default control. :) Are you sure that if you put the cursor to the text box and press Enter, it does what you expected?</p>\r\n<p>Okay, if you are not an addict of beautiful code, just use something like</p>\r\n<p>[System.Windows.Forms.SendKeys]::SendWait(\"{ENTER}\")</p>\r\n<p>&nbsp;</p>\r\n<p>for example, to be sure that the focus is on the text box exactly in time, you can use the following lines of code:</p>\r\n<p>Get-UIATextBox -AutomaitonId 'your text box Id';</p>\r\n<p>[System.Windows.Forms.SendKeys]::SendWait(\"{ENTER}\")</p>\r\n<p>if your environment is not stable enough (the focus can be moved, or a some pop-up might appear), you can use this construction twice or thrice.</p>\r\n<p>for example, with a shorter timeout</p>\r\n<p>&nbsp;</p>\r\n<p>Get-UIATextBox -AutomaitonId 'your text box Id' -Seconds 2;</p>\r\n<p>[System.Windows.Forms.SendKeys]::SendWait(\"{ENTER}\");</p>\r\n<p>Get-UIATextBox -AutomaitonId 'your text box Id' -Seconds 2;</p>\r\n<p>[System.Windows.Forms.SendKeys]::SendWait(\"{ENTER}\");</p>\r\n<p>&nbsp;</p>\r\n<p>The Set-UIAControlText cmdlet uses the PostMessage (or SendMessage, I already forgot, since the code is proven as working) API call that doesn't understand escape sequences that SendKeys consumes. Theoretically, I could translate all the curly bracket constructions to virtual keys (VK), but the work doesn't seem to be very useful. Here, on CodePlex, I know the project, called TestApi (by Microsoft). There are good key pressing features (among many others), and I planned to write cmdlets upon this project. But I have not started yet. :) Maybe, it's time to start this May.</p>\r\n<p>&nbsp;</p>\r\n<p>Hope it helps</p>",
+    "PostedDate": "2012-05-22T10:58:16.123-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "841611",
+    "ThreadId": "356339",
+    "Html": "<p>Thanks for all your replys!</p>\r\n<p>I wish you good luck with the future of this project and new future features. :)</p>\r\n<p>&nbsp;</p>",
+    "PostedDate": "2012-05-28T05:41:46.51-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "841642",
+    "ThreadId": "356339",
+    "Html": "<p>I'm just wondering, whether you are lucky enough with this help or are seeking for a better solution?</p>\r\n<p>If you need something, propose features, <a class=\"UserProfileLink\" href=\"http://www.codeplex.com/site/users/view/xk0ni\">xk0ni</a>, and you'll be possibly given with them if efforts and value of your&nbsp;wishes will meet possibilities to create the features...</p>",
+    "PostedDate": "2012-05-28T07:08:09.037-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "844050",
+    "ThreadId": "356339",
+    "Html": "<blockquote style=\"border: solid .1em #ccc; font-style: italic; margin: .25em 1em 0 1em; padding: 0 .25em 0 .25em;\"><strong>xinliu wrote:</strong><br />\r\n<p>I'm just wondering, whether you are lucky enough with this help or are seeking for a better solution?</p>\r\n<p>If you need something, propose features, <a href=\"http://www.codeplex.com/site/users/view/xk0ni\"> xk0ni</a>, and you'll be possibly given with them if efforts and value of your&nbsp;wishes will meet possibilities to create the features...</p>\r\n</blockquote>\r\n<p>Hey,</p>\r\n<p>yes, actual the current solution is not that nice... My Laptop doesn&acute;t auto-shutdown the light because of the SendKeys.</p>\r\n<p>If you could do Virtual-Keys (like wm_keydown) this would be EXTREMLY awesome for me!</p>\r\n<p>&nbsp;</p>\r\n<p>And i got another question: While using \"Get-UIADocumentRangeText\" i get the whole Document (as exspected). Is it possible to just get the last line of it? I just found a semi-solution (outputting all into a txt and then just use [-1] to get last line.</p>\r\n<p>&nbsp;</p>\r\n<p>I wish you good luck for the future of this project. And im sorry if it&acute;s hard to understand me. English is not my motherlanguage</p>",
+    "PostedDate": "2012-06-03T06:46:21.37-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "848899",
+    "ThreadId": "356339",
+    "Html": "<p>Hi, in a desperate attempt to do some thing in Metro UI, I added original SendKeys to the Set-UIAControlKeys cmdlet. I simply had no time to do anything better. :( The name of the cmdlet and the name of its parameter&nbsp;also sound badly. Nonetheless, it works, somehow, and, probably, slightly better than when called from .NET because it's usually given a control of our interest.</p>\r\n<p>This worked similarly to any cmdlets accepting an AutomationElement:</p>\r\n<p>Get-UIA[ControlType] - .... | Set-UIAControlKeys -Text \"bla-bla-bla{ENTER}\"</p>\r\n<p>The cmdlet requires input, even if it's the desktop object:</p>\r\n<p>Get-UIADesktop | Set-UIAControlKeys -Text \"^{ESC}\"</p>",
+    "PostedDate": "2012-06-14T04:30:30.03-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "854016",
+    "ThreadId": "356339",
+    "Html": "<p>Hey,</p>\r\n<p>thanks for your efforts but somehow i can&acute;t get it to work.... it is properly me Mistake.</p>\r\n<p>Im using Version <span class=\"FileNameLink\">0.7.12 .NET35 at the moment.</span></p>\r\n<p>&nbsp;</p>\r\n<p><span class=\"FileNameLink\">If i do now:</span></p>\r\n<p>Get-UIAWindow -Processname 'CSPSPServer' | Get-UIATextBox | Set-UIAControlKeys -Text \"bla-bla-bla{ENTER}\"</p>\r\n<p>&nbsp;</p>\r\n<p>It returns \"True\" in powershell and then outputs bla-bla-bla is not a CMDlet etc.</p>\r\n<p>&nbsp;</p>\r\n<p>Thanks for your help</p>",
+    "PostedDate": "2012-06-26T12:48:46.95-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "854025",
+    "ThreadId": "356339",
+    "Html": "<p>Hello,&nbsp;</p>\r\n<p>what do you mean saying \"<span>&nbsp;then outputs bla-bla-bla is not a CMDlet etc</span>\"? Does it output to somewhere else? Or it outputs to the text box, but Enter is not put there?</p>\r\n<p>&nbsp;</p>\r\n<p>How does the Set-UIAControlKeys work? In fact, this is the same SendKeys that we have in VBScript or C#, and it broadcasts the keys.</p>\r\n<p>The following line of code</p>\r\n<p>\r\n<div style=\"color: black; background-color: white;\">\r\n<pre>Start<span style=\"color: gray;\">-</span>Process calc <span style=\"color: gray;\">-</span>PassThru | Get<span style=\"color: gray;\">-</span>UIAWindow | Set<span style=\"color: gray;\">-</span>UIAControlKeys <span style=\"color: gray;\">-</span>Text <span style=\"color: #a31515;\">\"1{+}1{ENTER}\"</span>\r\n</pre>\r\n</div>\r\n</p>\r\n<p>does exactly the same as the following does</p>\r\n<p>\r\n<div style=\"color: black; background-color: white;\">\r\n<pre>Start<span style=\"color: gray;\">-</span>Process calc <span style=\"color: gray;\">-</span>PassThru | Get<span style=\"color: gray;\">-</span>UIAWindow; <span style=\"color: gray;\">[</span><span style=\"color: teal;\">System.Windows.Forms.SendKeys</span><span style=\"color: gray;\">]</span><span style=\"color: gray;\">::</span>SendWait(<span style=\"color: #a31515;\">\"1{+}1{ENTER}\"</span>);\r\n</pre>\r\n</div>\r\n</p>\r\n<p>This means that if your text box is in the focus, it gets the keys. Otherwise, you may run something like</p>\r\n<p>\r\n<div style=\"color: black; background-color: white;\">\r\n<pre>Get<span style=\"color: gray;\">-</span>UIAWindow <span style=\"color: gray;\">-</span>Processname <span style=\"color: #a31515;\">'CSPSPServer'</span> | Get<span style=\"color: gray;\">-</span>UIATextBox | Set<span style=\"color: gray;\">-</span>UIAFocus | ...\r\n</pre>\r\n</div>\r\n</p>\r\n<p>or</p>\r\n<p>\r\n<div style=\"color: black; background-color: white;\">\r\n<pre>Get<span style=\"color: gray;\">-</span>UIAWindow <span style=\"color: gray;\">-</span>Processname <span style=\"color: #a31515;\">'CSPSPServer'</span> | Set<span style=\"color: gray;\">-</span>UIAFocus | Get<span style=\"color: gray;\">-</span>UIATextBox | ...\r\n</pre>\r\n</div>\r\n</p>\r\n<p>There is also a new cmdlet, Invoke-UIAHotkey. It's a temporary cmdlet, I'm planning to rewrite it, however, this is and will be available in some way.&nbsp;</p>\r\n<p>It also broadcasts the keys.</p>\r\n<p>For example, if you run the following in PowerShell console</p>\r\n<p>\r\n<div style=\"color: black; background-color: white;\">\r\n<pre>Invoke<span style=\"color: gray;\">-</span>UIAHotKey <span style=\"color: gray;\">-</span>Enter\r\n</pre>\r\n</div>\r\nit reacts as if you'd pressed the Enter there.</p>\r\n<p>&nbsp;</p>\r\n<p>I think that if cmdlets can't hit the text box, the SendKeys also can't? Maybe, what accepts the Enter key is not a text box?</p>",
+    "PostedDate": "2012-06-26T13:09:25.937-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "854198",
+    "ThreadId": "356339",
+    "Html": "<p>Hi <a class=\"UserProfileLink\" href=\"http://www.codeplex.com/site/users/view/xk0ni\">xk0ni</a>,</p>\r\n<p>probably, I've reproduced what you've been complaining about. When you run the Set-UIAControlKeys -Text \"some text\" cmd in the foreground PowerShell console, the console accepts \"some text\" as a command and spits it out.</p>\r\n<p>Run a PowerShell console instance and paste the following to there:</p>\r\n<p>\r\n<div style=\"color: black; background-color: white;\">\r\n<pre><span style=\"color: green;\"># to load System.Windows.Forms namespace</span>\r\nipmo ....\\UIAutomation.dll\r\n\r\n<span style=\"color: green;\"># painting a form</span>\r\n<span style=\"color: orangered;\">$form</span> <span style=\"color: gray;\">=</span> New<span style=\"color: gray;\">-</span>Object System.Windows.Forms.Form\r\n<span style=\"color: orangered;\">$form</span>.Text <span style=\"color: gray;\">=</span> <span style=\"color: #a31515;\">\"testform\"</span>\r\n<span style=\"color: orangered;\">$textbox</span> <span style=\"color: gray;\">=</span> New<span style=\"color: gray;\">-</span>Object System.Windows.Forms.TextBox\r\n<span style=\"color: orangered;\">$textbox</span>.Left <span style=\"color: gray;\">=</span> 20;\r\n<span style=\"color: orangered;\">$textbox</span>.Top <span style=\"color: gray;\">=</span> 50;\r\n<span style=\"color: orangered;\">$textbox</span>.Visible <span style=\"color: gray;\">=</span> <span style=\"color: orangered;\">$true</span>;\r\n<span style=\"color: orangered;\">$textbox</span>.AcceptsReturn <span style=\"color: gray;\">=</span> <span style=\"color: orangered;\">$true</span>;\r\n<span style=\"color: orangered;\">$textbox</span>.Add_KeyPress((<span style=\"color: gray;\">[</span><span style=\"color: teal;\">EventHandler</span><span style=\"color: gray;\">]</span><span style=\"color: orangered;\">$handler</span> <span style=\"color: gray;\">=</span> {<span style=\"color: blue;\">param</span>(<span style=\"color: orangered;\">$src</span>, <span style=\"color: orangered;\">$e</span>) <span style=\"color: blue;\">if</span> (<span style=\"color: orangered;\">$e</span>.KeyChar <span style=\"color: gray;\">-eq</span> 13){<span style=\"color: orangered;\">$form</span>.Close();}}));\r\n<span style=\"color: orangered;\">$form</span>.Controls.Add(<span style=\"color: orangered;\">$textbox</span>);\r\n<span style=\"color: orangered;\">$form</span>.ShowDialog();\r\n</pre>\r\n</div>\r\n</p>\r\n<p>and press Enter to start the form.</p>\r\n<p>Run another instance of PowrShell and paste the following to the command prompt:</p>\r\n<p>\r\n<div style=\"color: black; background-color: white;\">\r\n<pre>Get<span style=\"color: gray;\">-</span>UIAWindow <span style=\"color: gray;\">-</span>n testform | Get<span style=\"color: gray;\">-</span>UIATextBox | Set<span style=\"color: gray;\">-</span>UIAFocus | Set<span style=\"color: gray;\">-</span>UIAControlKeys <span style=\"color: gray;\">-</span>Text <span style=\"color: #a31515;\">\"abc{ENTER}\"</span>\r\n</pre>\r\n</div>\r\n</p>\r\n<p>In my tests, the second code put abc to the textbox field and closed the form.</p>\r\n<p>If you throw out the Set-UIAFocus cmdlet from the pipeline, the code will return something like: \"The term 'abc' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.\"</p>\r\n<p>Is it your case, <a class=\"UserProfileLink\" href=\"http://www.codeplex.com/site/users/view/xk0ni\">xk0ni</a>?</p>\r\n<p>&nbsp;</p>\r\n<p>If you need a form to be foreground, there you have two ways to do it</p>\r\n<p>1) use Set-UIAFocus (not every control likes it, though)</p>\r\n<p>2) run PowerShell console minimized, for example, using a Windows short cut (that is in turn minimized) to a cmd file (assuming the the folder C:\\1 exists):</p>\r\n<p>\r\n<pre>start /wait /normal /min powershell.exe -sta -command \" &amp;{dir \"c:\\1\" &gt;&gt; \"c:\\1\\dir_from_cmd.txt\";}\"</pre>\r\n</p>\r\n<p>I often ran scripts in the second way, putting in the curly brackets the full path to a script and returning the result using the exit command...</p>",
+    "PostedDate": "2012-06-27T00:50:30.07-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "854309",
+    "ThreadId": "356339",
+    "Html": "\r\n<p>Sorry, It was my mistake.</p>\r\n<div style=\"color:black; background-color:white\"></div>\r\n",
+    "PostedDate": "2012-06-27T05:03:30.45-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

@@ -1,0 +1,49 @@
+<div class="wikidoc"><h2>Introduction</h2>All our test frameworks (UIAutomation, SePSX, TMX, etc) are made up, of course, with reporting in mind. There are two ways to report results of your tests:
+<ul><li>rich reporting capabilities with the TMX module</li>
+<li>basic reporting via out-of-the-box TMX.dll</li></ul>
+Whereas TMX as a module provides you with such capabilities as sorting and filtering of test results, writing them to and reading from a database, etc, TMX as an embedded library enables you to have your test results as a list.<br />This article is about the second case.
+<h2>Examples</h2>How to use primitive reporting? All cmdlets have special common parameters:
+<ul><li>-TestResultName (a string that helps you recognize a certain test result)</li>
+<li>-TestPassed (a switch parameters that declares a test result as Passed or Failed (-TestResult:$false))</li>
+<li>-KnownIssue (during working on a version of the product, the situation when test are written but product coudn&#39;t keep up is not rare. When it&#39;s considered &#39;not a bug&#39;, for example, &#39;not implemented&#39; or &#39;postponed&#39;, the -KnownIssue parameter marks the result as KnownIssue).</li></ul>
+Alternatively, you can use automated test result generation:<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:Gray;">[</span><span style="color:Teal;">UIAutomation.Preferences</span><span style="color:Gray;">]</span><span style="color:Gray;">::</span>EveryCmdletAsTestResult <span style="color:Gray;">=</span> <span style="color:OrangeRed;">$true</span>
+</pre></div>We would recommend to generate test results automatically in most cases, and only in cases you need a specific logic to make a test result decision to use hand=made test results.<br /><div style="color:Black;background-color:White;"><pre>
+ipmo UIAutomation;
+<span style="color:Gray;">[</span><span style="color:Teal;">UIAutomation.Preferences</span><span style="color:Gray;">]</span><span style="color:Gray;">::</span>EveryCmdletAsTestResult<span style="color:Gray;">=</span><span style="color:OrangeRed;">$true</span>
+
+<span style="color:Green;"># the happy path</span>
+Start<span style="color:Gray;">-</span>Process calc <span style="color:Gray;">-</span>PassThru | Get<span style="color:Gray;">-</span>UIAWindow | Get<span style="color:Gray;">-</span>UIAButton <span style="color:Gray;">-</span>Name 1 | Invoke<span style="color:Gray;">-</span>UIAButtonClick;
+
+<span style="color:Green;"># code that never be marked as Passed:</span>
+Start<span style="color:Gray;">-</span>Process calc <span style="color:Gray;">-</span>PassThru | Get<span style="color:Gray;">-</span>UIAWindow | Get<span style="color:Gray;">-</span>UIAButton <span style="color:Gray;">-</span>Name 10 | Invoke<span style="color:Gray;">-</span>UIAButtonClick;
+
+<span style="color:Gray;">[</span><span style="color:Teal;">TMX.TestData</span><span style="color:Gray;">]</span><span style="color:Gray;">::</span>CurrentTestScenario.TestResults | fl name,status,timespent
+</pre></div>In the above example, names of test results are generated from code.<br /><br /><br />
+<h1>This is under rewriting</h1>
+<div style="color:Black;background-color:White;"><pre>
+<span style="color:Gray;">[</span><span style="color:Teal;">UIAutomation.Preferences</span><span style="color:Gray;">]</span><span style="color:Gray;">::</span>EveryCmdletAsTestResult <span style="color:Gray;">=</span> <span style="color:OrangeRed;">$true</span>
+Start<span style="color:Gray;">-</span>Process calc <span style="color:Gray;">-</span>PassThru | Get<span style="color:Gray;">-</span>UIAWindow <span style="color:Gray;">-</span>TestResultName <span style="color:#A31515;">&quot;Calculator started&quot;</span> | Get<span style="color:Gray;">-</span>UIAButton <span style="color:Gray;">-</span>Name 1 <span style="color:Gray;">-</span>TestResultName <span style="color:#A31515;">&quot;The Button 1 has been found&quot;</span> | Invoke<span style="color:Gray;">-</span>UIAButtonClick <span style="color:Gray;">-</span>TestResultName <span style="color:#A31515;">&quot;The Button 1 has been clicked&quot;</span>
+<span style="color:Gray;">[</span><span style="color:Teal;">TMX.TestData</span><span style="color:Gray;">]</span><span style="color:Gray;">::</span>CurrentTestScenario.TestResults | fl name,status,timespent
+</pre></div><br /><div style="color:Black;background-color:White;"><pre>
+Get<span style="color:Gray;">-</span>UIAWindow <span style="color:Gray;">-</span>Name <span style="color:OrangeRed;">$windowTitle</span> | Get<span style="color:Gray;">-</span>UIAChildWindow | Get<span style="color:Gray;">-</span>UIATextBox <span style="color:Gray;">-</span>AutomationID ServerBox | Set<span style="color:Gray;">-</span>UIATextBoxText <span style="color:Gray;">-</span>OnSuccessAction {Set<span style="color:Gray;">-</span>UIATestResultLabel <span style="color:Gray;">-</span>TestResultLabel <span style="color:#A31515;">&quot;1.1.1&quot;</span> <span style="color:Gray;">-</span>TestPassed} <span style="color:Gray;">-</span>OnErrorAction {Set<span style="color:Gray;">-</span>UIATestResultLabel <span style="color:Gray;">-</span>TestResultLabel <span style="color:#A31515;">&quot;1.1.1&quot;</span>}
+</pre></div><div style="color:Black;background-color:White;"><pre>
+Get<span style="color:Gray;">-</span>UIAWindow <span style="color:Gray;">-</span>ProcessName <span style="color:OrangeRed;">$processname</span> | Get<span style="color:Gray;">-</span>UIADataGrid | Invoke<span style="color:Gray;">-</span>UIAControlContextMenu | Get<span style="color:Gray;">-</span>UIAMenuItem <span style="color:Gray;">-</span>Name Properties;
+Add<span style="color:Gray;">-</span>UIATestDetail <span style="color:Gray;">-</span>TestDetail <span style="color:#A31515;">&quot;Properties window: test started&quot;</span>;
+
+<span style="color:Green;"># code</span>
+
+Add<span style="color:Gray;">-</span>UIATestDetail <span style="color:Gray;">-</span>TestDetail <span style="color:#A31515;">&quot;Properties window: test almost passed, the final click&quot;</span>;
+
+<span style="color:Green;"># code</span>
+
+If (<span style="color:Gray;">-not</span> (Get<span style="color:Gray;">-</span>UIAWindow <span style="color:Gray;">-</span>ProcessName <span style="color:OrangeRed;">$processname</span> | Get<span style="color:Gray;">-</span>UIAChildWindow <span style="color:Gray;">-</span>Name Properties)){
+
+Set<span style="color:Gray;">-</span>UIATestResultLabel <span style="color:Gray;">-</span>TestResultLabel <span style="color:#A31515;">&quot;1.1.2&quot;</span>;
+
+} <span style="color:Blue;">else</span> {
+
+Set<span style="color:Gray;">-</span>UIATestResultLabel <span style="color:Gray;">-</span>TestResultLabel <span style="color:#A31515;">&quot;1.1.2&quot;</span> <span style="color:Gray;">-</span>TestPassed
+
+}
+</pre></div>visit the <a href="https://uiautomation.codeplex.com/wikipage?title=uiautomation.currentdata&referringTitle=Reporting%20about%20your%20tests">uiautomation.currentdata</a>::TestResults collection to look at your test&#39;s results.</div><div class="ClearBoth"></div>

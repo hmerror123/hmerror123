@@ -1,0 +1,42 @@
+[
+  {
+    "Id": "1222839",
+    "ThreadId": "539019",
+    "Html": "For reasons that I'm not at liberty to fully explain (but it has to be this way) I need to ssh from my windows box to a linux box back into my windows box. I have a python script that is run from the linux box which then executes the powershell script via ssh.\r<br />\n<br />\nThis seems to present a problem to the UIA extension.  My powershell script runs flawlessly on the windows box before ssh, but when I execute the python script or try to run the PS script from via windows&gt;linux&gt;windows ssh, it doesn't recognize any of the windows objects.\r<br />\n<br />\nExample: \r<br />\n<br />\nGet-UIAWindow : Object reference not set to instance of an object\r<br />\n<br />\nGet-UIAChildWindow : Cannot validate argument on parameter 'InputObject'. The argument is null or empty....\r<br />\n<br />\nThese windows exist as, like I said, the script is fine when run locally, but I'm assuming that by doing ssh from the linux box into the windows box, the UIAutomation can't &quot;see&quot; the windows anymore.\r<br />\n<br />\nIs this the case? \r<br />\nHas anyone else run into this? \r<br />\nIs there a work around?\r<br />\nAm I missing someting? etc. etc.?\r<br />\n<br />\nAny insight or help would be much appreciated.\r<br />\n<br />\nThanks for the help, mates.<br />\n",
+    "PostedDate": "2014-03-14T10:31:43.433-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1222887",
+    "ThreadId": "539019",
+    "Html": "Hi CronusIX,\r<br />\nis your Windows box with Vista+ system and your ssh server on Windows is a Windows service?\r<br />\nIn that case you are trying to work from the session 0 that doesn't support GUI and user session at all.\r<br />\n<br />\nIf so, you have two options:\r<br />\n1) RemoteApp<br />\n<ul>\n<li>you need to create a RemoveApp in the Registry (for example, c:\\folder\\file.cmd)</li>\n<li>create the file c:\\folder\\file.cmd</li>\n<li>add something like\r<br />\npowershell.exe -sta -executionpolicy bypass -noninteractive -command &quot;&amp; { your_powershell_script.ps1 parameters; }&quot;</li>\n<li>\nput PowerShell script(s) in place\r<br />\nand run an RDP client from your Linux box<br />\n</li>\n</ul>\nI described all that one needs to implement this scenario <a href=\"https://uiautomation.codeplex.com/discussions/462599\" rel=\"nofollow\">here</a>\r<br />\n<br />\nThis option is native and works good. To check that there is no sessions in parallel or that the session is finished, there are cmdlets by Shay Levi that works without a user session.\r<br />\n<br />\n2) tools like PsExec (PaExec, RemCom)\r<br />\nThese tools are not native and their ability to work in a user session from the session 0 is limited.\r<br />\n<br />\nIf your ssh server on windows is not a Windows service, or your operating system is lower than Vista, I hope there should be one more solution.\r<br />\n<br />\nFeel free to ask for more details on way 1 (hardly can I help in the way 2), or provide info about your Windows operation system, your ssh server and a way you run the script (command line).<br />\n",
+    "PostedDate": "2014-03-14T12:22:07.413-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1222933",
+    "ThreadId": "539019",
+    "Html": "Forgot to mention, if your Windows ssh server is running as a service and could be running as an executable, this may also be the way.<br />\n",
+    "PostedDate": "2014-03-14T15:02:10.807-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1223585",
+    "ThreadId": "539019",
+    "Html": "Makes sense and I did more research on the session 0 thing.  Seems to be an issue for a lot of people with no real good answer.<br />\n<br />\nDo you know if there is a way to manipulate the session (change to session 1) from ssh or from powershell because I can't do the RDP client.<br />\n",
+    "PostedDate": "2014-03-17T09:39:02.227-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1223601",
+    "ThreadId": "539019",
+    "Html": "There's no honest way for your scripts to go beyond the session 0 (if the system is Vista, 2008 or higher).\r<br />\nThere's API (people complain that the memory provided is limited for real-life applications) and tools PSExec, RemCom, PaExec.\r<br />\nIf your application is rich (i.e., many controls), there is little chance to work well.\r<br />\nIf your app is tiny or you need no GUI (for example, I use object model of the application under test just because the model signals to a windows service with WCF interface, and I can't access such WCF interface from session 0 unless programmers extend ACL of named pipes, they refused, so that I use RemCom to access WCF as from user session :)) - this way could be okay for you.\r<br />\n<br />\nPut a tool to a folder, add cmd files like below (scripts run the first cmd, the cmd runs via RemCom, which connects to a target system, the second cmd (StartTask.cmd)):<br />\n<pre><code>C:\\TESTHOME\\libs\\RemCom\\RemCom.exe \\\\%1 /user:%2 /pwd:%3 C:\\TestHome\\libs\\RemCom\\StartTask.cmd %4 %5\nrem %1 host\nrem %2 domain\\user\nrem %3 password\nrem %4 %5 parameters for StartTask.cmd</code></pre>\n\nStartTask.cmd:<br />\n<pre><code>SET powershellCommand=&quot;&amp; { $global:TestHome = 'C:\\TestHome'; New-Item -Path 'C:\\TestHome\\Logs' -ItemType directory -Force -Confirm:$false; New-Item -Path 'C:\\TestHome\\Reports' -ItemType directory -Force -Confirm:$false; ipmo C:\\TestHome\\PSModules\\LogManager; $global:Logger = Get-Logger C:\\TestHome\\Logs\\StartTask.log debug 5; ipmo C:\\TestHome\\PSModules\\GuiConsoleCommon; GuiConsoleCommon\\Start-ManagedObjectDataCollection %1 %2 }&quot; &gt; C:\\TestHome\\output1.txt &gt;&gt; C:\\TestHome\\output2.txt\necho %powershellCommand%\npowershell.exe -sta -noninteractive -executionpolicy bypass -command %powershellCommand%</code></pre>\n\nThese tools use API with some hacks to partially access the user session. My code works without the user session existing before scripts start RemCom. Code to hit the GUI may require that a user session under the same user be available. You need to experiment.<br />\n",
+    "PostedDate": "2014-03-17T10:33:50.677-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

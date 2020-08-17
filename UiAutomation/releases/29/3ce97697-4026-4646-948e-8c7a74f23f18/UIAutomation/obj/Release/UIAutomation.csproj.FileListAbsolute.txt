@@ -1,0 +1,10 @@
+C:\Projects\PS\UIAutomation.Old\UIAutomation\bin\Release\UIAutomation.dll
+C:\Projects\PS\UIAutomation.Old\UIAutomation\bin\Release\TMX.dll
+C:\Projects\PS\UIAutomation.Old\UIAutomation\obj\Release\ResolveAssemblyReference.cache
+C:\Projects\PS\UIAutomation.Old\UIAutomation\obj\Release\Commands\Transcript\RecorderFrom.baml
+C:\Projects\PS\UIAutomation.Old\UIAutomation\obj\Release\Commands\Transcript\Window1.baml
+C:\Projects\PS\UIAutomation.Old\UIAutomation\obj\Release\Commands\Transcript\RecorderFrom.g.cs
+C:\Projects\PS\UIAutomation.Old\UIAutomation\obj\Release\Commands\Transcript\Window1.g.cs
+C:\Projects\PS\UIAutomation.Old\UIAutomation\obj\Release\UIAutomation_MarkupCompile.cache
+C:\Projects\PS\UIAutomation.Old\UIAutomation\obj\Release\UIAutomation.g.resources
+C:\Projects\PS\UIAutomation.Old\UIAutomation\obj\Release\UIAutomation.dll

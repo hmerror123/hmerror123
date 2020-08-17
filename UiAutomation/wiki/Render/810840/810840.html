@@ -1,0 +1,14 @@
+<div class="wikidoc">Interface ISupportsSelectionItemPattern exposes three methods and two properties:<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:Green;"># selects and element. This method fits containers without multi-select.</span>
+<span style="color:OrangeRed;">$element</span>.Select();
+
+<span style="color:Green;"># These methods are for elements in a container that supports multi-select.</span>
+<span style="color:OrangeRed;">$element</span>.AddToSelection();
+<span style="color:OrangeRed;">$element</span>.RemoveFromSelection();
+
+<span style="color:Green;"># checking the state</span>
+<span style="color:OrangeRed;">$element</span>.IsSelected
+
+<span style="color:Green;"># getting the container</span>
+<span style="color:OrangeRed;">$parentContainer</span> <span style="color:Gray;">=</span> <span style="color:OrangeRed;">$element</span>.SelectionContainer
+</pre></div></div><div class="ClearBoth"></div>

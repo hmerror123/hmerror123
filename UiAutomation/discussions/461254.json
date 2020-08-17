@@ -1,0 +1,170 @@
+[
+  {
+    "Id": "1103981",
+    "ThreadId": "461254",
+    "Html": "There are extractly 8 items in the list. When executing the following command, after wallked through 8 items, it stuck for 15 seconds and reports timeout exception.\r<br />\nWhy?<br />\n<pre><code>PS C:\\Windows\\system32&gt; Get-UIAWindow -Name 'xxx' | `\n    Get-UIAList | `\n    Get-UIAListItem -Seconds 15\n\nCached                  Current                 CachedParent            CachedChildren         \n------                  -------                 ------------            --------------         \nSystem.Windows.Autom... System.Windows.Autom...                                                \nSystem.Windows.Autom... System.Windows.Autom...                                                \nSystem.Windows.Autom... System.Windows.Autom...                                                \nSystem.Windows.Autom... System.Windows.Autom...                                                \nSystem.Windows.Autom... System.Windows.Autom...                                                \nSystem.Windows.Autom... System.Windows.Autom...                                                \nSystem.Windows.Autom... System.Windows.Autom...                                                \nSystem.Windows.Autom... System.Windows.Autom...                                                \nGet-UIAListItem : Get-UIAListItem: timeout expired for control with class: + '', control type: \n'ListItem', title: '', automationId: '', value: ''\n所在位置 行:3 字符: 2\n+     Get-UIAListItem -Seconds 15\n+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~\n    + CategoryInfo          : OperationTimeout: (:) [Get-UIAListItem], Exception\n    + FullyQualifiedErrorId : ControlIsNull,UIAutomation.Commands.GetUIAListItemCommand</code></pre>\n\n",
+    "PostedDate": "2013-10-05T08:37:54.347-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1104071",
+    "ThreadId": "461254",
+    "Html": "Hi VictorWoo,<br />\ncould you try the same code with UIAutomation 0.8.6 Beta 5?<br />\n",
+    "PostedDate": "2013-10-05T15:30:45.67-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1104123",
+    "ThreadId": "461254",
+    "Html": "Yes I tried, the problem remains.<br />\n<pre><code>PS C:\\Windows\\system32&gt; gcm Get-UIAWindow | select DLL\n\nDLL                                                                                                                                                      \n---                                                                                                                                                      \nD:\\sync\\script\\UIAutomation.0.8.6B5.NET40\\UIAutomation.dll                                                                                               \n\n\n\nPS C:\\Windows\\system32&gt; Get-UIAWindow -Name 'XXX' |\n    Get-UIAList |\n    Get-UIAListItem | % { $_.Current.Name }\nAAA\nBBB\nCCC\nGet-UIAListItem : Get-UIAListItem: timeout expired for control with class: + '', control type: 'ListItem', title: '', automationId: '', value: ''\n所在位置 行:3 字符: 5\n+     Get-UIAListItem | % { $_.Current.Name }\n+     ~~~~~~~~~~~~~~~\n    + CategoryInfo          : OperationTimeout: (:) [Get-UIAListItem], Exception\n    + FullyQualifiedErrorId : ControlIsNull,UIAutomation.Commands.GetUIAListItemCommand</code></pre>\n\n",
+    "PostedDate": "2013-10-05T22:34:50.05-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1104125",
+    "ThreadId": "461254",
+    "Html": "How many controls of type List (list view, grid, etc) might your application have?<br />\n<pre><code>(Get-UIAWindow -Name 'XXX' |  Get-UIAList).Count</code></pre>\n\nIt seems to me that UIA tries to enumerate list items from several lists.\r<br />\nIf there are several of them, you can try the following:<br />\n<ul>\n<li>use some identifier for the list you work with now:</li>\n</ul>\n<pre><code>Get-UIAWindow -Name 'XXX' |  Get-UIAList -automationId zzz -name yyy -class mmm</code></pre>\n\n<ul>\n<li>a number (they are often the same during the life of the app):</li>\n</ul>\n<pre><code>(Get-UIAWindow -Name 'XXX' | Get-UIAList)[0]</code></pre>\n\n<ul>\n<li>make path in the Automation tree leading only to one List:</li>\n</ul>\n<pre><code>Get-UIAWindow -Name 'XXX' | Get-UIAPane -Aitomationid 1 | Get-UIAPane -AutomationId 2 | Get-UIAList</code></pre>\n\nyou can also run UIAutomationSpy, point to a list item and print the full path to the control here; it sometimes might be helpful to read the full path.\r<br />\n<br />\nThe last thought that you work with a child window and UIAutomation enumerates at first the short way, and after that the long way, I.e.\r<br />\nWindow xxx -&gt; list\r<br />\nAnd window 'main window' -&gt; child window xxx -&gt; list\r<br />\nMS UI Automation treat windows as controls.\r<br />\n<br />\nIf you have several windows in your application (you may be unaware of it. for example, a frame inside MMC window is one more window), UIA 0.8.6 Betas 4 and 5 could help: you are allowed to use more parameters with the Get-UIAWindow cmdlet.\r<br />\n<br />\nI'm sure for 90% that UIA just has a similar area (List) for further search. Alternatively, try a bigger timeout (maybe, 120 seconds) to obtains further results and learn what they are.<br />\n",
+    "PostedDate": "2013-10-05T23:10:39.98-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": "2013-10-06T01:30:36.313-07:00"
+  },
+  {
+    "Id": "1104135",
+    "ThreadId": "461254",
+    "Html": "GOTCHA!\r<br />\nThere are 2 UIALists in the same position. Walking through the second causes exception.\r<br />\nIt seems empty.\r<br />\nThank you very much, and my faith ++ :)<br />\n",
+    "PostedDate": "2013-10-05T23:39:57.127-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1104140",
+    "ThreadId": "461254",
+    "Html": "It explains.\r<br />\nInitially, the UIA module returned only one control. It was good in simple situations, but never fitted for rich output.\r<br />\nIf UIA is asked to return list items from an empty List, it returns timeout error.\r<br />\nIn case of two lists, an empty one and one that is non-empty, the result is puzzling.\r<br />\nUnfortunately, any output (string) could not be used: it spoils the standard output.\r<br />\n<br />\nWe have the following options:<br />\n<ul>\n<li>Verbose output (but it overly verbose)</li>\n<li>old logging (UIAutomatin.log) that is also verbose and, the worst of all, is locked until you close PowerShell.exe (0.8.5)</li>\n<li>\nnew logging (TMX.log) that is not turned on by default (0.8.6)<br />\n</li>\n</ul>\nThere are a way to watch which controls were used: the Show-UIAExecutionPlan cmdlet.\r<br />\nIt shows several waves of output with number (mouse over controls to refresh) and might help to learn which controls were used.<br />\n",
+    "PostedDate": "2013-10-06T00:00:38.867-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1104142",
+    "ThreadId": "461254",
+    "Html": "<strong>apetrovskiy wrote:</strong><br />\n<blockquote>\nIf UIA is asked to return list items from an empty List, it returns timeout error. <br />\n</blockquote>\nIs it logically suitable? If we can't initially know the count of list items, it could be 0..infinite.\r<br />\ne.g.: Reply all incoming emails in the inbox.\r<br />\nIf the inbox is empty, the script turn in to error. Or need some judgement? how?<br />\n",
+    "PostedDate": "2013-10-06T00:11:58.87-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1104146",
+    "ThreadId": "461254",
+    "Html": "My UIAutomationSpy generated code is:<br />\n<pre><code>Get-UIAWindow -Class 'TXGuiFoundation' -Name 'XXX' | `\nGet-UIAPane | `\nGet-UIAPane | `\nGet-UIAPane | `\nGet-UIAPane | `\nGet-UIAPane | `\nGet-UIAPane | `\nGet-UIAPane | `\nGet-UIAPane | `\nGet-UIAPane | `\nGet-UIAPane | `\nGet-UIAPane | `\nGet-UIAPane | `\nGet-UIAPane | `\nGet-UIAList | `\nGet-UIAListItem -Name 'YYY'</code></pre>\n\nAnd the last but one item in Hierarchy view is:<br />\n<pre><code>name = ''; automationId = ''; class = ''; control type = 'List'</code></pre>\n\nThe automationId is empty. How to use -AutomationId then?\r<br />\n<br />\nBTW, it'll be awesome if add some <strong>copy as text</strong> feature to UIAutomationSpy :)<br />\n",
+    "PostedDate": "2013-10-06T00:25:09.26-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1104149",
+    "ThreadId": "461254",
+    "Html": "The Get- cmdlets are not the same as, for instance, the Get-ChildItem cmdlet:\r<br />\nthe Get-ChildItem cmdlet works only 'now'.\r<br />\nThe Get-UIA cmdlets work not only now, the work (when :)) from start time to the time timeout expires.\r<br />\nThis is very useful in software testing as the situation a windows appears after ten seconds is common. Appearance of a control (the next step of a wizard, for example) after several seconds is also common.\r<br />\nA Get-UIA[ControlType] cmdlet fails if no controls in question are here during the time your timeout or default timeout expires.\r<br />\n<br />\nOf course, there are ways to avoid code interruption:<br />\n<ul>\n<li>the Test-UIAControlState cmdlet checks ($true/$false) ad hoc</li>\n<li>the Wait-UIAWindow and Wait-UIA[ControlType] cmdlets check all the time timeout is equal are return $true/$false</li>\n</ul>\n<pre><code>if ((Wait-UIAWindows bla-bla-bla)) {\n\n}\nif ((Test-UIAControlState ...)) {\n\n}\nif (Get-UIAWindow ... | Wait-UIAButton -n OK)) {\n\n}</code></pre>\n\nA mess-up in names? We tried to follow Cmdlet Development Guidelines as we could (despite that Microsoft's cmdlets were created before this guidelines appeared and these guys don't follow the guidelines :)).<br />\n",
+    "PostedDate": "2013-10-06T00:32:00.253-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1104153",
+    "ThreadId": "461254",
+    "Html": "<strong>apetrovskiy wrote:</strong><br />\n<blockquote>\nThe Get-UIA cmdlets work not only now, the work (when :)) from start time to the time timeout expires. <br />\n</blockquote>\nYes, I think I can follow your meaning: Get-UIA* Cmdlets are time-based, detecting for a period. So we should change our mind from traditional understanding of linear programming.\r<br />\n<br />\nAnd there is one last more question, please have a look at the &quot;automationId is empty&quot; problem above, thanks.<br />\n",
+    "PostedDate": "2013-10-06T00:46:33.517-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1104154",
+    "ThreadId": "461254",
+    "Html": "Regarding 'Copy as text', there is  check box 'Write code to clipboard'. It copies to the clipboard only one line (Get-UIA[ControlType] ...).\r<br />\n<br />\nHowever, we have more ways to copy it:\r<br />\n1) stop the spy and copy from the lower box or from the Script tab (the whole history)\r<br />\n2) use the Start-UIARecorder cmdlet, for exmaple:<br />\n<pre><code>Start-UIARecorder -WriteCurrentPattern -NoClassInformation:$false -NoEvents:$false -NoScriptHeader -NoUI -Seconds 30</code></pre>\n\nIt writes to two files: full (with the sample you provided) and short (less code). By default, the files are saved to your Temp folder (cd %temp%).\r<br />\n<br />\nI'll going to re-write the spy (I'm tried to do this for the last year :)) and I'll be thinking how to do this and do this as simply for the user as possible. For example, Coded UI works in other way: collects actions, the user edits these high-level actions and after that their spy generates code. Maybe, it's a good feature to implement...\r<br />\n<br />\nRegarding the lack of properties, yes, sometimes UI automation is no t only craftwork, but also art. :) :) There is also the -SearchCriteria parameter that sometimes helps:<br />\n<pre><code>Get-UIAWindow -pn calc | Get-UIAButton -SearchCriteria @{name=&quot;1&quot;;isenabled=$true}</code></pre>\n\nthe full list of properties supported (MS UI Automation v.1.0):<br />\n<pre><code>(Get-UIAWindow -pn calc | Get-UIAButton -SearchCriteria @{name=&quot;1&quot;;isenabled=$true}).Current</code></pre>\n\n",
+    "PostedDate": "2013-10-06T00:47:04.23-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1104159",
+    "ThreadId": "461254",
+    "Html": "<strong>VictorWoo wrote:</strong><br />\n<blockquote>\nAnd there is one last more question, please have a look at the &quot;automationId is empty&quot; problem above, thanks.<br />\n</blockquote>\nI suggested in the previous post using the -SearchCriteria parameter:<br />\n<pre><code>Get-UIAWindow -pn calc | Get-UIAButton -SearchCriteria @{name=&quot;1&quot;;isenabled=$true}</code></pre>\n\nMS UI Automation v.1.0 provides as with the following set of properties for an AutomaitonElement:\r<br />\nControlType          : System.Windows.Automation.ControlType\r<br />\nLocalizedControlType : button\r<br />\nName                 : 1\r<br />\nAcceleratorKey       :\r<br />\nAccessKey            :\r<br />\nHasKeyboardFocus     : False\r<br />\nIsKeyboardFocusable  : True\r<br />\nIsEnabled            : True\r<br />\nBoundingRectangle    : 1453,494,34,27\r<br />\nHelpText             :\r<br />\nIsControlElement     : True\r<br />\nIsContentElement     : True\r<br />\nLabeledBy            :\r<br />\nAutomationId         : 131\r<br />\nItemType             :\r<br />\nIsPassword           : False\r<br />\nClassName            : Button\r<br />\nNativeWindowHandle   : 66766\r<br />\nProcessId            : 4912\r<br />\nIsOffscreen          : False\r<br />\nOrientation          : None\r<br />\nFrameworkId          : Win32\r<br />\nIsRequiredForForm    : False\r<br />\nItemStatus           :\r<br />\n<br />\nPractically, we can use IsEnabled (enabled), IsOffscreen (! visible), sometimes we can play with AcceleratorKey, AccessKey, FrameworkId (if an author of the app provided us with these values).\r<br />\nAlternatively, the order can help. Using the order is not a good idea, however, it may help:<br />\n<pre><code>(Get-UIAWindow -Name 'XXX' | Get-UIAList)[0] | Get-UIAListItem</code></pre>\n\nProbably, the second List could be avoided by specifying the path to the first control (there should be difference between full paths).\r<br />\n<br />\nSometimes, if control never change its relative position to the parent of ancestor when the user changes the size of form, we can use coordinated click:<br />\n<pre><code>Get-UIAWindow -Name 'XXX' | Get-UIAPane | Get-UIAPane | Get-UIAPane | Move-UIACursor -X 20 -Y 30 | Get-UIAControlFromPoint # List</code></pre>\n\nIf the situation when one List is not used or never contains list items, you can simplify your work:<br />\n<pre><code>Get-UIAWindow -Name 'XXX'  | Get-UIAListItem</code></pre>\n\n",
+    "PostedDate": "2013-10-06T01:23:23.193-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1104161",
+    "ThreadId": "461254",
+    "Html": "Yes I saw your answer. They are good practice and valuable for new user.\r<br />\nThey can be placed in wiki or documentation to help people.<br />\n",
+    "PostedDate": "2013-10-06T01:33:07.68-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1104165",
+    "ThreadId": "461254",
+    "Html": "I'll extend the documentation <a href=\"http://goo.gl/FlR9PL\" rel=\"nofollow\">working with controls</a>, some 0.8.x features are not yet documented.\r<br />\nThere was a slight decrease in use of the framework during the summer and I was overwhelmed with automation at work, so that I stopped re-writing old documentation and extending it. I'll continue, of course.\r<br />\n<br />\nThere's also a tool from MIcrosoft <a href=\"http://goo.gl/I1XCW4\" rel=\"nofollow\">UIA V</a> that might help learning the Automation tree. It works exactly as UI Automation v.1.0 (the last month they removed the tool based on MS UI Automation v.2.0).<br />\n",
+    "PostedDate": "2013-10-06T01:50:15.56-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1104171",
+    "ThreadId": "461254",
+    "Html": "I've an idea about UIAutomationSpy:\r<br />\nIn multiple UIAList situation, if UIAutomationSpy detects multiple instance in the same tree level, it automatically compares their &quot;.Current&quot; properties or automationId, etc.,  and calculate the minimal filter set to make sure the user selection wins. Or generate some suggestions for creating filters. It can save life, isn't it?<br />\n",
+    "PostedDate": "2013-10-06T02:17:18.083-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1104182",
+    "ThreadId": "461254",
+    "Html": "UIAutomationSpy works &quot;from the end&quot;: it uses the ability of Microsoft UI Automation to get a control from the point the mouse cursor is now hovering over.\r<br />\nAfter that the spy builds the full/short path up to the window.\r<br />\n<br />\nI added the Test generated code check box, which was meant to test the PowerShell code, however I didn't add the C# code that checks the PowerShell code the spy writes out...<br />\n",
+    "PostedDate": "2013-10-06T03:39:15.317-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1104200",
+    "ThreadId": "461254",
+    "Html": "So it's not possible to find a unique path automatically?<br />\n",
+    "PostedDate": "2013-10-06T05:28:42.603-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1104389",
+    "ThreadId": "461254",
+    "Html": "It's hardly possible to find <em>the best path</em> automatically.\r<br />\nCmdlets support several ways of search<br />\n<ul>\n<li>direct UI Automation search</li>\n<li>UI Automation search with wild cards</li>\n<li>\nWin32 search (SendMessage) with wild cards\r<br />\nThe two last types of search  collect 1) all control of the type, below parent 2) all controls with handles below the parent\r<br />\nand apply wild cards to the collection.\r<br />\nThese types of search much more useful, however, if we work with a grid, table, etc control with hundreds and thousands of elements (controls), it takes time.\r<br />\nFinally, the best way is what the user prefers.\r<br />\nIf the spy tests all ways, if will eat a lot of time.<br />\n</li>\n</ul>\nThe similar problem with Selenium. It supports, besides direct searches and search via JavaScript, two types of search: CSS and XPath.\r<br />\nPeople prefer the latter, though relatively slow but readable.\r<br />\nA tool, firebug for example, output something like\r<br />\n//div/div/table/tr/td/div/[0] (a very simple example)\r<br />\nThe user makes from it something like:\r<br />\n//../tr/td/div/[0]\r<br />\nI used Selenium a year ago and my sample is not so clear.\r<br />\nThe most interesting that all tools that out of the box generate code (HP QTP, TestComplete, Visual Studio, etc) are left behind in popularity by Selenium that even does not have code generation.<br />\n",
+    "PostedDate": "2013-10-07T00:33:10.48-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1104392",
+    "ThreadId": "461254",
+    "Html": "Yes, I've thought about css, xpath, etc, before. A tool call XmlSpy gives similar answers like //div/div/table/tr/td/div/[0] , not friendly to people.<br />\nSo, is there any tip in PowerShell to compare two objects, find different value to help making a filter?<br />\nI tried<br />\n<pre><code>Compare-Object xxx.Current yyy.Current</code></pre>\n\nThough they have different property value, but Compare-Object doesn't give me the expected answer. My stupid solution is:<br />\n<pre><code>Compare-Object (xxx.Current.ToString().Split(&quot;`n&quot;)) (yyy.Current.ToString().Split(&quot;`n&quot;))</code></pre>\n\nI think there must be a better solution..<br />\n",
+    "PostedDate": "2013-10-07T00:52:46.753-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1104534",
+    "ThreadId": "461254",
+    "Html": "<pre><code>$wnd1 = Get-UIAWindow -n *command*pro*\n$wnd2 = Get-UIAWindow -n *calc*\n$wnd1.Current | Get-Member | %{ Compare-Object ($wnd1.Current).&quot;$($_.Name)&quot; $wnd2.Current.&quot;$($_.Name)&quot;; }</code></pre>\n\n",
+    "PostedDate": "2013-10-07T07:28:20.123-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1104829",
+    "ThreadId": "461254",
+    "Html": "Thank you for your script.<br />\n",
+    "PostedDate": "2013-10-07T20:09:58.463-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

@@ -1,0 +1,3 @@
+\\stora\familylibrary\Projects\PS\UIAutomation\UIAutomation\obj\Debug\ResolveAssemblyReference.cache
+\\stora\familylibrary\Projects\PS\UIAutomation\UIAutomation\obj\Debug\UIAutomation.Commands.RecorderForm.resources
+\\stora\familylibrary\Projects\PS\UIAutomation\UIAutomation\obj\Debug\UIAutomation.csproj.GenerateResource.Cache

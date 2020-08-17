@@ -1,0 +1,45 @@
+{
+  "WorkItem": {
+    "AffectedComponent": {
+      "Name": "",
+      "DisplayName": ""
+    },
+    "ClosedComment": "",
+    "ClosedDate": null,
+    "CommentCount": 1,
+    "Custom": null,
+    "Description": "I've just given the library a shot, and my first two tests (run around 09:36 and 09:37 this morning) with Set-UIAScreenshot  have produced the following filenames:\r\n\r\n2013112193723363_NotePad++.bmp\r\n201311219366494_NotePad++.bmp\r\n\r\n\r\nThis clearly means leading zeroes in the \"hours\", \"minutes\" and \"seconds\" parts of the filename (and probably elsewhere, didn't check the code) are omitted, whereas they shouldn't...\r\n",
+    "LastUpdatedDate": "2013-11-21T01:37:07.443-08:00",
+    "PlannedForRelease": "",
+    "ReleaseVisibleToPublic": false,
+    "Priority": {
+      "Name": "Unassigned",
+      "Severity": 0,
+      "Id": 0
+    },
+    "ProjectName": "UiAutomation",
+    "ReportedDate": "2013-11-21T00:47:25.1-08:00",
+    "Status": {
+      "Name": "Proposed",
+      "Id": 1
+    },
+    "ReasonClosed": {
+      "Name": "Unassigned"
+    },
+    "Summary": "Default filename for Save-UIAScreenshot uses incorrect format for date/time",
+    "Type": {
+      "Name": "Unassigned",
+      "Id": 5
+    },
+    "VoteCount": 1,
+    "Id": 7
+  },
+  "FileAttachments": [],
+  "Comments": [
+    {
+      "Message": "Hi sba,\nthank you for your request. It will be fixed in [the nearest beta of 0.8.7](https://uiautomation.codeplex.com/releases/view/114746) (most likely, in beginning of the next week).",
+      "PostedDate": "2013-11-21T01:37:07.443-08:00",
+      "Id": 123741
+    }
+  ]
+}

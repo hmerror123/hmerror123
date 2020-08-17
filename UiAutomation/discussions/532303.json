@@ -1,0 +1,26 @@
+[
+  {
+    "Id": "1209359",
+    "ThreadId": "532303",
+    "Html": "Hi everyone. I’d like to automate an IE page which is consisted of some iframes. I tried to figure it out, but I didn’t know what kind of commands combination is correct.\r<br />\n<br />\nGet-UiaWindow -Class 'IEFrame' -Name 'Title - Internet Explorer' | <code>Get-UiaPane -Class 'Frame Tab' |</code>\r<br />\nGet-UiaPane -Class 'TabWindowClass' -Name 'Title - Internet Explorer' | <code>Get-UiaPane -Class 'Shell DocObject View' |</code>\r<br />\nGet-UiaPane -Class 'Internet Explorer_Server' -Name 'Title'\r<br />\n<br />\nAfter above, I tried to put Get-UiaCustom, Get-UiaWindows, and Get-UiaPane. But I don’t know which combination is correct to recognize the iframes. Any kind of help will be appreciated. Thanks in advance.<br />\n",
+    "PostedDate": "2014-02-17T03:42:17.64-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1209696",
+    "ThreadId": "532303",
+    "Html": "Hi,\r<br />\nunfortunately, what can be get via hovering over by the mouse (AutomationElement.FromPoint()), not always available via search (AutomationElement.FindAll()). IE is a good example, I mean a good bad example. Try Firefox instead.\r<br />\nI failed to get even iframes in IE, oppositely in FF not only iframes themselves are available, but their internal elements available too. Slowly, but available.\r<br />\n<br />\nExample:\r<br />\nassuming that you've downloaded these files (that have been made from w3schools's samples)\r<br />\n<a href=\"https://github.com/apetrovskiy/STUPS/blob/master/SePSX/TestData/iframe.htm\" rel=\"nofollow\">file1</a>, <a href=\"https://github.com/apetrovskiy/STUPS/blob/master/SePSX/TestData/frameContent1.htm\" rel=\"nofollow\">file2</a>, <a href=\"https://github.com/apetrovskiy/STUPS/blob/master/SePSX/TestData/frameContent2.htm\" rel=\"nofollow\">file3</a>, put them in a folder and run the firt in FF:<br />\n<pre><code>$lists = Get-UiaWindow -Class 'MozillaWindowClass' -Name 'Mozilla Firefox' | `\nGet-UiaDocument -Name '*iframe*' | `\nGet-UiaDocument -Name '*frameContent1*' | `\nGet-UiaList\n\n$lists.Count;\n$lists | Read-UiaControlName;\n$lists | Read-UiaControlAutomationId;\n$lists | Read-UiaControlClass;\n\n$edits = Get-UiaWindow -Class 'MozillaWindowClass' -Name 'Mozilla Firefox' | `\nGet-UiaDocument -Name '*iframe*' | `\nGet-UiaDocument -Name '*frameContent2*' | `\nGet-UiaEdit\n\n$edits.Count;\n$edits | Read-UiaControlName;\n$edits | Read-UiaControlAutomationId;\n$edits | Read-UiaControlClass;</code></pre>\n\nNot so bad? In the first frame, there are 5 lists. The happiness stops here: they are and elements below don't have names, automationIds, classnames, only type.\r<br />\nIn the second frame, there are 3 edit and 4 labels, UIAutomation counts them as 7 edits. This means that you need to navigate among them a-la &quot;next sibling&quot;, &quot;first child&quot;, etc.\r<br />\n<br />\nTotals: IE seems to be a very poor choice, there is little chance to get it working. FF looks promising, though it also requires hard work and patience.<br />\n",
+    "PostedDate": "2014-02-17T22:49:49.917-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1210376",
+    "ThreadId": "532303",
+    "Html": "Hi, thank you for taking your time. I'll try it later.<br />\n",
+    "PostedDate": "2014-02-19T01:25:52.797-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

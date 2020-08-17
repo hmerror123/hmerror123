@@ -1,0 +1,14 @@
+<div class="wikidoc">How to program a wizard test? Write several functions like below which do some logic and press the Next button?<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:Blue;">function</span> Invoke<span style="color:Gray;">-</span>WelcomeStep {
+    <span style="color:Blue;">if</span> ((Wait<span style="color:Gray;">-</span>UIAWindow <span style="color:Gray;">-</span>n <span style="color:Gray;">*</span>wizard<span style="color:Gray;">*</span> <span style="color:Gray;">-</span>WithControl @{name<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;*welcome*&quot;</span>})) {
+        <span style="color:OrangeRed;">$null</span> <span style="color:Gray;">=</span> Get<span style="color:Gray;">-</span>UIAButton <span style="color:Gray;">-</span>Name <span style="color:Gray;">*</span>Next<span style="color:Gray;">*</span> | Invoke<span style="color:Gray;">-</span>UIAButtonClick;
+    }
+}
+
+<span style="color:Blue;">function</span> Invoke<span style="color:Gray;">-</span>LicenseeAgreementStep {
+    <span style="color:Blue;">if</span> ((Wait<span style="color:Gray;">-</span>UIAWindow <span style="color:Gray;">-</span>n <span style="color:Gray;">*</span>wizard<span style="color:Gray;">*</span> <span style="color:Gray;">-</span>WithControl @{name<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;*accept*&quot;</span>})) {
+        <span style="color:OrangeRed;">$null</span> <span style="color:Gray;">=</span> Get<span style="color:Gray;">-</span>UIACheckBox <span style="color:Gray;">-</span>Name <span style="color:Gray;">*</span>accept<span style="color:Gray;">*</span> | Set<span style="color:Gray;">-</span>UIACheckBoxToggleState <span style="color:OrangeRed;">$true</span>;
+        <span style="color:OrangeRed;">$null</span> <span style="color:Gray;">=</span> Get<span style="color:Gray;">-</span>UIAButton <span style="color:Gray;">-</span>Name <span style="color:Gray;">*</span>Next<span style="color:Gray;">*</span> | Invoke<span style="color:Gray;">-</span>UIAButtonClick;
+    }
+}
+</pre></div>These days, we have a specific set of cmdlets for such use. Here is the list:<br /><br /><b>New-UIAWizard</b> - creates a new wizard object, gives it the name and initial script (Start-Process of an independent wizard-application or click anywhere in the program to call an embedded wizard)<br /><br /><b>Add-UIAWizardStep</b> - takes the wizard object through the pipeline (or the InputObject parameter), sets the name to a step. After that adds the step to the wizard.<br /><br /><b>Remove-UIAWizardStep</b> - removes a step from the collection<br /><br /><b>Get-UIAWizard</b> - returns a wizard by name<br /><br /><b>Invoke-UIAWizard</b> - starts the wizard by running code in the start action, returns the wizard object.<br /><br />The Step-UIAWizard cmdlet is now obsolete.</div><div class="ClearBoth"></div>

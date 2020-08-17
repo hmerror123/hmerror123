@@ -1,0 +1,58 @@
+[
+  {
+    "Id": "983812",
+    "ThreadId": "428793",
+    "Html": "\r\n<p>Background:</p>\r\n<p>I'm in the process of automating some configuration processes, but have run into a snag trying to get items within a treeView control 'checked'. &nbsp;Can anyone supply a snippet to help me out?</p>\r\n<p>My existing code appears to select the item, but does not actually &quot;check the box&quot;</p>\r\n<p>Get-UIAWindow -name $setupTitle | Get-UIATree | Get-UIATreeItem -Name $featureName | Invoke-UIATreeItemSelectItem -ItemName $featureName&nbsp;</p>\r\n<p>Thanks</p>\r\n",
+    "PostedDate": "2013-01-07T09:04:32.773-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "983837",
+    "ThreadId": "428793",
+    "Html": "\r\n<p>Hello <a href=\"http://www.codeplex.com/site/users/view/bohreer\">bohreer</a>,</p>\r\n<p>I created a Windows Forms application with a TreeView control with several nodes, and set its CheckBoxes property to True.</p>\r\n<p>As the SelectItemPattern does nothing except changing the color of a node, the best way is to click to the left from a node:</p>\r\n<p></p>\r\n<div style=\"color:black; background-color:white\">\r\n<pre>Get<span style=\"color:gray\">-</span>UIAWindow <span style=\"color:gray\">-</span>pn treeviewtest | Get<span style=\"color:gray\">-</span>UIATreeItem <span style=\"color:gray\">-</span>Name Node0 | Invoke<span style=\"color:gray\">-</span>UIAControlClick <span style=\"color:gray\">-</span>X <span style=\"color:gray\">-</span>10 <span style=\"color:gray\">-</span>Y 3;\r\n</pre>\r\n</div>\r\n<p></p>\r\n<p>The X-coordinate <a title=\"increases\" href=\"http://uiautomation.codeplex.com/wikipage?title=Click%20on%20position&referringTitle=Clicks\" target=\"_blank\">\r\nincreases</a> from left to right, so that a negative number is what we need to hit outside the node. The Y-coordinate grows from top to bottom, so that we can use 0 or a small positive number to hit into a node. Sometimes people choose too small shift and hit\r\n the red border, the module displays by default for the active control...</p>\r\n",
+    "PostedDate": "2013-01-07T10:31:12.497-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "984024",
+    "ThreadId": "428793",
+    "Html": "\r\n<p>With the reorganization of documentation we started recently, we created the Troublrshooting guide section and put the answer to there:&nbsp;http://uiautomation.codeplex.com/wikipage?title=TreeView</p>\r\n",
+    "PostedDate": "2013-01-08T02:37:42.037-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1008808",
+    "ThreadId": "428793",
+    "Html": "Is there a way how to get state of the checkbox in treeview? I don't have a problem with checking or unchecking the box, but I need to know the state in some tests and I haven't found a way (items in the tree don't have TogglePattern according to UIVerify).<br />\n",
+    "PostedDate": "2013-03-01T05:41:00.293-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1011066",
+    "ThreadId": "428793",
+    "Html": "Looks like some treeviews in different applications doesn't have TVS_CHECKBOXES style set and in that case UIAutomation doesn't provide toggle pattern for individual items. I haven't found a way around it sadly and only option is to get info from developer what flags they use to handle checkboxes and then via SendMessage get the value.<br />\n",
+    "PostedDate": "2013-03-06T02:00:39.043-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1011754",
+    "ThreadId": "428793",
+    "Html": "There was a thought, months ago, to add image recognition mechanism (based on OpenCV or another library). When searching of a small area, it should work fast. I mean that code should be something like:<br />\n<pre><code>function Get-TreeItemCheckedState\n{\nparam($Name)\n\n[void]($treeItem = Get-UIATreeItem -Name $Name);\n\nif ((Search-UIAImageMatch -InputObject $treeItem -X -30 -Y 5 -Image 'checked.bmp')) return $true;\n}</code></pre>\n\nI think, I can implement this during this week.<br />\n",
+    "PostedDate": "2013-03-07T05:38:42.63-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1011810",
+    "ThreadId": "428793",
+    "Html": "That would be fantastic having some image recognition support in these cmdlets.<br />\n",
+    "PostedDate": "2013-03-07T07:28:50.413-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

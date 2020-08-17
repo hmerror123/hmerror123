@@ -1,0 +1,34 @@
+[
+  {
+    "Id": "1107303",
+    "ThreadId": "462132",
+    "Html": "Hello,<br />\n<br />\nI'm currently struggling with handling scrollbars in an application I'm testing. The object of interest is DataTable, which has a scrollbar attached to it - unfortunately, the only way I've found to handle the DataTable entries is by using Get-UIACustom -Value &lt;value&gt;. From there, I can, of course, click the items, save for those not in view. I tried using Invoke-UIACustomScrollItem, but I haven't been able to get anything to happen. I read Victor Woo's question and the corresponding responses (<a href=\"https://uiautomation.codeplex.com/discussions/461891\" rel=\"nofollow\">https://uiautomation.codeplex.com/discussions/461891</a>), but since I have to get the objects as Custom items instead of as a List, I wasn't able to figure out how to apply the well-written responses to my own situation.<br />\n<br />\nI'm currently running Windows 7 - any help would be greatly appreciated!<br />\n<br />\nThanks so much for your time,<br />\n<br />\n-Jonathan<br />\n<br />\nEdit: I'm trying to click an object outside of the currently displayed range. I'm currently attempting to use Set-UIAControlKeys to hit the down arrow button until $customObj | Read-UIAControlHasKeyboardFocus returns true, but I'd like to know whether a simpler and more efficient method exists.<br />\n",
+    "PostedDate": "2013-10-14T11:54:00.783-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1107323",
+    "ThreadId": "462132",
+    "Html": "Hitting the down arrow button accomplished what I was looking for and the task is accomplished pretty quickly, so I'm good. I'd still like to know how to scroll, but for anybody else who might find the code helpful, here's what I did:<br />\n<pre><code>$table = &lt;code to get DataTable element&gt;\n$dataElement = Get-UIACustom -Value &lt;item value&gt;\n\nwhile ($($dataElement | Read-UIAControlHasKeyboardFocus) -ne $true) {\n    $table | Set-UIAControlKeys -Text &quot;{DOWN}&quot;\n}</code></pre>\n\nHope this helps!<br />\n",
+    "PostedDate": "2013-10-14T12:44:46.97-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1107342",
+    "ThreadId": "462132",
+    "Html": "Thanks Jonathan!\r<br />\nI was pondering what to use to model the situation (and inclined to use Excel 2013, its sheet is UI Automation Tab with scroll), as your answer is already here! :)\r<br />\n<br />\nFrom the question, I didn't get whether your DataTable implements or doesn't ScrollPattern. I understood that Custom elements don't support ScrollItemPattern.\r<br />\n<br />\nThere is no right way for any control to scroll it as only minority of controls support what they are supposed to support.<br />\n<ul>\n<li>if a control (a container control like DataGrid, Table) supports ScrollPattern, we can use the Invoke-UIA[ControlType]Scroll cmdlet.</li>\n<li>if an item (a child control like DataItem) supports ScrollItemPattern, we can use the Invoke-UIA[ControlType]ScrollItem cmdlet\r<br />\nIn other cases, we use what is possible:</li>\n<li>keyboard as you just used (the Set-UIAFocus cmdlet may be used if necessary)</li>\n<li>a Win32 click or InvokePattern (Invoke-UIA[ControlType]Click) on the upper or lower part of the scroll bar</li>\n<li>\na Win32 click or InvokePattern on the upper or lower button of the scroll control<br />\n</li>\n</ul>\nJust a story: when I worked for Quest, these guys have bought legacy WinForms controls by Infragistics. I automated UltraGrid. The vendor refused to support UI Automation for these controls (it was 2011, nobody would invest in WinForms support as it was WPF+, Silverlight, etc era). There are a couple of cmdlets of those times in the framework. To select several rows in the grid, I used Ctrl + click inside the cmdlet (similarly to Invoke-UIAControlClick -Ctrl in PowerShell). It worked slowly, but finally it worked. The vendor offered only plugin for QTP or IBM RFT for $3k each (each tool itself costs $6-12k), so that my bosses were glad that I spent three or four days to produce a test engine for the grid and the need to approve an expensive tool has gone... :)<br />\n",
+    "PostedDate": "2013-10-14T13:27:31.403-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1107369",
+    "ThreadId": "462132",
+    "Html": "Thanks for your quick reply - it's definitely appreciated (:\r<br />\n<br />\nThe DataTable does not implement ScrollPattern, it seems. So the only options would be one of those last three. May have to put a bug in the developer's ears about that!\r<br />\n<br />\nI'm in a somewhat similar situation - the application I'm testing must be tested with no impact from third-party software... so I'm importing the UIA library from a CD and using the computer's native Powershell to run the scripts from CD.\r<br />\n<br />\nThanks again!<br />\n",
+    "PostedDate": "2013-10-14T14:24:13.213-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

@@ -1,0 +1,32 @@
+<div class="wikidoc">Interface ISupportsControlPattern exposes one method:<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:Green;"># performs a Win32 click</span>
+<span style="color:OrangeRed;">$element</span>.Click();
+</pre></div><br />The following methods are moved to the Control property:<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:Green;">&lt;#
+# performs a Win32 doucle-click
+$element.DoubleClick();
+
+# performs a Win32 right click
+$element.RightClick();
+
+# performs a Win32 click + Ctrl
+$element.CtrlClick();
+
+# performs a Win32 click + Alt
+$element.AltClick();
+
+# performs a Win32 click + Shift
+$element.ShiftClick();
+
+# performs a coordinated Win32 click
+# coordinates measured from the upper-left corner of a control
+$element.Click($x, $y);
+
+# performs a coordinated Win32 double-click
+$element.DoubleClick($x, $y);
+
+# invokes context menu on an element,
+# returns the object of menu
+$element.InvokeContextMenu(); # this is broken in 0.8.7 alpha 3, fixed in 0.8.7 alpha 4
+#&gt;</span>
+</pre></div></div><div class="ClearBoth"></div>

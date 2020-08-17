@@ -1,0 +1,26 @@
+[
+  {
+    "Id": "896588",
+    "ThreadId": "390597",
+    "Html": "\r\n<p>Hello.</p>\r\n<p>I have noticed that the automation elements that are selected have a magenta border around them (or at least this is how it appears on my monitor).</p>\r\n<p>Is this something implemented in the Powershell extension, or does it come from the UI Automation API itself? Any way to remove it?</p>\r\n<p>Thanks.</p>\r\n",
+    "PostedDate": "2012-08-07T08:44:39.203-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "896621",
+    "ThreadId": "390597",
+    "Html": "\r\n<p>Hello JohnQuest,</p>\r\n<p>the square can be removed by running the following command:</p>\r\n<div style=\"color:black; background-color:white\">\r\n<pre><span style=\"color:gray\">[</span><span style=\"color:teal\">UIAutomation.Preferences</span><span style=\"color:gray\">]</span><span style=\"color:gray\">::</span>Highlight <span style=\"color:gray\">=</span> <span style=\"color:orangered\">$false</span>;\n</pre>\r\n</div>\r\n<p>The latest version also supports highlighting of the parent element:</p>\r\n<div style=\"color:black; background-color:white\">\r\n<pre><span style=\"color:gray\">[</span><span style=\"color:teal\">UIAutomation.Preferences</span><span style=\"color:gray\">]</span><span style=\"color:gray\">::</span>HighlightParent <span style=\"color:gray\">=</span> <span style=\"color:orangered\">$false</span>;\n</pre>\r\n</div>\r\n<p>By default, the module works in the Presentation mode, because of the first actions the tester does are trying the code and observing the results. For unattended runs, there is the Normal mode. The command to switch the module to the Normal mode is:</p>\r\n<div style=\"color:black; background-color:white\">\r\n<pre><span style=\"color:gray\">[</span><span style=\"color:teal\">UIAutomation.Mode</span><span style=\"color:gray\">]</span><span style=\"color:gray\">::</span>Profile <span style=\"color:gray\">=</span> <span style=\"color:gray\">[</span><span style=\"color:teal\">UIAutomation.Modes</span><span style=\"color:gray\">]</span><span style=\"color:gray\">::</span>Normal;\n</pre>\r\n</div>\r\n<p>The Normal mode works without highlighting and debug delays.</p>\r\n",
+    "PostedDate": "2012-08-07T10:53:35.25-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "896637",
+    "ThreadId": "390597",
+    "Html": "<p>Excellent.</p>\r\n<p>Thank you.</p>",
+    "PostedDate": "2012-08-07T12:01:29.193-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

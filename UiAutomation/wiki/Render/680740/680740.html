@@ -1,0 +1,11 @@
+<div class="wikidoc">There are six event indicating that the structure of Automation tree has been changed. These six events can be chosed as parameters of the Register-UIAStructureChangedEvent cmdlet:<br /><div style="color:Black;background-color:White;"><pre>
+Register<span style="color:Gray;">-</span>UIAStructureChangedEvent <span style="color:Gray;">-</span>ChildAdded <span style="color:Gray;">-</span>ChildRemoved <span style="color:Gray;">-</span>ChildrenInvalidated <span style="color:Gray;">-</span>ChildrenBulkAdded <span style="color:Gray;">-</span>ChildrenBulkRemoved <span style="color:Gray;">-</span>ChildrenReordered
+</pre></div>In the following sample, we register a StructureChangedEvent, after that (no code provided) we perform manual or programmatic actions with GUI, and, finally, obtain the results list.<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:OrangeRed;">$global:annals</span> <span style="color:Gray;">=</span> New<span style="color:Gray;">-</span>Object System.Collections.ArrayList;
+Start<span style="color:Gray;">-</span>Process calc <span style="color:Gray;">-</span>PassThru | Get<span style="color:Gray;">-</span>UIAWindow | Register<span style="color:Gray;">-</span>UIAStructureChangedEvent <span style="color:Gray;">-</span>ChildrenBulkAdded <span style="color:Gray;">-</span>ChildAdded <span style="color:Gray;">-</span>ChildRemoved <span style="color:Gray;">-</span>ChildrenReordered <span style="color:Gray;">-</span>EventAction { <span style="color:Blue;">param</span>(<span style="color:OrangeRed;">$src</span>, <span style="color:OrangeRed;">$e</span>) <span style="color:OrangeRed;">$global:annals</span>.Add(<span style="color:OrangeRed;">$src</span>.Current.Name); <span style="color:OrangeRed;">$global:annals</span>.Add(<span style="color:OrangeRed;">$e</span>.StructureChangeType); };
+
+<span style="color:Green;"># perform manual or programmatic actions like show/hide worksheets or change mode</span>
+
+<span style="color:Green;"># display which event have been caught</span>
+<span style="color:OrangeRed;">$global:annals</span>;
+</pre></div></div><div class="ClearBoth"></div>

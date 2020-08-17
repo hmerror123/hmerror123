@@ -1,0 +1,5 @@
+C:\Projects\PS\UIAutomation.Old\UIAutomationAliases\bin\Release40\UIAutomationAliases.dll
+C:\Projects\PS\UIAutomation.Old\UIAutomationAliases\bin\Release40\UIAutomation.dll
+C:\Projects\PS\UIAutomation.Old\UIAutomationAliases\bin\Release40\TMX.dll
+C:\Projects\PS\UIAutomation.Old\UIAutomationAliases\obj\Release40\Release40\ResolveAssemblyReference.cache
+C:\Projects\PS\UIAutomation.Old\UIAutomationAliases\obj\Release40\Release40\UIAutomationAliases.dll

@@ -1,0 +1,70 @@
+<div class="wikidoc">
+<p>&nbsp;</p>
+<div style="color:black; background-color:white">
+<pre><span style="color:green"># Verifies that a control(s) meet(s) provided conditions. Conditions is an array of Hashtables @{AutomationElement.propertyname=value}</span>
+
+ipmo C:\tests\UIAutomation.dll;
+
+Write<span style="color:gray">-</span>Host <span style="color:#a31515">&quot;start the services.msc snap-in&quot;</span>;
+
+Stop<span style="color:gray">-</span>Process <span style="color:gray">-</span>Name mmc;
+
+Start<span style="color:gray">-</span>Process services.msc -PassThru | Get<span style="color:gray">-</span>UIAWindow <span style="color:gray">-</span>p mmc | Get<span style="color:gray">-</span>UIADataItem <span style="color:gray">-</span>Name BranchCache | Invoke<span style="color:gray">-UIAControlContextMenu | Get<span style="color:gray">-UIAMenuItem <span style="color:gray">-Name Properties | Invoke<span style="color:gray">-</span>UIAMenuItemClick;</span></span></span></pre>
+</div>
+<p>&nbsp;</p>
+<div style="color:black; background-color:white">
+<pre>Write<span style="color:gray">-</span>Host <span style="color:#a31515">&quot;checking the OK button (right)&quot;</span>;
+
+Get<span style="color:gray">-</span>UIAWindow <span style="color:gray">-</span>p mmc | Test<span style="color:gray">-</span>UIAControlState <span style="color:gray">-</span>SearchCriteria @{Name<span style="color:gray">=</span><span style="color:#a31515">'OK'</span>} <span style="color:gray">-</span>ver
+</pre>
+</div>
+<p>&nbsp;</p>
+<div style="color:black; background-color:white">
+<pre>Write<span style="color:gray">-</span>Host <span style="color:#a31515">&quot;checking the Cancel button (right)&quot;</span>;
+
+Get<span style="color:gray">-</span>UIAWindow <span style="color:gray">-</span>p mmc | Test<span style="color:gray">-</span>UIAControlState <span style="color:gray">-</span>SearchCriteria @{Name<span style="color:gray">=</span><span style="color:#a31515">'Cancel'</span>} <span style="color:green">#-ver</span>
+</pre>
+</div>
+<p>&nbsp;</p>
+<div style="color:black; background-color:white">
+<pre>Write<span style="color:gray">-</span>Host <span style="color:#a31515">&quot;checking IsEnabled (wrong IsEnabled because until any changes have been applied to the window, the Appy button is disabled)&quot;</span>;
+
+Get<span style="color:gray">-</span>UIAWindow <span style="color:gray">-</span>p mmc | Test<span style="color:gray">-</span>UIAControlState <span style="color:gray">-</span>SearchCriteria @{Name<span style="color:gray">=</span><span style="color:#a31515">'Apply'</span>;IsEnabled<span style="color:gray">=</span><span style="color:orangered">$true</span>} <span style="color:green">#-ver</span>
+</pre>
+</div>
+<p>&nbsp;</p>
+<div style="color:black; background-color:white">
+<pre>Write<span style="color:gray">-</span>Host <span style="color:#a31515">&quot;checking the OK and Cancel buttons (right)&quot;</span>;
+
+Get<span style="color:gray">-</span>UIAWindow <span style="color:gray">-</span>p mmc | Test<span style="color:gray">-</span>UIAControlState <span style="color:gray">-</span>SearchCriteria @{Name<span style="color:gray">=</span><span style="color:#a31515">'OK'</span>},@{Name<span style="color:gray">=</span><span style="color:#a31515">'Cancel'</span>;IsEnabled<span style="color:gray">=</span><span style="color:orangered">$true</span>;IsOffscreen<span style="color:gray">=</span><span style="color:orangered">$false</span>} <span style="color:green">#-ver</span>
+</pre>
+</div>
+<p>&nbsp;</p>
+<div style="color:black; background-color:white">
+<pre>Write<span style="color:gray">-</span>Host <span style="color:#a31515">&quot;checking the OK and Cancel buttons (wrong IsOffscreen)&quot;</span>;
+
+Get<span style="color:gray">-</span>UIAWindow <span style="color:gray">-</span>p mmc | Test<span style="color:gray">-</span>UIAControlState <span style="color:gray">-</span>SearchCriteria @{Name<span style="color:gray">=</span><span style="color:#a31515">'OK'</span>},@{Name<span style="color:gray">=</span><span style="color:#a31515">'Cancel'</span>;IsEnabled<span style="color:gray">=</span><span style="color:orangered">$false</span>;IsOffscreen<span style="color:gray">=</span><span style="color:orangered">$false</span>} <span style="color:green">#-ver</span>
+</pre>
+</div>
+<p>&nbsp;</p>
+<div style="color:black; background-color:white">
+<pre>Write<span style="color:gray">-</span>Host <span style="color:#a31515">&quot;checking the OK and Cancel buttons (wrong AutomationId)&quot;</span>;
+
+Get<span style="color:gray">-</span>UIAWindow <span style="color:gray">-</span>p mmc | Test<span style="color:gray">-</span>UIAControlState <span style="color:gray">-</span>SearchCriteria @{Name<span style="color:gray">=</span><span style="color:#a31515">'OK'</span>;AutomationId<span style="color:gray">=</span><span style="color:#a31515">'uuu'</span>},@{Name<span style="color:gray">=</span><span style="color:#a31515">'Cancel'</span>;IsEnabled<span style="color:gray">=</span><span style="color:orangered">$true</span>;IsOffscreen<span style="color:gray">=</span><span style="color:orangered">$false</span>} <span style="color:gray">-</span>ver
+</pre>
+</div>
+<p>&nbsp;</p>
+<div style="color:black; background-color:white">
+<pre>Write<span style="color:gray">-</span>Host <span style="color:#a31515">&quot;checking the OK and Cancel buttons (wrong parameter name, Exception will be raised)&quot;</span>;
+
+Get<span style="color:gray">-</span>UIAWindow <span style="color:gray">-</span>p mmc | Test<span style="color:gray">-</span>UIAControlState <span style="color:gray">-</span>SearchCriteria @{Name<span style="color:gray">=</span><span style="color:#a31515">'OK'</span>},@{Name<span style="color:gray">=</span><span style="color:#a31515">'Cancel'</span>;IsEnabled<span style="color:gray">=</span><span style="color:orangered">$true</span>;IsOffscreen<span style="color:gray">=</span><span style="color:orangered">$false</span>;LocalizedConrolName<span style="color:gray">=</span><span style="color:#a31515">'sss'</span>} <span style="color:gray">-</span>ver
+</pre>
+</div>
+<p>&nbsp;</p>
+<div style="color:black; background-color:white">
+<pre>Write<span style="color:gray">-</span>Host <span style="color:#a31515">&quot;checking the OK and Cancel buttons (wrong LocalizedControlType)&quot;</span>;
+
+Get<span style="color:gray">-</span>UIAWindow <span style="color:gray">-</span>p mmc | Test<span style="color:gray">-</span>UIAControlState <span style="color:gray">-</span>SearchCriteria @{Name<span style="color:gray">=</span><span style="color:#a31515">'OK'</span>},@{Name<span style="color:gray">=</span><span style="color:#a31515">'Cancel'</span>;IsEnabled<span style="color:gray">=</span><span style="color:orangered">$true</span>;IsOffscreen<span style="color:gray">=</span><span style="color:orangered">$false</span>;LocalizedControlType<span style="color:gray">=</span><span style="color:#a31515">'sss'</span>} <span style="color:gray">-</span>ver
+</pre>
+</div>
+</div><div class="ClearBoth"></div>

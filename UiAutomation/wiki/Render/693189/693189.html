@@ -1,0 +1,25 @@
+<div class="wikidoc">By default, the UIAutomation module provides you with two highlighters (squares): one for an element that cmdlet returns and one for its parent.<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:Green;"># When a screenshot is being taken automatically, hides the highlighter</span>
+<span style="color:Gray;">[</span><span style="color:Teal;">UIAutomation.Preferences</span><span style="color:Gray;">]</span><span style="color:Gray;">::</span>HideHighlighterOnScreenShotTaking
+<span style="color:Green;"># default: $true</span>
+</pre></div>The following three parameters relate to highlighting of a control or controls that cmdlet returns.<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:Green;"># highlighter for the element returned</span>
+<span style="color:Gray;">[</span><span style="color:Teal;">UIAutomation.Preferences</span><span style="color:Gray;">]</span><span style="color:Gray;">::</span>Highlight
+<span style="color:Green;"># default: $true</span>
+</pre></div><div style="color:Black;background-color:White;"><pre>
+<span style="color:Gray;">[</span><span style="color:Teal;">UIAutomation.Preferences</span><span style="color:Gray;">]</span><span style="color:Gray;">::</span>HighlighterBorder
+<span style="color:Green;"># default: 3</span>
+</pre></div><div style="color:Black;background-color:White;"><pre>
+<span style="color:Gray;">[</span><span style="color:Teal;">UIAutomation.Preferences</span><span style="color:Gray;">]</span><span style="color:Gray;">::</span>HighlighterColor
+<span style="color:Green;"># default: [System.Drawing.Color]::Red</span>
+</pre></div>The same parameters are provided for parent&#39;s keys.<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:Green;"># highlighter for the element&#39;s parent returned</span>
+<span style="color:Gray;">[</span><span style="color:Teal;">UIAutomation.Preferences</span><span style="color:Gray;">]</span><span style="color:Gray;">::</span>HighlightParent
+<span style="color:Green;"># default: $true</span>
+</pre></div><div style="color:Black;background-color:White;"><pre>
+<span style="color:Gray;">[</span><span style="color:Teal;">UIAutomation.Preferences</span><span style="color:Gray;">]</span><span style="color:Gray;">::</span>HighlighterBorderParent
+<span style="color:Green;"># default: 5</span>
+</pre></div><div style="color:Black;background-color:White;"><pre>
+<span style="color:Gray;">[</span><span style="color:Teal;">UIAutomation.Preferences</span><span style="color:Gray;">]</span><span style="color:Gray;">::</span>HighlighterColorParent
+<span style="color:Green;"># default: [System.Drawing.Color]::HotPink</span>
+</pre></div></div><div class="ClearBoth"></div>

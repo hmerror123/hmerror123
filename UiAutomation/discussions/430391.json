@@ -1,0 +1,18 @@
+[
+  {
+    "Id": "990163",
+    "ThreadId": "430391",
+    "Html": "\r\n<p>Hello.&nbsp;</p>\r\n<p>I'd like to share my experience with running UIAutomation (0.8.3) task via Jenkins slave.</p>\r\n<p>It's quite easy to setup Jenkins slave via web start app.</p>\r\n<p>You should use normal login screen to Windows, not RDP.</p>\r\n<p>If you connect via RDP to remote machine and start the slave app UIAutomation will work. But when you disconnect from RDP session or minimize RDP window, then UIAutomation won't be able to locate Window.</p>\r\n",
+    "PostedDate": "2013-01-22T01:08:50.667-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "990222",
+    "ThreadId": "430391",
+    "Html": "\r\n<p>Hi <a href=\"http://www.codeplex.com/site/users/view/georgik\">georgik</a>,</p>\r\n<p>thanks for sharing the info!</p>\r\n<p>The topic you raised is so vital that we immediately created a documentation <a title=\"page\" href=\"http://uiautomation.codeplex.com/wikipage?title=Common%20concerns\" target=\"_blank\">\r\npage</a>.</p>\r\n<p>&nbsp;</p>\r\n<p>The fact that you are using CI with UIAutomation is a good sign: we are strong believers that loadable on-demand command-line tools are better than both commercial all-in-one elephants (QTP, TestComplete, Ranorex) and advanced free frameworks (write-&gt;compile-&gt;debug\r\n the test-&gt;rewrite-&gt;recomplie, etc) like white or watin.</p>\r\n",
+    "PostedDate": "2013-01-22T02:46:29.847-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

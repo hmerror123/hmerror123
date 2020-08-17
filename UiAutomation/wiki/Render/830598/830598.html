@@ -1,0 +1,12 @@
+<div class="wikidoc"><h3>0.8.7</h3>1) more API just from command line to support for cmdletless mode like<br /><div style="color:Black;background-color:White;"><pre>
+(Get<span style="color:Gray;">-</span>UiaButton ...).Invoke() or (Get<span style="color:Gray;">-</span>UiaTreeItem).Expand()
+</pre></div>, or<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:Green;"># types 1110</span>
+<span style="color:OrangeRed;">$btn</span> <span style="color:Gray;">=</span> Start<span style="color:Gray;">-</span>Process calc <span style="color:Gray;">-</span>PassThru | Get<span style="color:Gray;">-</span>UiaWindow | Get<span style="color:Gray;">-</span>UiaButton 1
+<span style="color:OrangeRed;">$btn</span>.Invoke().Invoke().Invoke().NavigateToNextSibling().Invoke().Highlight();
+</pre></div>Each element you get from cmdlets exposes properties and methods accordingly to patterns it supports. This allows you to perform less calls to the Automation tree, to shorten and simplify your code. For example, after one call like<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:OrangeRed;">$wnd</span> <span style="color:Gray;">=</span> Get<span style="color:Gray;">-</span>UiaWindow ...; <span style="color:Green;"># your code to move the window looks like</span>
+<span style="color:Blue;">if</span> (<span style="color:OrangeRed;">$window</span>.CanMove) <span style="color:OrangeRed;">$wnd</span>.Move(1000, 500) <span style="color:Green;"># or even simply</span>
+<span style="color:OrangeRed;">$wnd</span>.Move(1000, 500) <span style="color:Green;"># as the object model hides the unsupported. (available)</span>
+</pre></div>2) support for regular expressions when &#39;Get-&#39;ting controls with the -Regex parameter (available)<br />3) bug fixes (available)<br />4) keyboard cmdlets<br />5) renewed Invoke-UiaWizard cmdlet (available)<br />6) renewed Invoke-UiaControlContextMenu cmdlet and the $element.Control.InvokeContextMenu method (available)<br />7) new logging (available)<br />
+<h3>0.8.6</h3>1) recursive search for child windows (available)<br />2) getting a window with specific control(s) (available)<br />3) improvements to wizard cmdlets (available, with a known issue)<br />4) the DateTimePicker cmdlet by Crowcz and a couple of others (available)<br />5) new cmdlets for radio buttons (available)<br />6) new banner cmdlets and parameters (available).<br /></div><div class="ClearBoth"></div>

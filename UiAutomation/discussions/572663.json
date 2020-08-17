@@ -1,0 +1,10 @@
+[
+  {
+    "Id": "1324351",
+    "ThreadId": "572663",
+    "Html": "HI,\r<br />\nI'm working with Hyper-V console to access to Virtual Machines, and some tasks needs to be done using Hyper-V console.\r<br />\n<br />\nMay someone give me some clue, or example about how can I send a sequence of CTRL+ALT+DEL and then Username password to this console?\r<br />\n<br />\nI've found how to send Ctrl+Alt+Del, but I'm unable to find the way about how to send username and password.\r<br />\n<br />\nRegards<br />\n",
+    "PostedDate": "2014-11-20T09:22:38.743-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

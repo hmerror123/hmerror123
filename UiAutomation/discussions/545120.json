@@ -1,0 +1,26 @@
+[
+  {
+    "Id": "1244453",
+    "ThreadId": "545120",
+    "Html": "Hello,<br />\n<br />\nThe documentation on the following page seems to be missing: <br />\n<a href=\"https://uiautomation.codeplex.com/wikipage?title=Java\" rel=\"nofollow\">https://uiautomation.codeplex.com/wikipage?title=Java</a> SWT sample&amp;referringTitle=Documentation<br />\n<br />\nI found the link on this page: <br />\n<a href=\"https://uiautomation.codeplex.com/documentation\" rel=\"nofollow\">https://uiautomation.codeplex.com/documentation</a><br />\n<br />\nCan you look into fixing this page?<br />\n<br />\nThank you.<br />\n<br />\nby oracle：<br />\n<br />\nThe Java Access Bridge product is now being included with Java SE 7u6. <br />\nManual installation of the Java Access Bridge will no longer be required. <br />\nAll Access Bridge files will be automatically installed by the JRE <br />\nand the JDK.<br />\n<a href=\"https://blogs.oracle.com/javaaccessibility/entry/developer_preview_available_for_java\" rel=\"nofollow\">https://blogs.oracle.com/javaaccessibility/entry/developer_preview_available_for_java</a><br />\n<br />\nand <br />\n%JRE_HOME%\\bin\\jabswitch -enable<br />\n<br />\n<img src=\"http://docs.oracle.com/javase/7/docs/technotes/guides/jweb/jcp/images/controlpanel.jpg\" alt=\"Image\" /><br />\n<pre><code>PS D:\\&gt; Get-UiaWindow -Name &quot;Java Control Panel&quot;|Get-UiaControl|Read-UiaControlName\nJava Control Panel\nSystem Menu Bar\nSystem\nMinimize\nMaximize\nClose\nPS D:\\&gt; Get-UiaWindow -Name &quot;Calculator&quot;|Get-UiaControl|Read-UiaControlName\n0.\nMC\nMR\nMS\n...............</code></pre>\n\nI have installed jre7 u55 (or jre8), but I still can‘t get the child controls, can you give some examples?<br />\nThank you！<br />\n<br />\n java control panel or JDownloader：<br />\n<a href=\"http://jdownloader.org/download/offline\" rel=\"nofollow\">http://jdownloader.org/download/offline</a><br />\n<br />\njava access bridge api is ok：<img src=\"http://ww4.sinaimg.cn/large/67298a01gw1egc04sgrnwj20tt0egq48.jpg\" alt=\"Image\" /><br />\n",
+    "PostedDate": "2014-05-12T09:54:46.52-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1244527",
+    "ThreadId": "545120",
+    "Html": "Hi,\r<br />\nI was unaware of the inclusion of Access Bridge to Java, thanks you!\r<br />\n<br />\nI check that this works the following way: on Windows 8.1 x64 with Java 7u55 (JDK) installed:<br />\n<ol>\n<li>\nturn on Java Access Bridge: Control Panel -&gt; Ease of Access -&gt; Ease of Access Center -&gt; Change sign-in settings -&gt; both check boxes<br />\n</li>\n<li>\nstart a new PowerShell with UIAutomation<br />\n</li>\n<li>\ndownload and unpack <a href=\"http://www.oracle.com/technetwork/java/javase/downloads/jab-2-0-2-download-354311.html\" rel=\"nofollow\">Java Access Bridge samples</a><br />\n</li>\n<li>\nrun, for example, JavaMonkey-64.exe<br />\n</li>\n</ol>\nThe following code now should work:<br />\n<pre><code>Get-UiaWindow -n *javamonk*  | Get-UiaMenuItem | Invoke-UiaMenuItemExpand</code></pre>\n\nif you run JavaFerret.exe, the following code should work:<br />\n<pre><code>Get-UiaWindow -n *java*ferr*  | Get-UiaMenuItem | Invoke-UiaMenuItemExpand</code></pre>\n\nI can't say whether they support real-life applications or don't as I have only .NET and Win32 applications to test for last years. I'll create a SWT sample to test how it works, however, all the capabilities of Java Access Bridge are up to them, Oracle.<br />\n",
+    "PostedDate": "2014-05-12T12:22:28.537-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1244656",
+    "ThreadId": "545120",
+    "Html": "JavaMonkey is a win32 application ,not java\r<br />\n<br />\njavacpl.exe is a java application\r<br />\n<br />\nControl Panel -&gt; java\r<br />\nor\r<br />\nc:\\Program Files (x86)\\Java\\jre7\\bin\\javacpl.exe\r<br />\nor\r<br />\nWin+Q -&gt;configure Java<br />\n<pre><code>PS D:\\&gt; Get-UiaWindow -ProcessName javaw |Get-UiaControl|Read-UiaControlName\nJava Control Panel\nSystem Menu Bar\nSystem\nMinimize\nMaximize\nClose</code></pre>\n\n",
+    "PostedDate": "2014-05-12T21:35:44.333-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

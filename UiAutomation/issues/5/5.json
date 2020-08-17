@@ -1,0 +1,50 @@
+{
+  "WorkItem": {
+    "AffectedComponent": {
+      "Name": "",
+      "DisplayName": ""
+    },
+    "ClosedComment": "",
+    "ClosedDate": null,
+    "CommentCount": 2,
+    "Custom": null,
+    "Description": "Hi,\r\n\r\nI have a script which is handing a dialog box to save a file.\r\nIn the app, in the text box, there is an existing default file name which I want to overwrite, using Set-UIAEditText.\r\nWhen I run the script, the default file name is overwritten in the text box with desired output file name, as expected. That is to say, that part works fine. \r\nHowever, the problem is that the file name does not seem to be seen by the program - it simply still uses the default file name for the file save, as though I had not overwritten it. \r\nHere is the relevant code snippet:\r\n...\r\n# Another window opens for saving file. \r\n    Get-UIAWindow -ProcessId $app_pid | `\r\n    Get-UIAEdit -Name 'File name:' | Set-UIAEditText $OutputFilename;\r\n\r\n    # Save file.\r\n    Get-UIAWindow -ProcessId $app_pid | `\r\n    Get-UIAButton -Name Save | Invoke-UIAButtonClick;\r\n\r\nDo you have any ideas about how to get around this problem?\r\n\r\nUIA version is 0.8.5\r\n\r\nThank you\r\n\r\nJim\r\n",
+    "LastUpdatedDate": "2013-09-21T21:07:03.943-07:00",
+    "PlannedForRelease": "",
+    "ReleaseVisibleToPublic": false,
+    "Priority": {
+      "Name": "Unassigned",
+      "Severity": 0,
+      "Id": 0
+    },
+    "ProjectName": "UiAutomation",
+    "ReportedDate": "2013-09-20T23:46:07.287-07:00",
+    "Status": {
+      "Name": "Proposed",
+      "Id": 1
+    },
+    "ReasonClosed": {
+      "Name": "Unassigned"
+    },
+    "Summary": "Set-UIAEditText not taking effect",
+    "Type": {
+      "Name": "Unassigned",
+      "Id": 5
+    },
+    "VoteCount": 1,
+    "Id": 5
+  },
+  "FileAttachments": [],
+  "Comments": [
+    {
+      "Message": "Hi Jim,\nthis is hardly an issue of the framework (and this request is more likely to Q&As in the Discussion section :)).\n\nDepending on what type of dialog is yours, there might (or might not) be such ideas applicable:\n\n- your application wants the focus has changed to read its value\n(it's not a rare case as UIAutomation often activates (a .NET example) the TextModified event, whereas IDE offers programmers the TextChanged event by default. This is also a frequent problem on some web sites when you need perform an additional click on another control to get data read)\nTry to get another control, click on it and after that click on the button:\n```\nGet-UIAWindow -ProcessId $app_pid | `\nGet-UIAEdit -Name 'File name:' | Set-UIAEditText $OutputFilename;\nGet-UIASomethingElsePreferableAnotherTextBox | Invoke-UIAControlClick;\nGet-UIAButton -Name Save | Invoke-UIAButtonClick;\n```\n\nAs a variant of the above, you may try the following:\nput the text into the box\nclick on something else\nput the text again in the same box\nclick the button\n```\nGet-UIAWindow -ProcessId $app_pid | `\nGet-UIAEdit -Name 'File name:' | Set-UIAEditText $OutputFilename;\nGet-UIASomethingElsePreferableAnotherTextBox | Invoke-UIAControlClick;\nGet-UIAEdit -Name 'File name:' | Set-UIAEditText $OutputFilename;\nGet-UIAButton -Name Save | Invoke-UIAButtonClick;\n```\n\n- your application might want that something was activated in the area where files are shown\nWhat is the result of the following manual actions: copy file name in the clipboard, open the dialog, select the default file name by the mouse, put there the saved text, and immeidately click the button?\nProbably, you need ot imitate the following user actions:\nuser navigates among files, the current file is shown in the text box, user clicks on the button, i.e.:\n```\nGet-UIAWindow -ProcessId $app_pid | `\nGet-UIAListViewORTreeView(what type is the area of) | Get-UIA...Item | Invoke-UIAControlClick;\nGet-UIAEdit -Name 'File name:' | Set-UIAEditText $OutputFilename;\nGet-UIAButton -Name Save | Invoke-UIAButtonClick;\n```\n\n- there's also the Set-UIAControlKeys cmdlet, which is an implementation of SendKeys and not so reliable, but however works.\n\n- there's also a chance to activate the box by clicking first into that or by cleaning value before putting in the needed data:\n1) \n```\nGet-UIAWindow -ProcessId $app_pid | `\nGet-UIAEdit -Name 'File name:' | Invoke-UIAControlClick;\nGet-UIAEdit -Name 'File name:' | Set-UIAEditText $OutputFilename;\nGet-UIAButton -Name Save | Invoke-UIAButtonClick;\n```\n2)\n```\nGet-UIAWindow -ProcessId $app_pid | `\nGet-UIAEdit -Name 'File name:' | Clear-UIAControlText;\nGet-UIAEdit -Name 'File name:' | Set-UIAEditText $OutputFilename;\nGet-UIAButton -Name Save | Invoke-UIAButtonClick;\n```\n\nSome cmdlets mentioned in the code are possible from 0.8.6 betas http://goo.gl/2n7ZgQ\n\nAlexander",
+      "PostedDate": "2013-09-21T02:29:36.643-07:00",
+      "Id": 115225
+    },
+    {
+      "Message": "\nHi Alex,\n\nThanks for your detailed response. And please excuse my posting my question in the wrong spot. I am a Codeplex newbie. I did not mean to imply that there is any issue with UIAutomation itself.\n\nTo answer the question in your response, the manual actions that you describe do save the file with the desired filename. \n\nBy the way, the context here is .NET, Win 7.\n\nI tried your suggestions but still did not have any luck. What is working for me now though, is to not try to enter any text in the text box. Instead, I first save a file manually with the desired filename.\nThen henceforth when running the script, when the dialog box comes up, I double-click on the filename.\n\ncode snippet:\n\n```\nGet-UIAWindow -ProcessId $app_pid | `\nGet-UIAEdit -Value $OutputFilename | Invoke-UIAControlClick -DoubleClick\nGet-UIAButton -Name Save | Invoke-UIAButtonClick;\n```\n\nThis is not ideal for me, but works well enough for now.\n\nThanks for your help, and many thanks for UIAutomation! It is an awesome tool.\n\nJim",
+      "PostedDate": "2013-09-21T21:07:03.943-07:00",
+      "Id": 115271
+    }
+  ]
+}

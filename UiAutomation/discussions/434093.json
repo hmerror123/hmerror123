@@ -1,0 +1,58 @@
+[
+  {
+    "Id": "1005154",
+    "ThreadId": "434093",
+    "Html": "Hi,<br />\nfirst of all I want to say that these cmdlets are absolutely awesome and they relay makes my life easier.<br />\n<br />\nSecondly I have found issue when I'm trying to get hyperlinks and other control from &quot;Internet Explorer_Server&quot; class object from our application. UIVerify and UIAutomationSpy are not able to return any childs of that object (hyperlinks, texts etc.). I've tested it in more apps and it seems that it only occurs in cases where &quot;Internet Explorer_Server&quot; class based object doesn't have Name property set. Any ideas where the problem might be?<br />\n<br />\nSome screens from UIVerify:<br />\n<a href=\"https://skydrive.live.com/redir?resid=CD7E715FE2A44A15!5828&amp;authkey=!AN20z3oeCgFgzxw\" rel=\"nofollow\">https://skydrive.live.com/redir?resid=CD7E715FE2A44A15!5828&authkey=!AN20z3oeCgFgzxw</a><br />\n<a href=\"https://skydrive.live.com/redir?resid=CD7E715FE2A44A15!5829&amp;authkey=!ADx3c4DeDVZDWIM\" rel=\"nofollow\">https://skydrive.live.com/redir?resid=CD7E715FE2A44A15!5829&authkey=!ADx3c4DeDVZDWIM</a><br />\n<br />\nAlso is there any way how to utilize AutomationID property when accessing objects under &quot;Internet Explorer_Server&quot;? I thought that it would be ID of the HTML element but I don't see that in UIVerify.<br />\n",
+    "PostedDate": "2013-02-22T03:23:12.71-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1005206",
+    "ThreadId": "434093",
+    "Html": "HI,<br />\nfirst of all thanks for your warm words about the module.<br />\nSeconds, I need to say that UIAutomation is not the best tool for browser automation. Why? A simple google first page consists of approx. 243 elements that could be caught as ~93 AutomationElements (by converting from Selenium's web element). This means that UIautomation (that builds the Automation tree in memory) works slowly. Selenium requests elements on-the-fly and this works faster in such situations.<br />\n<br />\nCloser to your question: <br />\n1) I hardly could say much about your application (when it exposes hyperlinks and when don't). UI Automation .NET sees less than UI Automation from uiacomwrapper.codeplex.com (the module does not empoley it yet), whereas uiacomwrapper rarer supports patterns.<br />\nSometimes, there are bugs in MS UI Automation .NET (i.e., an element could be got via hovering over but fails be got via search).<br />\nMS UI Automation performs some calculations basing on properties that are available via MSAA. And who knows what is the algorithm.<br />\nProbably, some developers use accessibility properties in controls, some don't. Or just a matter of luck.<br />\n2) Unfortunately, there is no way to use anything to search for except what AutomationElement brings to us: Name, Class, AutomationId, Value. Selenium could but fails to work with embedded browsers.<br />\n<br />\nIf a pane is of fixed size of link on fixed positions from left and top, you could use coordinated clicks.<br />\n<br />\nI'm planning to add support for uiacomwrapper later, maybe it'll help.<br />\n<br />\nUpd: if you are close to developers or a developer itself, the following links might (or might not) help in development accessible controls<br />\n<a href=\"http://msdn.microsoft.com/en-us/library/windows/desktop/cc307844.aspx\" rel=\"nofollow\">http://msdn.microsoft.com/en-us/library/windows/desktop/cc307844.aspx</a><br />\n<a href=\"http://msdn.microsoft.com/en-us/library/system.windows.forms.accessibleobject.aspx\" rel=\"nofollow\">http://msdn.microsoft.com/en-us/library/system.windows.forms.accessibleobject.aspx</a><br />\n",
+    "PostedDate": "2013-02-22T05:28:50.213-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1005268",
+    "ThreadId": "434093",
+    "Html": "Thank you very much for detailed response. I've found that it's probably caused by self protection feature of process I'm testing, it limits access to process in some way which causes that UIAutomation can't access some controls :s It worked so far with TestComplete (which I'm trying to get rid of) so I haven't thought that that could cause it. So I'm basically stuck here because the only way how to access the process is to sign PowerShell with the same certificate as tested app (certificate I have but can't change it in PS executable), and I can't compile my scripts into executables and sign those because of some complications in our framework :(\r<br />\n<br />\nI also thought about using Selenium but as you said there is no way how to &quot;hook&quot; it to embedded browser which is basically what I'm trying to achieve.\r<br />\n<br />\nAnyway thank you for your time when analyzing this.<br />\n",
+    "PostedDate": "2013-02-22T07:47:33.723-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1005339",
+    "ThreadId": "434093",
+    "Html": "If the problem is in certificate, and it's not a *.snk certificate<br />\n1) you could (try to) sign powershell.exe (I'm sure that this will work)<br />\nI sign my software creatures is the following way:<br />\n&quot;C:\\Program Files (x86)\\Windows Kits\\8.0\\bin\\x64\\signtool.exe&quot; sign /f C:\\Projects\\PS\\STUPS\\certificate\\my\\SoftwareTestingUsingPowerShell.pfx /t <a href=\"http://timestamp.verisign.com/scripts/timestamp.dll\" rel=\"nofollow\">http://timestamp.verisign.com/scripts/timestamp.dll</a> /p %1 C:\\Projects\\PS\\STUPS\\UIA\\UIAutomationSpy\\bin\\Release35\\UIAutomationSpy.exe<br />\nwhere<br />\nSoftwareTestingUsingPowerShell.pfx is a local certificate I generated months ago<br />\n%1 is certificate's password<br />\nsigntool.exe in is Windows SDK 8.0, 7.1, should be in 7.0 also<br />\nthe last is the executable I sign<br />\n<br />\n2) you could sign my exes:<br />\nthe UIAutomation module is shipped with three executables: UIAutomationSpy (it can run PS code), UIARunner (it is intended to run PS code in the GUI or from command-line) and BGShell (for running code over Metro UI)<br />\nBoth types of signing are possible.<br />\nOpen source rules!<br />\n<br />\n3) you could follow steps how to install an accessible app <a href=\"http://uiautomation.codeplex.com/wikipage?title=Installation%20for%20Metro%20UI%20testing&amp;referringTitle=Documentation\" rel=\"nofollow\">http://uiautomation.codeplex.com/wikipage?title=Installation%20for%20Metro%20UI%20testing&referringTitle=Documentation</a> after the phrase &quot;Putting module files into a secure location&quot;.<br />\n(put an app in the secure location, add my certificate to the Trusted Root Certification Authorities store (a Microsoft's requirement), etc)<br />\nAccessible apps have more privileges.<br />\nYou also could try to combine 2) and 3).<br />\n<br />\nP.S. Are you working on an AV? A fun fact about avast: when I build another release/beta and put my executables in a new location to publish them, avast on the first run embraces my app with sandbox border and label. If I start spying with UIAutomationSpy, it also sandboxes my squares over windows or controls with the Avast label...<br />\n",
+    "PostedDate": "2013-02-22T09:54:52.377-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1006357",
+    "ThreadId": "434093",
+    "Html": "I signed everything with certificate, which tested app accepts as trusted, and it works. However I had to also sign powershell.exe in order to get it working. Do you know if it possible that something could stop working since it's not signed by Microsoft anymore (I mean like access to WMI etc.)?\r<br />\n<br />\nP.S. Yes it's an AV product, it's a bitch to automate sometimes due to all protection stuff.\r<br />\n<br />\nThank you very much for all the help.<br />\n",
+    "PostedDate": "2013-02-25T07:54:12.533-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1006425",
+    "ThreadId": "434093",
+    "Html": "Hi,\r<br />\nit's hard to say whether MS checks or doesn't when running powershell.exe. The vast majority of users (even those German people who created 'portable powershell') hardly change signature of powershell.exe.\r<br />\n<br />\nAlternatively, you could you UIARunner.exe (a very simple PowerShell host) that could be used with GUI or from command line:\r<br />\nUIARunner.exe [path]\\script.ps1\r<br />\nUIARunner requires some files (UIAutomaiton.dll and TMX.dll, for example), so that it should be run from the folder it has been unpacked to.\r<br />\n<br />\nOne more option is BGShell (by Lee Holmes and several other guys) that is also PowerShell host.<br />\n",
+    "PostedDate": "2013-02-25T09:07:34.51-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1321832",
+    "ThreadId": "434093",
+    "Html": "Guys, it seems that I have similar problem with IE that for some reason &quot;Internet Explorer_Server&quot; class based object doesn't have Name property set when app tries to get it using MSAA accessibility interface. \r<br />\n<br />\nI am working on project which helps end user to create daily reports by tracking it's activity.\r<br />\nTo track activity in IE browser application uses accessibility interface (MSAA). \r<br />\n<br />\nIn brief, tracking works the following way:<br />\n<ol>\n<li>App searches for all child windows of IE browser which have &quot;Internet Explorer_Server&quot; window class (tab documents windows)</li>\n<li>Gets IAccessible object by window handle.</li>\n<li>\nGets name of the IAccessible object which represents URL of the document loaded for this tab<br />\n</li>\n</ol>\nEverything works fine for most of users. But several users reported that IE tracking doesn't work for them.\r<br />\nNothing fails, but empty string is always returned as name of the IAccessible object (document).\r<br />\n<br />\nI checked that URL can be obtained using UIAutomation API (I used Inspect.exe, AccChecker.exe tools), but for some reason the name is always empty for this element when MSAA api is used on problem machine.\r<br />\n<br />\nThe issue is reproduced for these users even when AntiVirus software is turned off and with all IE Add-ons disabled.\r<br />\n<br />\n<strong>Note</strong>: Application has valid signature. I also tried to set UIAccess=true in application manifest. It didn't help.\r<br />\n<br />\nIs anybody aware of the settings or anything else which influence on this behavior?<br />\n",
+    "PostedDate": "2014-11-13T08:52:10.98-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

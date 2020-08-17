@@ -1,0 +1,26 @@
+[
+  {
+    "Id": "1218854",
+    "ThreadId": "537843",
+    "Html": "I want to wait for MMC to finish with an process (Spinner or loading bar). We use both in certain situations so I want to know if there is a cmdlet to wait for it before continuing with the automation script. <br />\n",
+    "PostedDate": "2014-03-04T00:47:26.4-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1218893",
+    "ThreadId": "537843",
+    "Html": "Hi IceBunny,\r<br />\nthere are several cmdlet that provide such functionality (done? $true/$false), the choice depends on what state you need to trigger:\r<br />\nuniversal state of a control or several controls:<br />\n<pre><code># executions stops until a button (enabled, with name 'control name') and a text (with text 'some text') appear or returns $false after 5 minutes\nWait-UiaControlState -SearchCriteria @{name=&quot;control name&quot;;isenabled=$true;controltype=&quot;button&quot;},@{name=&quot;some text&quot;;controltype=&quot;text&quot;;automaitonid=&quot;3&quot;} -Seconds 300;\n# to get the full list of parameters, use the ConvertTo-UiaSearchCriteria cmdlet:\n$element | ConvertTo-UiaSearchCriteria -Full\n# and avoid using such things (that are changeable from run to run) as processId and nativeWindowHandle</code></pre>\n\nIsEnabled<br />\n<pre><code># cmdlets that are specific to a state\n# Wait-Uia[ControlType]IsEnabled\nWait-UiaButtonIsEnabled</code></pre>\n\nIsVisible<br />\n<pre><code># these cmdlets are also specific to a state (isOffscreen)\n# Wait-Uia[ControlType]IsVisible\nWait-UiaButtonIsVisible</code></pre>\n\nany Get- cmdlet has such functionality<br />\n<pre><code># this piece of code waits for a button (for example, a red cross of the form) that is enable - it's a useless example for a standard form and could be useful only for a form without caption\n# if there is no such button during the time selected, the cmdlet throws an exception\nGet-UiaButton -Name Close -SearchCriteria @{isenabled=$true} -Seconds 20</code></pre>\n\nthe Wait-UiaWindow cmdlet also could perform such a trick!<br />\n<pre><code># the mild version ($true/$false)\nWait-UiaWindow -Name *admin*powershell* -WithControl @{controltype=&quot;button&quot;;name=&quot;close&quot;} -Seconds 100;\n# the strict version (returns element(s) or throws an exception)\nGet-UiaWindow -Name *admin*powershell* -WithControl @{controltype=&quot;button&quot;;name=&quot;close&quot;} -Seconds 100;</code></pre>\n\nAs D. Koontz said, &quot;the choice is yours&quot; :)<br />\n",
+    "PostedDate": "2014-03-04T01:32:12.407-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1218919",
+    "ThreadId": "537843",
+    "Html": "awesomeness, thank you so much! apetrovskiy<br />\n",
+    "PostedDate": "2014-03-04T02:29:34.963-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

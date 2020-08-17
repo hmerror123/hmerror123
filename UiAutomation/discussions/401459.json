@@ -1,0 +1,82 @@
+[
+  {
+    "Id": "934886",
+    "ThreadId": "401459",
+    "Html": "\r\n<p>Hello.</p>\r\n<p>Can I get a control from its position on screen? For instance from the ClickablePoint property (from UI Spy). I know there is the Get-UIAControlFromPoint cmdlet, but I don't know how to use it.</p>\r\n",
+    "PostedDate": "2012-10-31T10:35:16.723-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "934900",
+    "ThreadId": "401459",
+    "Html": "<p>Hello John,</p>\r\n<p>the Get-UIAControlFromPoint cmdlet works exactly as its name says (and as the&nbsp;underplaying&nbsp;MS UI Automation AutomationElement.FromPoint() method works): it returns the control that is under the cursor and above all other controls, i.e. the foreground control.</p>\r\n<p>How to use it:</p>\r\n<p>open powershell.exe, type</p>\r\n<p>\r\n<div style=\"color: black; background-color: white;\">\r\n<pre>Get<span style=\"color: gray;\">-</span>UIAControlFromPoint | Read<span style=\"color: gray;\">-</span>UIAControlName\r\n</pre>\r\n</div>\r\n</p>\r\n<p>and put the mouse cursor over powershell's title bar, or above the Close button (the red button with cross), or above the Maximize button, or whichever control you like and press Enter. It will return the name of the control, or nothing if the control lacks it.</p>\r\n<p>Though I never used the cmdlet itself (it has been written to complement what MS UI Automation offers), UIAutomationSpy uses this call (roughly, UIAutomaitonSpy is that: do { AutomationElement currentElement = AutomationElement.FromPoint(); } while (! timeout); ). This call is also used in the Selenium cmdlets (ConvertTo-SeAutomationElement).</p>\r\n<p>You can position the cursor with the Move-UIACursor cmdlet and get what is under the cursor. Sometimes, the .FromPoint() call can get an element that is impossible to get through the search (there are bugs in UI Automation v.1 (.NET 3.0-4.0), UI Automation v.2 (UIAComWrapper) can get more).</p>\r\n<p>&nbsp;</p>",
+    "PostedDate": "2012-10-31T11:01:38.713-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "935204",
+    "ThreadId": "401459",
+    "Html": "<p>So I see from my tests that I cannot do this to another window.&nbsp;I mean&nbsp;move the cursor to a position above a certain application, and get the control underneath. It only works on the current window (PowerShell console in this case).</p>",
+    "PostedDate": "2012-11-01T03:39:38.793-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "935272",
+    "ThreadId": "401459",
+    "Html": "\r\n<p>I would disagree :). The code below hits the 9 button on my W8:</p>\r\n<p>&nbsp;</p>\r\n<div style=\"color:black; background-color:white\">\r\n<pre><span style=\"color:orangered\">$null</span> <span style=\"color:gray\">=</span> Start<span style=\"color:gray\">-</span>Process calc <span style=\"color:gray\">-</span>PassThru | Get<span style=\"color:gray\">-</span>UIAWindow | Move<span style=\"color:gray\">-</span>UIACursor <span style=\"color:gray\">-</span>X 100 <span style=\"color:gray\">-</span>Y 200; \nGet<span style=\"color:gray\">-</span>UIAControlFromPoint | Read<span style=\"color:gray\">-</span>UIAControlName\n</pre>\r\n</div>\r\n<p>Please note that if you are using a virtual guest from the console, the VMware Pointing Device driver should be uninstalled (the SetCursorPos API call stops working with this driver). I don't know about Hyper-V or other virtualization systems' issues.</p>\r\n<p>If you use VMware guest via RDP, all works without uninstall.</p>\r\n",
+    "PostedDate": "2012-11-01T07:14:48.773-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "935286",
+    "ThreadId": "401459",
+    "Html": "<p>There's also the second problem: you might be trying to Move upon control(s) without handle. The Move-UIAControl cmdlet (and all Win32 click cmdlets like Invoke-UIAControlClick, Invoke-UIAControlContextMenu and wherever else it may be incorporated) gets an AutomationElement object, extract its handle (or extract handle of its parent or ancestor), and move the cursor relatively to the control's position. In case the handle of parent or ancestor was used, it recalculates absolute position to the control of interest's position.</p>\r\n<p>Shortly, the Move-UIACursor cmdlet should send the cursor to a window/control with positive or negative offset set by using the -X and -Y parameters.</p>\r\n<p>&nbsp;</p>\r\n<p>Do you have an error that raised or simply suffer the fact that the cursor is unwilling to be sent to another window?</p>",
+    "PostedDate": "2012-11-01T07:33:01.297-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "935322",
+    "ThreadId": "401459",
+    "Html": "<p>You are right, it does work with the calc application. Also tried another one. The problem I think is with my specific application. It seems that a lot of things here are seen as panes (including&nbsp;check boxes) and I suppose they do not have the clickable pattern. The cursor is moved, but nothing happens&nbsp;upon invocation.&nbsp;The app is using DevExpress components, that might be one of the causes. I am not using a virtual machine.</p>\r\n<p>Is there a way to force a \"raw\" button click, regardless of the patterns supported?</p>\r\n<p>&nbsp;</p>\r\n<p>Unrelated to this, is there an Invoke Text Pattern command? I can't find one. I want to&nbsp;write text to controls.</p>",
+    "PostedDate": "2012-11-01T09:03:08.437-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "935344",
+    "ThreadId": "401459",
+    "Html": "<p>Hmm, a \"raw\" button click is Invoke-UIAControlClick (Win32). Here might be the following problem: you have several layers of panes.</p>\r\n<p>We had the same problem with a third-party control that shows an HTML file (I don't know who is its vendor). The solution was to find the pane of interest and the resulting code was something like:</p>\r\n<p>\r\n<div style=\"color: black; background-color: white;\">\r\n<pre>Get<span style=\"color: gray;\">-</span>UIAWindow ... | Get<span style=\"color: gray;\">-</span>UIA... | Get<span style=\"color: gray;\">-</span>UIAPane | Get<span style=\"color: gray;\">-</span>UIAPane | Get<span style=\"color: gray;\">-</span>UIAPane | Invoke<span style=\"color: gray;\">-</span>UIAControlClick <span style=\"color: gray;\">-</span>X ... <span style=\"color: gray;\">-</span>Y ...\r\n</pre>\r\n</div>\r\n</p>\r\n<p>The guy who claimed this was hitting to a wrong pane. It sounds glass-like when we hit what couldn't be hit, but the guy didn't hear sounds his remote desktop window produced.. Here I'd recommend to use UIA Verify v. 2.0 (http://uiautomationverify.codeplex.com/downloads/get/220103) to learn upon what control lies the thing you need to click.</p>\r\n<p>Because the Invoke-UIAControlClick cmdlet hits the handle (the control you are seeing might not be the control you need to hit), it's vital to find out the right parent of what you want to click.</p>\r\n<p>If Spy++ sees your controls, it also may help you construct the right combination of name, automationid and class(name).</p>\r\n<p>&nbsp;</p>\r\n<p>If you have a DevExpress distribution (some package your developers use), there might be some demos from the vendor, compiled or not. If so, could you please upload demos to a file share? It should be compiled as I don't have DevExpress license. When we automated Infragistics UltraGrid, we managed to create a 'select items' cmdlet using rows enumeration and ctrl+click (it's called Invoke-UIAifUltraGridSelectItemByName). UltraGrid automation is extremely slow (due to enumeration), but it works, somehow.</p>\r\n<p>&nbsp;</p>\r\n<p>Regarding TextPattern, yes, there are no such cmdlet now. Why? TextPattern is for serious texts like text editors and it has a number of properties and methods. It's not a problem to code out, the problem is to create cmdlets that be understandable by users. :) I'll look at this pattern today or tomorrow.</p>\r\n<p>Are you sure that you need TextPattern? Simple text boxes need only Set-UIA[ControlType]Text (for example, Set-UIATextboxText. It is ValuePattern) or Set-UIAControlText (Win32).</p>\r\n<p>If your controls have handles and don't have patterns, the Set-UIAControlText cmdlet may be your best friend. Beware, developers may write up controls so strange, that the application sometimes falls down on putting text to a control. ;) Via pattern or via Win32.</p>\r\n<p>There is also cmdlet for putting text into a control that is focused: Set-UIAControlKeys (try something like Get-UIAWindow | Get-UIATextbox | Set-UIAfocus; Set-UIAocntrolKeys 'keys' in the worst situation. It's SendKeys.).</p>",
+    "PostedDate": "2012-11-01T09:38:25.457-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "935346",
+    "ThreadId": "401459",
+    "Html": "<p>I'll be attempting next few days to incorporate UI Automation v.2.0 into the module (<a href=\"http://uiacomwrapper.codeplex.com/\">http://uiacomwrapper.codeplex.com/</a>). I have tried it previously, but failed. UIA 2.0 can get more elements, but lacks some patterns v.1.0 has.</p>",
+    "PostedDate": "2012-11-01T09:41:03.9-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "935358",
+    "ThreadId": "401459",
+    "Html": "<p>It worked. Invoke-UIAControlClick worked! Thanks a lot.</p>\r\n<p>Set-UIAControlText works also, I guess it is enough for what I need.</p>\r\n<p>&nbsp;</p>\r\n<p>Amazing how simple things can be, when you know what to do. :) I guess because there are some many cmdlets, it is hard to find the right ones from the begining.</p>\r\n<p>Is there a difference (performance?) between generic cmdlets like Invoke-UIAControlClick, Set-UIAControlText and specific ones (Invoke-UIAButtonClick, Invoke-UIACheckBoxToggle, Set-UIATextBoxText, etc)? I suppose there is a reason to keep all versions, when only one would suffice (for each operation type I mean).</p>\r\n<p>&nbsp;</p>\r\n<p>Thank you again for all the help.&nbsp;Highly appreciated.</p>",
+    "PostedDate": "2012-11-01T10:12:31.993-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "935388",
+    "ThreadId": "401459",
+    "Html": "<p>Thank you for your response!</p>\r\n<p>I have a couple of comments:</p>\r\n<p>1) how to find a cmdlet? It's not so easy (and I simply can't create good documentation for everything - I'm the author of several frameworks and more frameworks yet in mind :) Well, a book would be good to write up, but time is what I lack). Let's try Get-Command:</p>\r\n<p>\r\n<div style=\"color: black; background-color: white;\">\r\n<pre>Get<span style=\"color: gray;\">-</span>Command <span style=\"color: gray;\">-</span>Module uia<span style=\"color: gray;\">*</span> <span style=\"color: gray;\">*</span>click<span style=\"color: gray;\">*</span>\r\nGet<span style=\"color: gray;\">-</span>Command <span style=\"color: gray;\">-</span>Module uia<span style=\"color: gray;\">*</span> <span style=\"color: gray;\">*</span>button<span style=\"color: gray;\">*</span>\r\nGet<span style=\"color: gray;\">-</span>Command <span style=\"color: gray;\">-</span>Module uia<span style=\"color: gray;\">*</span> <span style=\"color: gray;\">*</span>text<span style=\"color: gray;\">*</span>\r\nGet<span style=\"color: gray;\">-</span>Command <span style=\"color: gray;\">-</span>Module uia<span style=\"color: gray;\">*</span> <span style=\"color: gray;\">*</span>control<span style=\"color: gray;\">*</span>\r\nGet<span style=\"color: gray;\">-</span>Command <span style=\"color: gray;\">-</span>Module uia<span style=\"color: gray;\">*</span> <span style=\"color: gray;\">*</span>wait<span style=\"color: gray;\">*</span>\r\n</pre>\r\n</div>\r\n</p>\r\n<p>This may help to some extent. I'm planning to add Java Swing support later this year, so that the number of cmdlets is not going to decrease...</p>\r\n<p>2) use the whole range of MS and my tools:</p>\r\n<p>UIAVerify v.1.0, v.2.0</p>\r\n<p>UISpy</p>\r\n<p>Inspect</p>\r\n<p>Spy++</p>\r\n<p>UIAutomationSpy (mine)</p>\r\n<p>Sometimes, one tool helps, others don't.</p>\r\n<p>3) You'll be shocked: since August or September, the 'generic' Get-UIAControl cmdlet might be worse that its derivatives! What is Get-UIAButton? Briefly, that:</p>\r\n<p>public class GetUIAControlCommand</p>\r\n<p>{ public string ControlType { get; set; } }</p>\r\n<p>public class GetUIAButtonCommand : GetUIAControlCommand</p>\r\n<p>{ public GetUIAButtonCommand { this.ControlType = \"Button\"; } }</p>\r\n<p>The Get-UIAButton cmdlet is an alias, in fact: you simply don't need to type Get-UIAControl -ControlType Button, you need to type Get-UIAButton (less typing, less mistakes).</p>\r\n<p>However, this is not all: people love wildcards. I love too. But this has its price: cmdlets query the Automation tree and enumerate the result (a collection of controls). It's slower that a direct query \"give me the only button with exact name 'OK'\".</p>\r\n<p>And if you have a form with a hundred of controls (grid, for example), and you have three button on the form, what will be here:</p>\r\n<p>Get-UIAButton -n OK collects three controls and returns one</p>\r\n<p>Get-UIAControl -ControlType Button -n OK collects three controls and returns one</p>\r\n<p>Get-UIAControl -n OK collects <strong>all the hundred</strong> controls and returns one (this takes time, of course).</p>\r\n<p>4) for greater performance, you may use the -Win32 parameter. If a control has handle, Get-UIAButton -n OK -Win32 works faster than Get-UIAButton -n OK. There is no difference if the number of controls is ten or even fifty. However, you'll feel the time taken if there are hundreds of controls (grid, treeview, listview).</p>",
+    "PostedDate": "2012-11-01T11:30:48.167-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

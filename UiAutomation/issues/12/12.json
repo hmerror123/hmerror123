@@ -1,0 +1,61 @@
+{
+  "WorkItem": {
+    "AffectedComponent": {
+      "Name": "",
+      "DisplayName": ""
+    },
+    "ClosedComment": "",
+    "ClosedDate": null,
+    "CommentCount": 3,
+    "Custom": null,
+    "Description": "# Note that here UIA is used instead of ComObject \"internetExplorer.Application\" \r\n# because windows popups started by some webs are to be managed\r\n\r\nImport-Module UIAutomation\r\n\r\n# starting I.E 8 on Win2003\r\n$prc = Start-Process 'C:\\Program Files\\Internet Explorer\\iexplore.exe' -PassThru \r\n\r\n# BUG : $prc.ID is wrong when another I.E window is already open \r\n\r\nsleep -Seconds 2;\r\n\r\n$wnd = Get-UiaWindow -pid $prc.Id\r\n\r\n# test.htm contains :\r\n# <html>\r\n# <body>\r\n# <table class=\"UsernamePasswordTable\">\r\n#  <tr><td>DAS ID: </td><td><input name=\"tb1\" type=\"text\" id=\"id1\" /></td></tr>\r\n#  <tr><td>Password: </td><td><input name=\"tb2\" type=\"text\" id=\"id2\" /></td></tr>\r\n#  </table>\r\n# </body>\r\n# </html>\r\n\r\n$wnd | Get-UIAEdit -name 'Address' |  Set-UIAEditText 'test.htm'\r\n\r\n$wnd | Get-UIAButton -name \"*test*\" | Invoke-UIAButtonClick\r\n\r\n$td = $wnd | Get-UIAText -name 'DAS ID: '\r\n\r\n$tr = $td | Get-UIAControlParent\r\n\r\n$table = $tr | Get-UIAControlParent\r\n\r\n# put OK from <TABLE> object but into both fields\r\n\r\n$table | Get-UIAEdit | Set-UIAEditText 'set from table'\r\n\r\n# text field is accessible from the TR object\r\n\r\n($tr | Get-UIAtext).Current.Name\r\n\r\n# but Edit field is not accessible from <TR> object\r\n\r\n$tr | Get-UIAEdit | Set-UIAEditText 'set from tr'\r\n\r\n# BUG => Get-UiaEdit : failed to get control in 5000 milliseconds by: title: '', automationId: '', className: '', value: ''.\r\n",
+    "LastUpdatedDate": "2014-03-19T05:53:10.637-07:00",
+    "PlannedForRelease": "",
+    "ReleaseVisibleToPublic": false,
+    "Priority": {
+      "Name": "Unassigned",
+      "Severity": 0,
+      "Id": 0
+    },
+    "ProjectName": "UiAutomation",
+    "ReportedDate": "2014-03-18T09:05:47.75-07:00",
+    "Status": {
+      "Name": "Proposed",
+      "Id": 1
+    },
+    "ReasonClosed": {
+      "Name": "Unassigned"
+    },
+    "Summary": "Get-UiaEdit failed to get control",
+    "Type": {
+      "Name": "Unassigned",
+      "Id": 5
+    },
+    "VoteCount": 1,
+    "Id": 12
+  },
+  "FileAttachments": [
+    {
+      "FileId": 815382,
+      "FileName": "IEviaUia.ps1.txt",
+      "DownloadUrl": ".\\815382"
+    }
+  ],
+  "Comments": [
+    {
+      "Message": "Hi,\nfirst of all about the Start-Process cmdlet. Some applications run something like 'engine' that in turn runs the app itself. For example, mmc.exe 32-bit on 64-bit Windows. I suspect that IE works similarly: it has a starter executable and the browser tab window.\nAnyway, please don't address problem with the Start-Process cmdlet to me - thi is Microsoft's I can't fix it. :)\n\nNow about the code - I'm on Windows 8 64-bit now with IE10 and I hope that latest IEs work more or less in a similar fashion. This code works for me (attached), UIAutomation 0.8.7 Beta 2:\n```\n# your test file c:\\1\\test.htm\n\n[int]$id = 123\n[string]$password = \"pwd\"\n\n# browsers usually accept path to an html file as input\nStart-Process iexplore -ArgumentList \"C:\\1\\test.htm\" -PassThru\n# just got the sleep from your code\nsleep -Seconds 2\n# to be sure that the window contains necessary controls, there is the -WithControl parameter\n# however, always work with as less windows as possible\n$wnd = Get-UiaWindow -ProcessName iexplore -WithControl @{contorlType=\"edit\";class=\"edit\"},@{controlType=\"text\";name=\"das*\"},@{controlType=\"text\";name=\"pass*\"}\n\n# you don't need the table\n# $table = $wnd | Get-UIAText -name DAS* | Get-UIAControlParent | Get-UIAControlParent\n\n# instead, go up to the custom objects that are parents of the text boxes and get their siblings respectively:\nGet-UIAText -name DAS* | Get-UIAControlParent | Get-UIAControlNextSibling | Get-UiaEdit | Set-UiaEditText $id\nGet-UIAText -name pass* | Get-UIAControlParent | Get-UIAControlNextSibling | Get-UiaEdit | Set-UiaEditText $password\n```\nMy IE 10 runs 2 process on the first start and adds one more process on every next time I run the Start-Process cmdlet.\n\nRegarding the buf with Get-UiaEdit. I don't know what set of controls is seen in IE 8, in IE 10 I have for every pair of controls (text + edit) the following:\n\ntable - another custom - edit\n  |\ncustom\n  |\ntext\nThis explains how the edit is accessible from the table and inaccessible from the custom that is over the text.\n",
+      "PostedDate": "2014-03-18T11:30:43.813-07:00",
+      "Id": 137243
+    },
+    {
+      "Message": "attachment",
+      "PostedDate": "2014-03-18T11:31:14.203-07:00",
+      "Id": 137244
+    },
+    {
+      "Message": "Hi, Many thanks for the quick workaround, which is also working on IE8",
+      "PostedDate": "2014-03-19T05:53:10.637-07:00",
+      "Id": 137332
+    }
+  ]
+}

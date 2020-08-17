@@ -1,0 +1,14 @@
+<div class="wikidoc">
+<p>There are several tools to investigate into controls and the MS UI Automation object model itself:</p>
+<p><strong>UISpy</strong> - a tool within Windows SDK</p>
+<p><strong>Inspect</strong> - also a good tool, can be found in Windows SDK. Microsoft&nbsp;</p>
+<p><strong><a title="UIAVerify" href="http://uiautomationverify.codeplex.com/">UIAVerify</a></strong> - it's our favorite tool. It can follow the focus or get what it's hovering over. Sometimes, it fails.</p>
+<p><strong>Spy&#43;&#43;</strong> - shipped with Visual Studio (not Express), less usable. You can use it for investigating into controls that have handles.</p>
+<p><strong>AccEvents</strong>&nbsp;- Windows SDK. We don't use it, some people use.</p>
+<p><strong>UIAutomationSpy</strong> - it's our tool. It shows what is under the mouse cursor in the language that PowerShell understands.&nbsp;It can also store the code line&nbsp;in the clipboard.</p>
+<p>There is a code recorder. It's not brilliant, even worse than the Start-UIARecorder cmdlet, but it can help somehow.</p>
+<p>How to recored code with the Start-UIARecorder cmdlet:</p>
+<p>Start-UIARecorder -noc -nos -nou -wri -Seconds 20</p>
+<p>and use the mouse to hover over application of your interest. After twenty seconds, it should open two text files:&nbsp;the recording file with full paths to the control and its shorter version (sometimes, the longer version can be invaluable).</p>
+<p>The text files can be used as a basis for your scripts.</p>
+</div><div class="ClearBoth"></div>

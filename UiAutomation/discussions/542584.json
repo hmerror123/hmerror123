@@ -1,0 +1,18 @@
+[
+  {
+    "Id": "1235253",
+    "ThreadId": "542584",
+    "Html": "Hi,\r<br />\n<br />\nCan you detail some examples of how to set values in a grid? I see examples how to get the values of a table, including number of rows and columns, and how to address each individual grid cell to obtain the values.\r<br />\n<br />\nHowever, I dont find a good example of how to set the values in a data grid, particularly when addressing the cell by row and grid number. The grid has mutiple rows and cells.\r<br />\n<br />\nFor example, I can get the following table and its specific cells:<br />\n<pre><code>    $grid=( ... | Get-UiaDataGrid -Class 'DataGridTable' )\n    $table1rowcount=$grid.GridRowCount ;\n    $table1columncount=$grid.GridColumnCount ;</code></pre>\n\nand either of these will return the text in cell 0,0:<br />\n<pre><code>    ($itemtext=$grid.GetItem(0,0) | Invoke-UIAValuePatternGet)\n    or\n    ($itemtext=($grid.GetItem(0,0)) | Get-UiaDataItemText) \n    </code></pre>\n\nBut how to set a value. I could not find a SetItem method.\r<br />\n<br />\nI find neither of the following sets a value:<br />\n<pre><code>    (($grid.GetItem(0,0)) | Set-UIAControlKeys -Text &quot;4&quot;)   \n    (($grid.GetItem(0,0)) | Set-UIAFocus | Set-UIAControlKeys -Text &quot;4&quot;) </code></pre>\n\nunless I click into the cell first.\r<br />\n<br />\n<br />\nSo to get anything to work I need to all of the following...<br />\n<pre><code>    (($grid.GetItem(0,0)) | Set-UiaFocus) \n    (($grid.GetItem(0,0)) | Invoke-UiaListItemClick) \n    (($grid.GetItem(0,0)) | Set-UIAControlKeys -Text &quot;4&quot;)</code></pre>\n\nbut there is a big problem. The text actually ends up in the wrong cell. Usually in cell 2,0 not cell 0,0.  I see the mouse hover over the 0,0 cell, but the text goes into the 2,0 cell. (That I need to click into the cell first might be a peculiarity of the grid I am automating. )<br />\n<pre><code>I see some examples of using Get-UiaDataItem as in:</code></pre>\n\n<pre><code>    $dataitems=($grid | Get-UiaDataItem)\n    foreach ($item in $dataitems) { ...\n    }</code></pre>\n\nbut in this case, how to address the specific $item (cell) by row and column number? Attempting to address the cells by name won't work, as they are all pre-populated with the same value. <br />\n<pre><code>So, what is/are the appropriate way[s] to set the values in a data grid when addressing the cell by row and grid number?\n</code></pre>\n\nThanks\r<br />\nJoe<br />\n",
+    "PostedDate": "2014-04-17T16:57:44.067-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1317861",
+    "ThreadId": "542584",
+    "Html": "Here's an <a href=\"http://www.kettic.com/how-to/aspnet-ajax/\" rel=\"nofollow\">ASP.NET control suite</a> with a gridview control included, which provides details for column and row customization, including corresponding sample codes. See if this might help.<br />\n",
+    "PostedDate": "2014-10-30T20:49:07.133-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

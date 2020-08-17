@@ -1,0 +1,50 @@
+[
+  {
+    "Id": "1431004",
+    "ThreadId": "640144",
+    "Html": "Hi,\r<br />\n<br />\nI'm trying to access a dialog/window which is spawned as a child from the mainform. On other dialogs it works fine, but on this particular dialog the whole UIA framework seems to be freezing. Only after I close the child dialog/window, the UIAFramework continues:\r<br />\n<br />\nUsing the .net4 variant btw.\r<br />\n<br />\nWorking code for &quot;new package dialog&quot;:<br />\n<pre><code>$global:GUIMainForm = Get-UIAWindow -ProcessName &quot;Automation Machine&quot; -TimeOut 10000 -name &quot;*Automation Machine*&quot;\n\n$GUIMainForm | Get-UiaListItem -Name 'New Package' | Invoke-UIAControlClick\n        # Check if new package dialog was opened\n        $GUIMainForm | Test-UIAControlState -SearchCriteria @{automationId=&quot;AMPackageDialog&quot;;controltype=&quot;Window&quot;;name=&quot;Create new Package&quot;} | Should be $true\n        $NewPackageDialog = Get-UIAWindow -automationId &quot;AMPackageDialog&quot; -Name &quot;Create new Package&quot;\n        # Add button should be disabled when no text has been entered\n        $NewPackageDialog | Test-UIAControlState -SearchCriteria @{automationId=&quot;buttonOk&quot;;controltype=&quot;Button&quot;;name=&quot;Add&quot;;IsEnabled=$false}\n</code></pre>\n\nnot working code for &quot;Filter builder dialog&quot;<br />\n<pre><code>$global:GUIMainForm = Get-UIAWindow -ProcessName &quot;Automation Machine&quot; -TimeOut 10000 -name &quot;*Automation Machine*&quot;\n# clicks the filter button, opens the filter dialog\n$GUIMainForm | Get-UiaControl -AutomationId &quot;buttonFilter&quot; | Invoke-uiaControlClick\n# The following doesn't work, UIA seems to be hanging indefinately untill I close the opened dialog.\n\n$GUIMainForm | Test-UIAControlState -SearchCriteria @{automationId=&quot;FilterExpressionBuilderDialog&quot;;controltype=&quot;Window&quot;;name=&quot;Filters: Default action set&quot;}\n\n# This works, get's the dialog and highligts it\n$FilterDialog = get-uiawindow -Name &quot;Filters: Default action set&quot;\n# Anything I try on the $FilterDialog seems to hang the UIA indefinately, cannot get buttons or anything without haning the UIA framework.</code></pre>\n\n",
+    "PostedDate": "2015-06-19T02:15:02.753-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1431339",
+    "ThreadId": "640144",
+    "Html": "Hi Henkes,\r<br />\nhave you observed this window (the Default action set window) via UIAutomationSpy or, better, more spectacularly showing <a href=\"https://uiautomationverify.codeplex.com/releases/view/11366\" rel=\"nofollow\">UIA Verify</a>?\r<br />\nHow many controls are situated below this window? On what level (top-level or under your main window) is this window?\r<br />\n<br />\nUsually, 'freezing' of UIAutomation is just a walk thorough a wrong subtree. Consider the following situation:\r<br />\n-------------------------------your root----------------------\r<br />\n|. . . . . . . . . . . . . . . . . . . . . . . . . .  . . . . . . . . . . . . . . . . . . . . . . . . .|\r<br />\nsome controls. . . . . . . . . .  . . . . . . . . . . . . . . . . . . . . .your child window\r<br />\n|\r<br />\nmany controls\r<br />\n|\r<br />\nmuch more controls\r<br />\n<br />\nUIAutomation walks through another subtree of controls before visiting the subtree of your interest. This is because the logic is to enumerate top-level items with their subitems from the search root (the Automation Machine window in your case). The first or the second subtree is full of controls and UIAutomation works until it ensures that there is no such element (the .Default action set window).\r<br />\nGood or bad, there is no proof that the algorithm is wrong - if enumerate top-level, the 2nd-level controls and so on, there must be a situation when whis logic will freeze.\r<br />\n<br />\nProbably, there's another problem. What will be in the output if you run the following:<br />\n<pre><code>$FilterDialog | Get-UiaControl | Read-UiaControlName # or Read-UiaControlAutomationId</code></pre>\n\n? Does it return anything or freezes immediately?<br />\n",
+    "PostedDate": "2015-06-22T08:04:55.877-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1431465",
+    "ThreadId": "640144",
+    "Html": "UIAutomationSpy and VisualUIAVerify are able to inspect the &quot;Default action set window&quot; and can see it's controls etc.. \r<br />\n<br />\nIt freezes immediately when doing<br />\n<pre><code>$FilterDialog | Get-UiaControl | Read-UiaControlName</code></pre>\n\nor<br />\n<pre><code>$FilterDialog | Get-UiaControl | Read-UiaControlAutomationId</code></pre>\n\nThis,however, does work...<br />\n<pre><code>$Expressionpanel = $FilterDialog.NavigateToFirstChild().Highlight()\n# Doubleclick first filter \n$listbox = $Expressionpanel.NavigateToFirstChild().NavigateToFirstChild().NavigatetoNextSibling().NavigateToNextSibling().Highlight()</code></pre>\n\nAnother strange behaviour i've noticed is with treeview/treeviewitems...\r<br />\nI have a treeview that looks like:\r<br />\n<br />\nDashboard\r<br />\nCollections\r<br />\nLayers\r<br />\nPackages\r<br />\n<br />\n(all rootnodes)\r<br />\n<br />\nI can get the nodes perfectly by using<br />\n<pre><code>$NavigationTree =  $GUIMainForm | Get-UIATree -AutomationId &quot;TreeViewMenu&quot;\n$NavigationTree | Get-UiaTreeItem -Name &quot;Dashboard&quot;\n$NavigationTree | Get-UiaTreeItem -Name &quot;Collections&quot;\n$NavigationTree | Get-UiaTreeItem -Name &quot;Layers&quot;\n$NavigationTree | Get-UiaTreeItem -Name &quot;Packages&quot;</code></pre>\n\nBut as soon as one of the rootnodes has a childnode,I am no longer able to get treenodes for any of the following rootnodes.\r<br />\ne.g. Dashboard has a childnode, I can get treeitems for Dashboard and it's child, but I can no longer get treeitems for collections, layers or packages\r<br />\ne.g. 2 Collections has a childnode, I can get treeitem for Dashboard,Collections and it's child, but I can no longer get treeitems for layers or packages.\r<br />\n<br />\nCurrenlty i'm working around this by automating bottom to top, first adding all nodes I need to bottom of the tree and then working my way up, but I'm sure i'm going to run into the situation where this workaround will no longer cut it...<br />\n",
+    "PostedDate": "2015-06-23T00:04:53.77-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1431467",
+    "ThreadId": "640144",
+    "Html": "Sorry, forgot to answer some questions:\r<br />\n$FilterDialog is a direct child window from $GUIMainForm, no intermediate controls between $FilterDialog and $GUIMainForm\r<br />\n<br />\nFilterdialog has 2 panels and 1 titlebar as direct childs.\r<br />\n<br />\nThe folowing does give output and doesn't freeze.<br />\n<pre><code>$FilterDialog | Get-UiaControlChildren | Read-UiaControlAutomationId\nfilterExpressionBuilderControl\npanelButtons\nTitleBar</code></pre>\n\n",
+    "PostedDate": "2015-06-23T00:14:24.243-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1431481",
+    "ThreadId": "640144",
+    "Html": "Henkes, are you using UIAutomation 0.87 beta 3?\r<br />\nIf so, I'd recommend you to try beta 2 on problematic places. Beta 3 was a release with some polishing done to hide exceptions threw by Microsoft's UI Automation. These exceptions always contains the work 'internal'.\r<br />\n<br />\nThe complaint was that sometimes there is an unhandled exception from Microsoft (something with the 'internal' word), the exception stops the script and I did some work to allow UIAutomation not to be interrupted so often.\r<br />\n<br />\nIf I too polished error handling, you should face such an exception. In this case all that I can do is to better inform the user (and probably repeat the action under the hood).\r<br />\nIf there's no such an exception, let's investigate in the issue further.<br />\n",
+    "PostedDate": "2015-06-23T01:42:03.713-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1431488",
+    "ThreadId": "640144",
+    "Html": "Beta2 seems to be giving the same result (freeze). No exception being thrown:<br />\n<pre><code>$FilterDialog | Get-UiaControl | Read-UiaControlAutomationId</code></pre>\n\n",
+    "PostedDate": "2015-06-23T02:55:11.763-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

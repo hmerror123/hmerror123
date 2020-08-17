@@ -1,0 +1,387 @@
+[
+  {
+    "Id": "310878",
+    "Title": "Usage",
+    "LatestDate": "2012-06-28T03:42:04.153-07:00"
+  },
+  {
+    "Id": "310880",
+    "Title": "Feature requests",
+    "LatestDate": "2012-03-03T00:03:02.003-08:00"
+  },
+  {
+    "Id": "356339",
+    "Title": "Send Keystroke",
+    "LatestDate": "2012-06-27T05:03:30.45-07:00"
+  },
+  {
+    "Id": "357191",
+    "Title": "How to install and use?",
+    "LatestDate": "2012-07-04T22:51:29.807-07:00"
+  },
+  {
+    "Id": "359366",
+    "Title": "Cannot import powershell module in windows 8 release preview",
+    "LatestDate": "2012-06-13T09:07:22.317-07:00"
+  },
+  {
+    "Id": "360789",
+    "Title": "Why Invoke-UIAControlClick -RightClick waits for mouse move?",
+    "LatestDate": "2012-06-25T08:57:47.947-07:00"
+  },
+  {
+    "Id": "360839",
+    "Title": "Cannot get Get-UIASpinnerValue",
+    "LatestDate": "2012-06-25T23:10:42.673-07:00"
+  },
+  {
+    "Id": "362965",
+    "Title": "Getting started",
+    "LatestDate": "2012-07-16T13:32:13.287-07:00"
+  },
+  {
+    "Id": "389137",
+    "Title": "Click on Informational/Warning Window",
+    "LatestDate": "2012-07-30T05:05:18.943-07:00"
+  },
+  {
+    "Id": "390597",
+    "Title": "Border around Automation Elements",
+    "LatestDate": "2012-08-07T12:01:29.193-07:00"
+  },
+  {
+    "Id": "390929",
+    "Title": "Finding UI Elements",
+    "LatestDate": "2012-08-28T09:47:04.653-07:00"
+  },
+  {
+    "Id": "395943",
+    "Title": "How to create sceenshot by using \"Save-UIAScreenshot\" or \"Get-UIAScreenshot\"?",
+    "LatestDate": "2012-09-21T10:34:41.28-07:00"
+  },
+  {
+    "Id": "401459",
+    "Title": "Find control from point",
+    "LatestDate": "2012-11-01T11:30:48.167-07:00"
+  },
+  {
+    "Id": "401463",
+    "Title": "Find control using AutomationId",
+    "LatestDate": "2012-10-31T14:18:47.03-07:00"
+  },
+  {
+    "Id": "401700",
+    "Title": "Sending hot keys to applications",
+    "LatestDate": "2012-11-02T12:44:54.987-07:00"
+  },
+  {
+    "Id": "428187",
+    "Title": "Two Panes under Window both without Name or AutomationID",
+    "LatestDate": "2013-01-21T14:51:52.277-08:00"
+  },
+  {
+    "Id": "428793",
+    "Title": "Treeview Selections",
+    "LatestDate": "2013-03-07T07:28:50.413-08:00"
+  },
+  {
+    "Id": "429748",
+    "Title": "Ignore error when UI element not found",
+    "LatestDate": "2013-01-15T23:39:27.383-08:00"
+  },
+  {
+    "Id": "429972",
+    "Title": "Wait for a window?",
+    "LatestDate": "2013-01-18T20:28:26.52-08:00"
+  },
+  {
+    "Id": "430391",
+    "Title": "Jenkins slave with UIAutomation",
+    "LatestDate": "2013-01-22T02:46:29.847-08:00"
+  },
+  {
+    "Id": "430895",
+    "Title": "Invoke-UIAButtonClick -InputObject?",
+    "LatestDate": "2013-01-28T09:47:18.193-08:00"
+  },
+  {
+    "Id": "431100",
+    "Title": "Set Focus on full screen windows",
+    "LatestDate": "2013-01-29T11:37:09.34-08:00"
+  },
+  {
+    "Id": "431849",
+    "Title": "Store App control and spy",
+    "LatestDate": "2013-02-19T02:15:15.947-08:00"
+  },
+  {
+    "Id": "434093",
+    "Title": "Problem with \"Internet Explorer_Server\" objects",
+    "LatestDate": "2014-11-13T08:52:10.98-08:00"
+  },
+  {
+    "Id": "434614",
+    "Title": "Issues importing the module into win7, ps 3.0",
+    "LatestDate": "2013-02-28T14:25:49.13-08:00"
+  },
+  {
+    "Id": "434671",
+    "Title": "Working with SysDateTimePick32",
+    "LatestDate": "2013-03-15T11:46:00.11-07:00"
+  },
+  {
+    "Id": "451074",
+    "Title": "Manipulate a Website textbox",
+    "LatestDate": "2014-10-30T20:43:27.16-07:00"
+  },
+  {
+    "Id": "452844",
+    "Title": "How to right click on a file in the system and create a shortcut on the desktop",
+    "LatestDate": "2013-08-13T06:45:01.85-07:00"
+  },
+  {
+    "Id": "453433",
+    "Title": "Speeding up execution",
+    "LatestDate": "2013-08-14T14:53:50.643-07:00"
+  },
+  {
+    "Id": "455396",
+    "Title": "Invoke Click Button at same time",
+    "LatestDate": "2013-09-04T06:56:13.22-07:00"
+  },
+  {
+    "Id": "458687",
+    "Title": "GPL license question",
+    "LatestDate": "2013-09-22T10:15:46.563-07:00"
+  },
+  {
+    "Id": "458865",
+    "Title": "Starting UIAutomationSpy",
+    "LatestDate": "2013-09-23T23:25:32.033-07:00"
+  },
+  {
+    "Id": "461243",
+    "Title": "Difference and relationship between WASP and UI Automation?",
+    "LatestDate": "2013-10-05T21:32:32.96-07:00"
+  },
+  {
+    "Id": "461254",
+    "Title": "\"Timeout\" while listing items in List",
+    "LatestDate": "2013-10-07T20:09:58.463-07:00"
+  },
+  {
+    "Id": "461297",
+    "Title": "How to manually clear highlight box *after* execution?",
+    "LatestDate": "2013-10-06T02:26:28.307-07:00"
+  },
+  {
+    "Id": "461298",
+    "Title": "Is it possible to support web automation?",
+    "LatestDate": "2013-10-05T23:42:53.623-07:00"
+  },
+  {
+    "Id": "461301",
+    "Title": "Full-automation recording",
+    "LatestDate": "2013-10-06T01:53:02.587-07:00"
+  },
+  {
+    "Id": "461891",
+    "Title": "How to click invisible ListItem?",
+    "LatestDate": "2013-10-11T08:53:26.283-07:00"
+  },
+  {
+    "Id": "462132",
+    "Title": "Help With Scrolling in an Application",
+    "LatestDate": "2013-10-14T14:24:13.213-07:00"
+  },
+  {
+    "Id": "462599",
+    "Title": "[ CLOSE ] Parallelizing tests",
+    "LatestDate": "2013-10-24T02:00:54.457-07:00"
+  },
+  {
+    "Id": "463334",
+    "Title": "Reading A Custom Item's Value",
+    "LatestDate": "2013-10-23T23:25:42.27-07:00"
+  },
+  {
+    "Id": "470534",
+    "Title": "how to enter url on the address bar of chrome",
+    "LatestDate": "2013-11-19T21:37:33.687-08:00"
+  },
+  {
+    "Id": "470805",
+    "Title": "Double click on static text",
+    "LatestDate": "2014-03-13T00:34:32.357-07:00"
+  },
+  {
+    "Id": "470822",
+    "Title": "Can I automate such application (JAVA)",
+    "LatestDate": "2013-11-22T07:00:50.937-08:00"
+  },
+  {
+    "Id": "472818",
+    "Title": "Get-ControlFirstChild and ControlType",
+    "LatestDate": "2013-12-11T01:41:20.62-08:00"
+  },
+  {
+    "Id": "476716",
+    "Title": "How to walk / filter on a TreeView?",
+    "LatestDate": "2013-12-20T08:13:03.197-08:00"
+  },
+  {
+    "Id": "476718",
+    "Title": "What's the tool to the left of calculator?",
+    "LatestDate": "2013-12-20T03:12:19.703-08:00"
+  },
+  {
+    "Id": "532303",
+    "Title": "IE page which is consisted of some frames.",
+    "LatestDate": "2014-02-19T01:25:52.797-08:00"
+  },
+  {
+    "Id": "535974",
+    "Title": "Input the Function Key",
+    "LatestDate": "2014-05-10T05:14:46.883-07:00"
+  },
+  {
+    "Id": "537843",
+    "Title": "Is it possible to wait for MMC",
+    "LatestDate": "2014-03-04T02:29:34.963-08:00"
+  },
+  {
+    "Id": "539019",
+    "Title": "SSH issues when executing: Can't find native windows",
+    "LatestDate": "2014-03-17T10:33:50.677-07:00"
+  },
+  {
+    "Id": "539398",
+    "Title": "Getting text content from Tree Item",
+    "LatestDate": "2014-03-18T11:47:40.077-07:00"
+  },
+  {
+    "Id": "542584",
+    "Title": "How to set values in a grid using cell row and column number?",
+    "LatestDate": "2014-10-30T20:49:07.133-07:00"
+  },
+  {
+    "Id": "543665",
+    "Title": "Get Child that is a dialog box",
+    "LatestDate": "2014-05-12T12:46:23.87-07:00"
+  },
+  {
+    "Id": "543997",
+    "Title": "UIAControlKeys \"{SPACE}\" does 3 spaces",
+    "LatestDate": "2014-05-12T06:57:02.827-07:00"
+  },
+  {
+    "Id": "545120",
+    "Title": "Missing wiki page: Java SWT sample",
+    "LatestDate": "2014-05-12T21:35:44.333-07:00"
+  },
+  {
+    "Id": "551304",
+    "Title": "Frequent Powershell crashes with \"Windows.Automation.ElementNotAvailable\" error with extensive use of UIAutomation and try-catch blocks",
+    "LatestDate": "2014-07-17T15:29:28.77-07:00"
+  },
+  {
+    "Id": "551780",
+    "Title": "How does Wait-UiaNoWindow work?",
+    "LatestDate": "2014-07-17T00:53:07.137-07:00"
+  },
+  {
+    "Id": "554312",
+    "Title": "Automation to Inactive or RDP sessions",
+    "LatestDate": "2014-07-27T01:24:22.817-07:00"
+  },
+  {
+    "Id": "572663",
+    "Title": "Hyper-V console, HowTo Send CTRL+ALT+DEL And Login User/passw",
+    "LatestDate": "2014-11-20T09:22:38.743-08:00"
+  },
+  {
+    "Id": "573838",
+    "Title": "How to click throw every item in a list quickly",
+    "LatestDate": "2014-12-02T16:42:41.093-08:00"
+  },
+  {
+    "Id": "578952",
+    "Title": "verifying word opens up inside IE (sharepoint)",
+    "LatestDate": "2015-02-02T11:20:31.27-08:00"
+  },
+  {
+    "Id": "584494",
+    "Title": "Access contents of a pane",
+    "LatestDate": "2015-03-09T17:22:01.677-07:00"
+  },
+  {
+    "Id": "638033",
+    "Title": "Windows 10 PE support",
+    "LatestDate": "2015-05-15T07:42:55.067-07:00"
+  },
+  {
+    "Id": "640144",
+    "Title": "Problem with child window",
+    "LatestDate": "2015-06-23T02:55:11.763-07:00"
+  },
+  {
+    "Id": "644791",
+    "Title": "Please make this module available via the PowerShell Gallery",
+    "LatestDate": "2015-09-09T19:17:39.433-07:00"
+  },
+  {
+    "Id": "644953",
+    "Title": "Get Name of Get-UiaText",
+    "LatestDate": "2015-09-14T11:20:59.607-07:00"
+  },
+  {
+    "Id": "644979",
+    "Title": "Failed to get control",
+    "LatestDate": "2015-09-15T08:18:36.62-07:00"
+  },
+  {
+    "Id": "645282",
+    "Title": "Test-UiaControlState Output Issue",
+    "LatestDate": "2015-09-23T06:10:02.613-07:00"
+  },
+  {
+    "Id": "646727",
+    "Title": "wait-process",
+    "LatestDate": "2015-10-29T03:08:23.377-07:00"
+  },
+  {
+    "Id": "651220",
+    "Title": "UIAutomation and PowerShell 4.0",
+    "LatestDate": "2016-02-17T02:38:39.34-08:00"
+  },
+  {
+    "Id": "651930",
+    "Title": "Can I automate JAVA GUI AWT engine sing this framework?",
+    "LatestDate": "2016-03-01T06:22:37.237-08:00"
+  },
+  {
+    "Id": "652297",
+    "Title": "Get-UiaWindow fails if waiting too long",
+    "LatestDate": "2016-04-23T10:40:14.323-07:00"
+  },
+  {
+    "Id": "653871",
+    "Title": "Set-UiaComboBoxText   fails to set the correct value",
+    "LatestDate": "2016-04-25T12:22:50.547-07:00"
+  },
+  {
+    "Id": "657410",
+    "Title": "About license",
+    "LatestDate": "2016-08-29T00:49:19.74-07:00"
+  },
+  {
+    "Id": "661248",
+    "Title": "UIautomation: cannot contol GUI on a remote PC",
+    "LatestDate": "2017-02-28T07:08:34.64-08:00"
+  },
+  {
+    "Id": "662731",
+    "Title": "No uia cmdlets being loaded",
+    "LatestDate": "2017-05-10T06:50:57.99-07:00"
+  }
+]

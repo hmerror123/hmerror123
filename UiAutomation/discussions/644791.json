@@ -1,0 +1,10 @@
+[
+  {
+    "Id": "1443840",
+    "ThreadId": "644791",
+    "Html": "I would love to be able to install this module simply by typing:<br />\n<pre><code>Install-Module UIAutomation</code></pre>\n\nOn all my Windows 10 machines.  There are instructions <a href=\"http://www.powershellgallery.com/pages/GettingStarted\" rel=\"nofollow\">here</a> on how to publish to the gallery.<br />\n",
+    "PostedDate": "2015-09-09T19:17:39.433-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

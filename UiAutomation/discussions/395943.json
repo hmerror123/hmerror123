@@ -1,0 +1,42 @@
+[
+  {
+    "Id": "914097",
+    "ThreadId": "395943",
+    "Html": "\r\n<p>Seems I always get exception by using these two command. I need to save the screen shot to a file.</p>\r\n<p>BTW, the error message is too general to specify the real reason.</p>\r\n",
+    "PostedDate": "2012-09-18T06:52:03.633-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "914129",
+    "ThreadId": "395943",
+    "Html": "<p>Hi,</p>\r\n<p>I was sure that I fixed it earlier, but the bug is now here. :(</p>\r\n<p>The problem is that both cmdlets can't decide which parameter set should be used (there is in the module a lot of inheritance, and several parameter sets are seen by a cmdlet).</p>\r\n<p>Quick fix: use the Description parameter:</p>\r\n<p>\r\n<div style=\"color: black; background-color: white;\">\r\n<pre>Start<span style=\"color: gray;\">-</span>Process calc <span style=\"color: gray;\">-</span>PassThru | Get<span style=\"color: gray;\">-</span>UIAWindow | Save<span style=\"color: gray;\">-</span>UIAScreenshot <span style=\"color: gray;\">-</span>Description asdf\r\n\r\n</pre>\r\n</div>\r\n</p>\r\n<p>This generates the following file: %TEMP%\\[year][month][day]...._asdf.bmp</p>\r\n<p>Now (will be published this week), I fixed it surely and the sample below is working and after having run it, I have a screenshot of the window as well as screenshots of every button:</p>\r\n<p>\r\n<div style=\"color: black; background-color: white;\">\r\n<pre>Start<span style=\"color: gray;\">-</span>Process charmap <span style=\"color: gray;\">-</span>PassThru | Get<span style=\"color: gray;\">-</span>UIAWindow | Save<span style=\"color: gray;\">-</span>UIAScreenshot\r\nStart<span style=\"color: gray;\">-</span>Process charmap <span style=\"color: gray;\">-</span>PassThru | Get<span style=\"color: gray;\">-</span>UIAWindow | Get<span style=\"color: gray;\">-</span>UIAButton | Save<span style=\"color: gray;\">-</span>UIAScreenshot\r\n</pre>\r\n</div>\r\n</p>\r\n<p>There is another bug: earlier, being run without pipeline input, the cmdlet returned the picture of the desktop. I'll fix it too.</p>\r\n<p>&nbsp;</p>\r\n<p>&nbsp;</p>",
+    "PostedDate": "2012-09-18T07:52:33.447-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "914597",
+    "ThreadId": "395943",
+    "Html": "<p>Thanks for your quick reply.&nbsp;</p>\r\n<p>\r\n<div style=\"color: black; background-color: white;\">\r\n<pre>Start<span style=\"color: gray;\">-</span>Process calc <span style=\"color: gray;\">-</span>PassThru | Get<span style=\"color: gray;\">-</span>UIAWindow | Save<span style=\"color: gray;\">-</span>UIAScreenshot <span style=\"color: gray;\">-</span>Path C:\\temp\\2.bmp\r\n</pre>\r\n</div>\r\n</p>\r\n<p>If I want to specify the path for the screenshot, it only works when the file is already there. Please also check it.</p>\r\n<p>Thanks in advance!</p>",
+    "PostedDate": "2012-09-19T06:35:43.93-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "914632",
+    "ThreadId": "395943",
+    "Html": "<p>Thanks for pointing my attention to the -Path parameter: I fixed it earlier, but I didn't check the fix (as I see in code). It creates a file by a custom path if 1) the path is not empty 2) file already exists :) Just a type, the code should be checking that the file does not exist before writing to a file (file operations are not included in the suite autotests and bug has been passed to the release page).</p>\r\n<p>There is a fun workaround:</p>\r\n<p>\r\n<div style=\"color: black; background-color: white;\">\r\n<pre><span style=\"color: #a31515;\">\"test\"</span> <span style=\"color: gray;\">&gt;</span> c:\\1\\test1.bmp\r\nStart<span style=\"color: gray;\">-</span>Process calc <span style=\"color: gray;\">-</span>PassThru | Get<span style=\"color: gray;\">-</span>UIAWindow | Save<span style=\"color: gray;\">-</span>UIAScreenshot <span style=\"color: gray;\">-</span>Description 1 <span style=\"color: gray;\">-</span>Path C:\\1\\test1.bmp\r\n</pre>\r\n</div>\r\n</p>\r\n<p>I must admit that description is ignored if you use custom path.</p>\r\n<p>Well, I'll fix it in the following way:</p>\r\n<p>1) the -Path parameter and 2) the -File/Name parameter instead of the single -Path parameter as it's done now</p>\r\n<p>3) the -Description parameter versus -Path + -File/Name parameter (i.e., in two separate parameter sets).</p>\r\n<p>&nbsp;</p>",
+    "PostedDate": "2012-09-19T07:37:44.043-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "915825",
+    "ThreadId": "395943",
+    "Html": "<p>Finally, all the code below is working:</p>\r\n<p>\r\n<div style=\"color: black; background-color: white;\">\r\n<pre><span style=\"color: green;\"># saves the desktop</span>\r\nSave<span style=\"color: gray;\">-</span>UIAScreenshot\r\n\r\n<span style=\"color: green;\"># saves the desktop to a specified file</span>\r\nSave<span style=\"color: gray;\">-</span>UIAScreenshot <span style=\"color: gray;\">-</span>Path c:\\1 <span style=\"color: gray;\">-</span>Name 20120921_1.bmp\r\n\r\n<span style=\"color: green;\"># saves a window</span>\r\nStart<span style=\"color: gray;\">-</span>Process calc <span style=\"color: gray;\">-</span>PassThru | Get<span style=\"color: gray;\">-</span>UIAWindow | Save<span style=\"color: gray;\">-</span>UIAScreenshot\r\n\r\n<span style=\"color: green;\"># saves a window to the specified file</span>\r\nStart<span style=\"color: gray;\">-</span>Process calc <span style=\"color: gray;\">-</span>PassThru | Get<span style=\"color: gray;\">-</span>UIAWindow | Save<span style=\"color: gray;\">-</span>UIAScreenshot <span style=\"color: gray;\">-</span>Path c:\\1 <span style=\"color: gray;\">-</span>Name 20120921_2.bmp\r\n\r\n<span style=\"color: green;\"># throws an exception 'Save-UIAScreenshot : File 'c:\\1\\20120921_2.bmp' already exists'</span>\r\nStart<span style=\"color: gray;\">-</span>Process calc <span style=\"color: gray;\">-</span>PassThru | Get<span style=\"color: gray;\">-</span>UIAWindow | Get<span style=\"color: gray;\">-</span>UIAButton <span style=\"color: gray;\">-</span>n 1 | Save<span style=\"color: gray;\">-</span>UIAScreenshot <span style=\"color: gray;\">-</span>Path c:\\1 <span style=\"color: gray;\">-</span>Name 20120921_2.bmp\r\n\r\n<span style=\"color: green;\"># saves a button to the specified file</span>\r\nStart<span style=\"color: gray;\">-</span>Process calc <span style=\"color: gray;\">-</span>PassThru | Get<span style=\"color: gray;\">-</span>UIAWindow | Get<span style=\"color: gray;\">-</span>UIAButton <span style=\"color: gray;\">-</span>n 1 | Save<span style=\"color: gray;\">-</span>UIAScreenshot <span style=\"color: gray;\">-</span>Path c:\\1 <span style=\"color: gray;\">-</span>Name 20120921_3.bmp\r\n\r\n<span style=\"color: green;\"># generates a screenshot for each numeric button (ten screenshots)</span>\r\nStart<span style=\"color: gray;\">-</span>Process calc <span style=\"color: gray;\">-</span>PassThru | Get<span style=\"color: gray;\">-</span>UIAWindow | Get<span style=\"color: gray;\">-</span>UIAButton <span style=\"color: gray;\">-</span>SearchCriteria @{automationid<span style=\"color: gray;\">=</span><span style=\"color: #a31515;\">'13*'</span>} | Save<span style=\"color: gray;\">-</span>UIAScreenshot\r\n</pre>\r\n</div>\r\n</p>",
+    "PostedDate": "2012-09-21T10:34:41.28-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

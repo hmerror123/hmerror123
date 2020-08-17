@@ -1,0 +1,18 @@
+[
+  {
+    "Id": "1449962",
+    "ThreadId": "646727",
+    "Html": "I want my script to wait for string which appear's in UI lately or wait for button to get visible in that UI\r<br />\ncan you help me with these thing guys pls its very urgent for me \r<br />\nthanks in advance\r<br />\n<br />\nsorry for my bad english <br />\n",
+    "PostedDate": "2015-10-28T03:35:30.733-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1450261",
+    "ThreadId": "646727",
+    "Html": "Hi arun_dhananjeyan, there are several ways to do what you've asked.<br />\n<ol>\n<li>The Wait-UiaControlState cmdlet with the -Seconds parameter<br />\nPlease refer to the <a href=\"https://uiautomation.codeplex.com/wikipage?title=Checking%20the%20state%20of%20UI\" rel=\"nofollow\">page</a>.<br />\nUsing this cmdlet you can wait for more sofisticated condition than other cmdlets offer.</li>\n<li>A 'regular' Get-UiaButton cmdlet has functionality to wait for a control, just set the number of seconds you are ready to wait:</li>\n</ol>\n<pre><code>Get-UiaWindow -Name wnd | Get-UiaButton -Name yourButtonName -Seconds 300;</code></pre>\n\n<ol>\n<li>The Wait-UiaControlIsVisible cmdlet</li>\n</ol>\n<pre><code>Get-UiaWindow -Name windowName | Get-UiaButton -Name OK | Wait-UiaControlIsVisible -Seconds 60;</code></pre>\n\n",
+    "PostedDate": "2015-10-29T03:08:23.377-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

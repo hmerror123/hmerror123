@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VisualState xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ShowCheckBoxes="false">
+  <TopNode>[0-1080]\\STORA\FamilyLibrary\Projects\PS\UIAutomation\UIAutomationTest\bin\Release\UIAutomationTest.dll</TopNode>
+  <SelectedNode>[0-1080]\\STORA\FamilyLibrary\Projects\PS\UIAutomation\UIAutomationTest\bin\Release\UIAutomationTest.dll</SelectedNode>
+  <ExcludeCategories>false</ExcludeCategories>
+  <Nodes>
+    <Node UniqueName="[0-1080]\\STORA\FamilyLibrary\Projects\PS\UIAutomation\UIAutomationTest\bin\Release\UIAutomationTest.dll" Expanded="true" />
+    <Node UniqueName="[0-1081]UIAutomationTest" Expanded="true" />
+    <Node UniqueName="[0-1082]UIAutomationTest.Commands" Expanded="true" />
+    <Node UniqueName="[0-1083]UIAutomationTest.Commands.Common" Expanded="true" />
+    <Node UniqueName="[0-1084]UIAutomationTest.Commands.Convert" Expanded="true" />
+    <Node UniqueName="[0-1085]UIAutomationTest.Commands.Discovery" Expanded="true" />
+    <Node UniqueName="[0-1086]UIAutomationTest.Commands.Pattern" Expanded="true" />
+    <Node UniqueName="[0-1087]UIAutomationTest.Commands.Select" Expanded="true" />
+    <Node UniqueName="[0-1050]UIAutomationTest.Commands.Select.GetUIAControlCommandTestFixture" Expanded="true" />
+    <Node UniqueName="[0-1088]UIAutomationTest.Commands.Transcript" Expanded="true" />
+    <Node UniqueName="[0-1089]UIAutomationTest.Commands.Wait" Expanded="true" />
+  </Nodes>
+</VisualState>

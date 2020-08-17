@@ -1,0 +1,26 @@
+[
+  {
+    "Id": "1104157",
+    "ThreadId": "461301",
+    "Html": "I've used a automation tool called &quot;QMacro&quot;, which is a commercial software mostly used in game playing, and is the best in related products in China.<br />\nIt's based on VBScript engine, and have many exciting features, like automatic recording, code wizard designer, hotkey supporting, script generating, .exe packeting, bla bla bla...<br />\n<br />\nThe official English site is here, :<br />\n<a href=\"http://www.qmacro.com/\" rel=\"nofollow\">http://www.qmacro.com/</a><br />\nDownlink is here:<br />\n<a href=\"http://www.qmacro.com/download.htm\" rel=\"nofollow\">http://www.qmacro.com/download.htm</a><br />\n<br />\nThe sceenshots are here:<br />\n<a href=\"http://www.anjian.com/interface.htm\" rel=\"nofollow\">http://www.anjian.com/interface.htm</a><br />\nIt's in Chinese, but I think you can get what it is doing (the generated script has a RAW code in English). <br />\n<br />\nI think the automatic recording is the highlight, it can help people to jump start. Hope this provides you some ideas :)<br />\nExcuse me apetrovskiy for disturbing today, because I'm involved today and like UIA so much :)<br />\n<br />\n<strong>Update: I see Start-UIARecorder works like some QMacro's feature, but QMacro still has some highlights, like key pressing, mouse clicking, etc., for your information.</strong><br />\n",
+    "PostedDate": "2013-10-06T01:13:26.75-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1104160",
+    "ThreadId": "461301",
+    "Html": "Thanks you for the info, VictorWoo. I'll learn the tool.\r<br />\n<br />\nThank you also for interesting questions: despite the fact that I'm myself a practitioner of UIA, I'm often forgetting thing written months ago :)\r<br />\nAnd the sample with two lists (one is empty) is exciting, I created a WinForms form and two lists, one is empy: the direct way (windows -&gt; list -&gt; list item) returns an error nobody could comprehend why. I'll be thinking how to make it more clear for the user. :)<br />\n",
+    "PostedDate": "2013-10-06T01:28:19.533-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1104168",
+    "ThreadId": "461301",
+    "Html": "Thank you apetrovskiy, for your patience. Though I'm not a practitioner of UIA, but I think it's a must-have tool for a geek ;-)\r<br />\nStudy hard, and maybe it can save your life time in some day.<br />\n",
+    "PostedDate": "2013-10-06T01:53:02.587-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

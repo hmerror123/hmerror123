@@ -1,0 +1,50 @@
+[
+  {
+    "Id": "1007250",
+    "ThreadId": "434614",
+    "Html": "I'm fairly new to Powershell but not new to scripted and automated testing. Trying to import the UIAutomation.0.8.5.NET40 dll and I'm getting an error:\r<br />\n<br />\n Import-Module : Could not load file or assembly \r<br />\n'file:///C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\UIAutomation\\UIAutomation.dll' or one of its dependencies. Operation \r<br />\nis not supported. (Exception from HRESULT: 0x80131515)\r<br />\n<br />\nI'm running Powershell 3.0 as Administrator, with my execution policy currently set wide open as unrestricted. I've even downloaded version 0.7.5 to grab the certificate and went through installing the certificate, still not getting past this error. I've even tried the Net3.5 version on Powershell 2.0 in Windows Server 2008R2 which does load but gives me some different errors:\r<br />\n<br />\nImport-Module : Cannot load Windows PowerShell snap-in C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\UIAutomation\\\r<br />\nUIAutomation.dll because of the following error: Unable to load one or more of the requested types. Retrieve the Loader\r<br />\nExceptions property for more information.\r<br />\nLoader Exceptions:\r<br />\nCould not load file or assembly 'UIAutomationTypes, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35'\r<br />\nor one of its dependencies. The system cannot find the file specified.\r<br />\nCould not load file or assembly 'UIAutomationTypes, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35'\r<br />\nor one of its dependencies. The system cannot find the file specified.\r<br />\nCould not load file or assembly 'UIAutomationTypes, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35'\r<br />\nor one of its dependencies. The system cannot find the file specified.\r<br />\nCould not load file or assembly 'UIAutomationTypes, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35'\r<br />\nor one of its dependencies. The system cannot find the file specified.\r<br />\nCould not load file or assembly 'UIAutomationTypes, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35'\r<br />\nor one of its dependencies. The system cannot find the file specified.\r<br />\nCould not load file or assembly 'UIAutomationTypes, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35'\r<br />\nor one of its dependencies. The system cannot find the file specified.\r<br />\nCould not load file or assembly 'UIAutomationTypes, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35'\r<br />\nor one of its dependencies. The system cannot find the file specified.\r<br />\nCould not load file or assembly 'UIAutomationTypes, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35'\r<br />\nor one of its dependencies. The system cannot find the file specified.\r<br />\nCould not load file or assembly 'UIAutomationTypes, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35'\r<br />\nor one of its dependencies. The system cannot find the file specified.\r<br />\nCould not load file or assembly 'UIAutomationTypes, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35'\r<br />\nor one of its dependencies. The system cannot find the file specified.\r<br />\nCould not load file or assembly 'UIAutomationTypes, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35'\r<br />\nor one of its dependencies. The system cannot find the file specified.\r<br />\nCould not load file or assembly 'PresentationFramework, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e\r<br />\n35' or one of its dependencies. The system cannot find the file specified.\r<br />\nCould not load file or assembly 'PresentationFramework, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e\r<br />\n35' or one of its dependencies. The system cannot find the file specified.\r<br />\nAt line:1 char:14\r<br />\n<br />\nAny help you can give is appreciated. I can't figure out what I'm doing wrong. Thanks in advance.\r<br />\n<br />\nJMH<br />\n",
+    "PostedDate": "2013-02-26T14:15:22.72-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1007266",
+    "ThreadId": "434614",
+    "Html": "Hi jmh_dt,<br />\nmight it be the TOP 1 reason: files are blocked (working in a networked environment, I face this problem almost everyday when I copy such files as scripts, dlls, even content of archives...).<br />\nPS C:\\Users\\administrator&gt; ipmo C:\\uia\\UIAutomation.dll<br />\nipmo : Could not load file or assembly 'file:///C:\\uia\\UIAutomation.dll' or one of its dependencies. Operation is not<br />\nsupported. (Exception from HRESULT: 0x80131515)<br />\nAt line:1 char:1<br />\n<ul>\n<li>ipmo C:\\uia\\UIAutomation.dll</li>\n<li>\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~<br />\n<ul>\n<li>CategoryInfo          : NotSpecified: (:) [Import-Module], FileLoadException</li>\n<li>\nFullyQualifiedErrorId : System.IO.FileLoadException,Microsoft.PowerShell.Commands.ImportModuleCommand<br />\n</li>\n</ul>\n</li>\n</ul>\nThe cure is <a href=\"http://softwaretestingusingpowershell.com/2012/07/04/metro-automation-the-first-step/\" rel=\"nofollow\">simple</a>: just open files' properties and click the Unblock button (alternatively, unblocking the zip archive may also help).<br />\nI checked this on a Windows 8 box with PS3.0 and PS 2.0 enabled - the same error, the same cure.<br />\n<br />\nI simple don't remember what was shiiped within 0.7.5 release, probably, some files that are gone by now. Or the same problem: Windows blocked all you have downloaded.<br />\n",
+    "PostedDate": "2013-02-26T15:19:13.757-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1007634",
+    "ThreadId": "434614",
+    "Html": "I downloaded sysinternals Streams.exe and used it on the files, worked perfectly, thank you.\r<br />\n<br />\nI still have an issue with the Win Serv 2008R2 with Powershell 2.0 though. Not the same error. Says it's unable to retrieve the requested types, I had captured it in the original posting. I am using the net 35 version there, any insight as to how to resolve this message, if it is going to be a problem, etc, I would appreciate it.\r<br />\n<br />\nJMH<br />\n",
+    "PostedDate": "2013-02-27T07:13:00.463-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1007818",
+    "ThreadId": "434614",
+    "Html": "Hi jmh_dt,\r<br />\nI tried to reproduce the issue on a Windows 2008 R2 but failed. I used an Amazon default Windows 2008 R2 SP1 instance (with contemporary updates including PS 3.0), under a local administrator (the default user Amazon/Microsoft provides), all three versions (0.8.5 .NET35, 0.8.5 .NET40, 0.8.5 for Metro UI) of UIAutomation.dll have been loaded without a problem from %systemroot%\\system32\\WindowsPowerShell\\Modules\\UIAutomation\\UIAutomation.dll.\r<br />\n<br />\nAs on your system such assemblies as UIAutomationTypes and PresentationFramework could not be loaded, your system is Core or something with minimal .NET (though even 3.5 Client Profile contains these assemblies). Is it not a Core box?<br />\n",
+    "PostedDate": "2013-02-27T12:27:14.803-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1008474",
+    "ThreadId": "434614",
+    "Html": "Not worth fighting with it, I installed Powershell 3.0 on the system in questions and proceeded. Thanks for you assistance and for the terrific tool.<br />\n",
+    "PostedDate": "2013-02-28T13:58:23.7-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1008485",
+    "ThreadId": "434614",
+    "Html": "Excellent!\r<br />\nThanks for a recipe: PS 3.0 over PS 2.0 may heal some misconfiguration in .NET 3.x.<br />\n",
+    "PostedDate": "2013-02-28T14:25:49.13-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

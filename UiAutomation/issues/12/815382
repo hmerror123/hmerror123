@@ -1,0 +1,24 @@
+# your test file c:\1\test.htm
+
+[int]$id = 123
+[string]$password = "pwd"
+
+# browsers usually accept path to an html file as input
+Start-Process iexplore -ArgumentList "C:\1\test.htm" -PassThru
+# just got the sleep from your code
+sleep -Seconds 2
+# to be sure that the window contains necessary controls, there is the -WithControl parameter
+# however, always work with as less windows as possible
+$wnd = Get-UiaWindow -ProcessName iexplore -WithControl @{contorlType="edit";class="edit"},@{controlType="text";name="das*"},@{controlType="text";name="pass*"}
+
+# you don't need the table
+# $table = $wnd | Get-UIAText -name DAS* | Get-UIAControlParent | Get-UIAControlParent
+
+# instead, go up to the custom objects that are parents of the text boxes and get their siblings respectively:
+Get-UIAText -name DAS* | Get-UIAControlParent | Get-UIAControlNextSibling | Get-UiaEdit | Set-UiaEditText $id
+Get-UIAText -name pass* | Get-UIAControlParent | Get-UIAControlNextSibling | Get-UiaEdit | Set-UiaEditText $password
+
+
+
+
+

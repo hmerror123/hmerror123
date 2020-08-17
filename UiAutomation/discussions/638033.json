@@ -1,0 +1,10 @@
+[
+  {
+    "Id": "1425594",
+    "ThreadId": "638033",
+    "Html": "Hi all,\r<br />\n<br />\nIt looks like the library is not compatible with the Windows 10 PE environment from winre.wim.\r<br />\n<br />\nThe library is successfully loaded but all the interactions with the targeted application fail.\r<br />\n<br />\n(My script is successfully working on Windows 8 and 8.1 winre.wim after installing the NetFx and Powershell packages)\r<br />\n<br />\nDid anybody encouter the same issue?\r<br />\n<br />\nThnaks in advance,\r<br />\nMarc<br />\n",
+    "PostedDate": "2015-05-15T07:42:55.067-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

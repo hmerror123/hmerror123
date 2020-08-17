@@ -1,0 +1,34 @@
+[
+  {
+    "Id": "1127866",
+    "ThreadId": "470822",
+    "Html": "Hello,<br />\n<br />\nI'm new to UIA but not new to PS. I have one application that I would like to automate:<br />\n<br />\n<img src=\"http://i40.tinypic.com/2aexoxw.png\" alt=\"Image\" /><br />\n<br />\nAs you can see, there are no more child-controls (Calc has all buttons listed here) Is there any way to automate such app or there is no hope as app don't have anything that UIA ca &quot;see&quot; and &quot;Click&quot;<br />\n",
+    "PostedDate": "2013-11-22T04:15:29.583-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1127877",
+    "ThreadId": "470822",
+    "Html": "Hi ALIENQuake,\r<br />\nthere is a special library for Java SWT applications: <a href=\"http://docs.oracle.com/javase/accessbridge/2.0.2/setup.htm\" rel=\"nofollow\">Java Access Bridge</a> (i.e., UI Automation provider by Oracle, previously, by Sun). It helps automate SWT applications, however it supports not every app.\r<br />\n<br />\nWe cannot redistribute the library (it seems to me that it could be distributed occasionally as a result of gathering all binaries during the compilation process), you'd better download it from the <a href=\"http://docs.oracle.com/javase/accessbridge/2.0.2/setup.htm\" rel=\"nofollow\">link</a>.\r<br />\nOur framework is shipped with <a href=\"https://uiautomation.codeplex.com/downloads/get/625758\" rel=\"nofollow\">script</a> that helps you perform settings that are mentioned on that page (i.e., copy binaries to right places, etc).\r<br />\n<br />\nOnce you set up the script (paths are inside) and put binaries to a place you set in the script, run it as administrator. Alternatively, perform all steps manually as said on the page. Probably, restart will be needed.\r<br />\nAfter that you should access controls via our module or via UIAVerify is this application is supported by Java Access Bridge.\r<br />\n<br />\nTo test the installation of Java Access Bridge, try to find controls in an application that is inside the Java Access Bridge package via UIAVerify or UIAutomationSpy (I forgot there should be Oracle's libraries in the folder from you are running our module or not).\r<br />\nThe corresponding blog <a href=\"http://softwaretestingusingpowershell.com/2013/02/08/java-swt-apps-official-support/\" rel=\"nofollow\">page</a> demonstrates the steps.<br />\n",
+    "PostedDate": "2013-11-22T04:47:31.46-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1127914",
+    "ThreadId": "470822",
+    "Html": "I was able to test that this solution actually works, unfortunately my application doesn't support this. Thank you anyway.<br />\n",
+    "PostedDate": "2013-11-22T06:41:49.817-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1127924",
+    "ThreadId": "470822",
+    "Html": "Yes, it's called an AWT application as the picture says. AWT is a predecessor of SWT (Swing) and a very old framework from the nineties, and, probably, does not support Accessibility.\r<br />\nIt should support Java robot library (a library that sends low-level instructions like mouse click and keyboard characters, ups and downs) and, as far as I know, Java code could be run from .NET via a couple of free frameworks (<a href=\"http://www.ikvm.net/\" rel=\"nofollow\">IKVM</a> and <a href=\"http://jni4net.sourceforge.net/\" rel=\"nofollow\">jni4net</a>). However, I'd recommend to find a free tool for Java automation instead of working with Java robot from C#/PS (it seems ugly to me).<br />\n",
+    "PostedDate": "2013-11-22T07:00:50.937-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

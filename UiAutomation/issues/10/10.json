@@ -1,0 +1,55 @@
+{
+  "WorkItem": {
+    "AffectedComponent": {
+      "Name": "",
+      "DisplayName": ""
+    },
+    "ClosedComment": "",
+    "ClosedDate": null,
+    "CommentCount": 3,
+    "Custom": null,
+    "Description": "Hi.\r\n\r\nThe website that has been referenced a number of times in various posts  (softwaretestingusingpowershell.com) is locked out. \r\n\r\n\"Oh no! This domain softwaretestingusingpowershell.com expired 29 days ago!\r\n\r\nPlease contact the owner of this website and ask them to renew the domain. Don't worry, you'll still be able to view the site at this web address: softwaretestingusingpowershell.wordpress.com.\"\r\n\r\nSeems to have a lot of useful examples and discussion. Can it be resurrected?\r\n\r\nThanks\r\nJoe\r\n",
+    "LastUpdatedDate": "2014-03-11T14:36:11.22-07:00",
+    "PlannedForRelease": "",
+    "ReleaseVisibleToPublic": false,
+    "Priority": {
+      "Name": "Unassigned",
+      "Severity": 0,
+      "Id": 0
+    },
+    "ProjectName": "UiAutomation",
+    "ReportedDate": "2014-03-11T11:37:46.03-07:00",
+    "Status": {
+      "Name": "Proposed",
+      "Id": 1
+    },
+    "ReasonClosed": {
+      "Name": "Unassigned"
+    },
+    "Summary": "softwaretestingusingpowershell.com is locked out",
+    "Type": {
+      "Name": "Unassigned",
+      "Id": 5
+    },
+    "VoteCount": 1,
+    "Id": 10
+  },
+  "FileAttachments": [],
+  "Comments": [
+    {
+      "Message": "and the secondary address softwaretestingusingpowershell.wordpress.com is also locked.",
+      "PostedDate": "2014-03-11T11:46:10.627-07:00",
+      "Id": 136522
+    },
+    {
+      "Message": "Thank you for information - I was unaware of it. When I log on to site, it displays the same message, however after a click outside the message Wordpress shows the site.\nThese guys hide site from visitors, what a company!\n\nI decided not to renew this domain name as it seems to me useless (and Wordpress asks more money than, for example, GoDaddy - the full price of registration as for the first time :)).",
+      "PostedDate": "2014-03-11T12:50:14.1-07:00",
+      "Id": 136535
+    },
+    {
+      "Message": "Thanks for your super-quick reply. \n\nAfter I read your reply, I went to the site and I can access the pages now. But I would surmise that won't be for long. So if possible can you migrate the content somewhere, like under this project (uiautomation.codeplex.com) or somewhere so the content is accessible. Looks like much of the conetnt doesn't exist elsewhere (yet). \n\nThanks\nJoe",
+      "PostedDate": "2014-03-11T14:36:11.22-07:00",
+      "Id": 136551
+    }
+  ]
+}

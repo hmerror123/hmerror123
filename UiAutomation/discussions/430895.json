@@ -1,0 +1,42 @@
+[
+  {
+    "Id": "992215",
+    "ThreadId": "430895",
+    "Html": "\r\n<p>I'm curious about the -InputObject parameter - are there any examples of how it is used with Invoke-UIAButtonClick? I found something in the discussion http://uiautomation.codeplex.com/discussions/310880&nbsp;&nbsp;but I did not really understand it.</p>\r\n<p>&nbsp;</p>\r\n<p>Thanks!</p>\r\n",
+    "PostedDate": "2013-01-25T12:15:02.6-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "992223",
+    "ThreadId": "430895",
+    "Html": "\r\n<p>Hi <a href=\"http://www.codeplex.com/site/users/view/peakbagger\">peakbagger</a>,</p>\r\n<p>the -InputObject parameter in more than 90% of UIAutomation module's cmdlets is AutomationElement[].</p>\r\n<p>&quot;InputObject&quot; is a relatively traditional name in MSDN for the parameter that receives data from the pipeline.</p>\r\n<p>The following one-liners do exactly the same:</p>\r\n<p></p>\r\n<div style=\"color:black; background-color:white\">\r\n<pre><span style=\"color:green\"># variant 1</span>\r\nStart<span style=\"color:gray\">-</span>Process calc <span style=\"color:gray\">-</span>PassThru | Get<span style=\"color:gray\">-</span>UIAWindow | Get<span style=\"color:gray\">-</span>UIAButton <span style=\"color:gray\">-</span>Name 1 | Invoke<span style=\"color:gray\">-</span>UIAButtonClick;\r\n<span style=\"color:green\"># variant 2</span>\r\n<span style=\"color:orangered\">$button1</span> <span style=\"color:gray\">=</span> Start<span style=\"color:gray\">-</span>Process calc <span style=\"color:gray\">-</span>PassThru | Get<span style=\"color:gray\">-</span>UIAWindow | Get<span style=\"color:gray\">-</span>UIAButton <span style=\"color:gray\">-</span>Name 1;\r\n<span style=\"color:orangered\">$button1</span> | Invoke<span style=\"color:gray\">-</span>UIAButtonClick;\r\n<span style=\"color:green\"># variant 3</span>\r\n<span style=\"color:orangered\">$button1</span> <span style=\"color:gray\">=</span> Start<span style=\"color:gray\">-</span>Process calc <span style=\"color:gray\">-</span>PassThru | Get<span style=\"color:gray\">-</span>UIAWindow | Get<span style=\"color:gray\">-</span>UIAButton <span style=\"color:gray\">-</span>Name 1;\r\nInvoke<span style=\"color:gray\">-</span>UIAButtonClick <span style=\"color:gray\">-</span>InputObject <span style=\"color:orangered\">$button1</span>;\r\n<span style=\"color:green\"># variant 4</span>\r\nInvoke<span style=\"color:gray\">-</span>UIAButtonClick <span style=\"color:gray\">-</span>InputObject (Start<span style=\"color:gray\">-</span>Process calc <span style=\"color:gray\">-</span>PassThru | Get<span style=\"color:gray\">-</span>UIAWindow | Get<span style=\"color:gray\">-</span>UIAButton <span style=\"color:gray\">-</span>Name 1);</pre>\r\n</div>\r\n<p></p>\r\n",
+    "PostedDate": "2013-01-25T12:27:25.663-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "992232",
+    "ThreadId": "430895",
+    "Html": "\r\n<p>Regarding the thread you recently dug out:</p>\r\n<p></p>\r\n<div style=\"color:black; background-color:white\">\r\n<pre><span style=\"color:orangered\">$null</span> <span style=\"color:gray\">=</span> Invoke<span style=\"color:gray\">-</span>UIAButtonClick <span style=\"color:gray\">-</span>InputObject <span style=\"color:orangered\">$button1</span>\r\n</pre>\r\n</div>\r\n<p></p>\r\n<p>This code should grab the reader's attention to the following:</p>\r\n<p>the &quot;$null = codeline&quot; or [void](codeline) constructions prevent unexpected output to be returned from a function (all function statements constitute the function output)</p>\r\n<p>The following piece of code equals to the previous:</p>\r\n<p></p>\r\n<div style=\"color:black; background-color:white\">\r\n<pre><span style=\"color:gray\">[</span><span style=\"color:teal\">void</span><span style=\"color:gray\">]</span>(<span style=\"color:orangered\">$button1</span> | Invoke<span style=\"color:gray\">-</span>UIAButtonClick);\r\n</pre>\r\n</div>\r\n<p></p>\r\n",
+    "PostedDate": "2013-01-25T12:40:09.973-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "993057",
+    "ThreadId": "430895",
+    "Html": "\r\n<p>A note about the -InputObject parameter (if you have not read the <a title=\"article\" href=\"http://msdn.microsoft.com/en-us/library/windows/desktop/dd878256(v=vs.85).aspx\" target=\"_blank\">\r\narticle</a> as it's unnecessary to users of the module and worth reading only for developers of the module): it's not my idea to give this name to the parameter:</p>\r\n<p>The -InputObject parameter is described in Cmdlet Development Guidelines&nbsp;<span style=\"font-size:10pt\">as&nbsp;</span></p>\r\n<dt><strong>InputObject</strong></dt><dd>Data type: Object\r\n<p>&nbsp;<span style=\"font-size:10pt\">Implement this parameter when the cmdlet takes input from other cmdlets. When you define an&nbsp;</span><em style=\"font-size:10pt\">InputObject</em><span style=\"font-size:10pt\">parameter, always specify the&nbsp;</span><strong style=\"font-size:10pt\">ValueFromPipeline</strong><span style=\"font-size:10pt\">&nbsp;keyword\r\n when you declare the&nbsp;</span><strong style=\"font-size:10pt\">Parameter</strong><span style=\"font-size:10pt\">&nbsp;attribute. For more information about using input filters, see&nbsp;</span><a href=\"http://msdn.microsoft.com/en-us/library/windows/desktop/aa965350(v=vs.85).aspx\" style=\"font-size:10pt\">Input\r\n Filter Parameters</a><span style=\"font-size:10pt\">.</span></p>\r\n<p>I would say that the end user of the framework may but not obliged to use this parameter, or even to be aware what the parameters does: in most situations,</p>\r\n<p>this parameter is the &quot;|&quot; character itself (i.e., &quot;invisible&quot; to the user):</p>\r\n<p>&nbsp;</p>\r\n<div style=\"color:black; background-color:white\">\r\n<pre>Get<span style=\"color:gray\">-</span>UIAWindow <span style=\"color:gray\">-</span>n calc* | Get<span style=\"color:gray\">-</span>UIAButton <span style=\"color:gray\">-</span>n [1-9] | Invoke-UIAButtonClick;\r\n<span style=\"color:green\"># or</span>\r\nGet<span style=\"color:gray\">-</span>UIAWindow <span style=\"color:gray\">-</span>pn calc | Invoke<span style=\"color:gray\">-</span>UIARegisterWindowOpenedEvent <span style=\"color:gray\">-</span>EventAction {};\r\n</pre>\r\n</div>\r\n<p>&nbsp;</p>\r\n<p>In the first line of code, a window object AutomationElement[] is put into the -InputObject parameter of the Get-UIAButton cmdlet (1 element). The -InputObject parameter of the Invoke-UIAButtonClick cmdlet is an array AutomationElement[] consisting of 9\r\n elements in the order that Windows preferred.</p>\r\n<p>In the second line of code, a window object (AutomationElement[], 1 element or several elements if more than one calc.exe is running) is/are put into the -InputObject parameter of the&nbsp;Invoke-UIARegisterWindowOpenedEvent cmdlet.</p>\r\n</dd>",
+    "PostedDate": "2013-01-28T06:31:40.12-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "993166",
+    "ThreadId": "430895",
+    "Html": "\r\n<p>Thank you XinLiu - your examples helped a lot.</p>\r\n",
+    "PostedDate": "2013-01-28T09:47:18.193-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

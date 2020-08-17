@@ -1,0 +1,37 @@
+<div class="wikidoc">There are two goals the extended elements&#39; object model should achieve:<br />1) provide the use with an overview what controls are available down the hierarchy<br />2) simplify coding in certain situations via dotted notation.<br /><br />To get an overview of controls that are under the current, we simply call a collection:<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:OrangeRed;">$wnd</span> <span style="color:Gray;">=</span> Start<span style="color:Gray;">-</span>Process calc <span style="color:Gray;">-</span>PassThru | Get<span style="color:Gray;">-</span>UiaWindow;
+<span style="color:OrangeRed;">$wnd</span>.Descendants.Buttons
+</pre></div>We couldn&#39;t use $wnd.Children here as no one button is immediately under the window object. Technically, we could, but the line $wnd.Children.Buttons returns $null, of course.<br /><br />To get a brief overview of all types of controls available down the hierarchy, we can simply call the list of collections (it may take time if an application is heavily loaded with controls as an app with grids, lists, etc):<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:OrangeRed;">$wnd</span> <span style="color:Gray;">=</span> Start<span style="color:Gray;">-</span>Process calc <span style="color:Gray;">-</span>PassThru | Get<span style="color:Gray;">-</span>UiaWindow;
+<span style="color:OrangeRed;">$wnd</span>.Children
+<span style="color:OrangeRed;">$wnd</span>.Descendants
+</pre></div><br />Getting a collection is not the only feature of the extended elements&#39; object model. We could easily select controls of our interest by using a part of their Name, AutomationId or Class:<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:OrangeRed;">$wnd</span> <span style="color:Gray;">=</span> Start<span style="color:Gray;">-</span>Process calc <span style="color:Gray;">-</span>PassThru | Get<span style="color:Gray;">-</span>UiaWindow;
+
+<span style="color:Green;"># returns two buttons, Maximize and Minimize</span>
+<span style="color:OrangeRed;">$wnd</span>.Descendants.Buttons<span style="color:Gray;">[</span><span style="color:Teal;">&#39;*ize&#39;</span><span style="color:Gray;">]</span>
+
+<span style="color:Green;"># narrowing the selection to the Maximize button only</span>
+<span style="color:OrangeRed;">$wnd</span>.Descendants.Buttons<span style="color:Gray;">[</span><span style="color:Teal;">&#39;*ize&#39;</span><span style="color:Gray;">]</span><span style="color:Gray;">[</span><span style="color:Teal;">&#39;Max*&#39;</span><span style="color:Gray;">]</span>
+</pre></div>This sample is not very clear as we user here the same property, Name.<br /><br />The next sample demonstrates how to get buttons by using AutomationId and Name subsequently:<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:OrangeRed;">$wnd</span> <span style="color:Gray;">=</span> Start<span style="color:Gray;">-</span>Process calc <span style="color:Gray;">-</span>PassThru | Get<span style="color:Gray;">-</span>UiaWindow;
+
+<span style="color:Green;"># there are ten numeric buttons with AutomationId 13*, from 1 to 10 (or 0 to 9 depending on localization):</span>
+<span style="color:OrangeRed;">$wnd</span>.Descendants.Buttons<span style="color:Gray;">[</span><span style="color:Teal;">&#39;13*&#39;</span><span style="color:Gray;">]</span>.Count
+
+<span style="color:Green;"># getting the button 2:</span>
+<span style="color:OrangeRed;">$wnd</span>.Descendants.Buttons<span style="color:Gray;">[</span><span style="color:Teal;">&#39;13*&#39;</span><span style="color:Gray;">]</span><span style="color:Gray;">[</span><span style="color:Teal;">&#39;2&#39;</span><span style="color:Gray;">]</span>
+
+<span style="color:Green;"># we can check that 2 is 2 by outputting the result:</span>
+<span style="color:OrangeRed;">$wnd</span>.Descendants.Buttons<span style="color:Gray;">[</span><span style="color:Teal;">&#39;13*&#39;</span><span style="color:Gray;">]</span><span style="color:Gray;">[</span><span style="color:Teal;">&#39;2&#39;</span><span style="color:Gray;">]</span> | Read<span style="color:Gray;">-</span>UiaControlName
+<span style="color:Green;"># or</span>
+<span style="color:OrangeRed;">$wnd</span>.Descendants.Buttons<span style="color:Gray;">[</span><span style="color:Teal;">&#39;13*&#39;</span><span style="color:Gray;">]</span><span style="color:Gray;">[</span><span style="color:Teal;">&#39;2&#39;</span><span style="color:Gray;">]</span>.Current
+</pre></div>The same sample via a variable:<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:OrangeRed;">$wnd</span> <span style="color:Gray;">=</span> Start<span style="color:Gray;">-</span>Process calc <span style="color:Gray;">-</span>PassThru | Get<span style="color:Gray;">-</span>UiaWindow;
+
+<span style="color:Green;"># getting numeric buttons</span>
+<span style="color:OrangeRed;">$numericButtons</span> <span style="color:Gray;">=</span> <span style="color:OrangeRed;">$wnd</span>.Descendants.Buttons<span style="color:Gray;">[</span><span style="color:Teal;">&#39;13*&#39;</span><span style="color:Gray;">]</span>
+
+<span style="color:Green;"># getting the button 2</span>
+<span style="color:OrangeRed;">$numericButtons</span><span style="color:Gray;">[</span><span style="color:Teal;">&#39;2&#39;</span><span style="color:Gray;">]</span>
+</pre></div></div><div class="ClearBoth"></div>

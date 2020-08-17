@@ -1,0 +1,31 @@
+<div class="wikidoc">
+<p>Typical ways to obtain access to windows and controls (please note that you must run powershell As Administrator if you are not domain admin or the settings don't allow you to):<br>
+<span style="background-color:white">&nbsp;</span></p>
+<p><span style="background-color:white">Get a window by its process name:</span></p>
+<div style="color:black; background-color:white">
+<pre>Get<span style="color:gray">-</span>UIAWindow <span style="color:gray">-</span>ProcessName <span style="color:orangered">$processname</span> | Get<span style="color:gray">-</span>UIAButton <span style="color:gray">-</span>Name <span style="color:orangered">$btnName</span> | Invoke<span style="color:gray">-</span>UIAButtonClick;</pre>
+<pre>Get<span style="color:gray">-</span>UIAWindow <span style="color:gray">-</span>pn <span style="color:orangered">$processname</span> | Get<span style="color:gray">-</span>UIAButton <span style="color:gray">-</span>Name <span style="color:orangered">$btnName</span> | Invoke<span style="color:gray">-</span>UIAButtonClick;</pre>
+<pre>Get<span style="color:gray">-</span>UIAWindow <span style="color:gray">-</span>ProcessName <span style="color:orangered">$processname</span> | Get<span style="color:gray">-</span>UIAMenuItem <span style="color:gray">-</span>Name File | Invoke<span style="color:gray">-</span>UIAMenuItemClick | Get<span style="color:gray">-</span>UIAMenuItem <span style="color:gray">-</span>Name Open... | Invoke<span style="color:gray">-</span>UIAMenuItemClick | Get<span style="color:gray">-</span>UIAChildWindow <span style="color:gray">-</span>Name <span style="color:#a31515">'Open File'</span></pre>
+</div>
+<p><span style="background-color:white">Get a window by its process Id:</span></p>
+<div style="color:black; background-color:white">
+<pre>Get<span style="color:gray">-</span>UIAWindow <span style="color:gray">-</span>ProcessId (Get<span style="color:gray">-</span>Process <span style="color:gray">-</span>Name mmc).Id</pre>
+<pre>Get<span style="color:gray">-</span>UIAWindow <span style="color:gray">-</span>pid (Get<span style="color:gray">-</span>Process <span style="color:gray">-</span>Name mmc).Id</pre>
+</div>
+<p><span style="background-color:white">Get a window from process:</span></p>
+<div style="color:black; background-color:white">
+<pre>Start<span style="color:gray">-</span>Process calc <span style="color:gray">-</span>PassThru | Get<span style="color:gray">-</span>UIAWindow</pre>
+<pre>Get<span style="color:gray">-</span>UIAWindow <span style="color:gray">-</span>Process (Get<span style="color:gray">-</span>Process <span style="color:gray">-</span>Name mmc)</pre>
+<pre>Get<span style="color:gray">-</span>UIAWindow <span style="color:gray">-</span>p (Get<span style="color:gray">-</span>Process <span style="color:gray">-</span>Name mmc)</pre>
+</div>
+<p><span style="background-color:white">Get a window by window title:</span></p>
+<div style="color:black; background-color:white">
+<pre>Get<span style="color:gray">-</span>UIAWindow <span style="color:gray">-</span>Name <span style="color:orangered">$windowTitle</span> | Get<span style="color:gray">-</span>UIAChildWindow | Get<span style="color:gray">-</span>UIATextBox <span style="color:gray">-</span>AutomationID ServerBox | Set<span style="color:gray">-</span>UIATextBoxText -Text &quot;text&quot;;</pre>
+</div>
+<p><span style="background-color:white">Get a window by window handle:</span></p>
+<div style="color:black; background-color:white">
+<pre>Get-UIAWindowFromHandle -Handle 123456</pre>
+</div>
+<p><span style="background-color:white">Get the active window (it's recommended to run your script in a minimized window):</span></p>
+<pre>Get-UIAActiveWindow</pre>
+</div><div class="ClearBoth"></div>

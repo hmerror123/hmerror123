@@ -1,0 +1,12 @@
+<div class="wikidoc">The example demonstrates how to move a tree item of a certain type into another tree item of the type &#39;folder&#39; (in terms of an application under test).<br />The action consists of three steps:<br />- getting the first control and pressing the Left button<br />- moving the cursor over the first control with the Left button pressed<br />- moving the control to the second control and releasing the Left button<br />the two seconds&#39; sleep is for the application under test (it reconfigures real-life objects the same time we move the cursor), you might not nned the sleep.<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:OrangeRed;">$treeItem01</span> <span style="color:Gray;">=</span> Get<span style="color:Gray;">-</span>UiaTreeItem <span style="color:Gray;">-</span>Name <span style="color:Gray;">*</span>comp<span style="color:Gray;">*</span>coll<span style="color:Gray;">*</span>
+<span style="color:OrangeRed;">$treeItem02</span> <span style="color:Gray;">=</span> Get<span style="color:Gray;">-</span>UiaTreeItem <span style="color:Gray;">-</span>Name <span style="color:Gray;">*</span>folder<span style="color:Gray;">*</span>
+
+<span style="color:OrangeRed;">$treeItem01</span> | Invoke<span style="color:Gray;">-</span>UiaControlClick; <span style="color:Green;"># step 1</span>
+<span style="color:OrangeRed;">$treeItem01</span>.Mouse.LeftButtonDown();
+<span style="color:OrangeRed;">$treeItem01</span> | Move<span style="color:Gray;">-</span>UiaCursor <span style="color:Gray;">-</span>X 5 <span style="color:Gray;">-</span>Y 5; <span style="color:Green;"># step 2</span>
+<span style="color:OrangeRed;">$treeItem02</span> | Move<span style="color:Gray;">-</span>UiaCursor <span style="color:Gray;">-</span>X 5 <span style="color:Gray;">-</span>Y 5; <span style="color:Green;"># step 3</span>
+<span style="color:OrangeRed;">$treeItem02</span>.SetFocus();
+sleep <span style="color:Gray;">-</span>Seconds 2;
+<span style="color:OrangeRed;">$treeItem02</span>.Mouse.LeftButtonUp();
+</pre></div></div><div class="ClearBoth"></div>

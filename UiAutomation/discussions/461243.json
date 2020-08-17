@@ -1,0 +1,26 @@
+[
+  {
+    "Id": "1103962",
+    "ThreadId": "461243",
+    "Html": "What's the difference and relationship between WASP<br />\n<a href=\"http://wasp.codeplex.com\" rel=\"nofollow\">http://wasp.codeplex.com</a><br />\nand UI Automation?<br />\n<a href=\"http://uiautomation.codeplex.com/\" rel=\"nofollow\">http://uiautomation.codeplex.com/</a><br />\n",
+    "PostedDate": "2013-10-05T07:08:41.41-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1104074",
+    "ThreadId": "461243",
+    "Html": "UIAutomation is based on Microsoft UI Automation (.NET 3.0+) and Win32 API, WASP is based on Win32 API.\r<br />\nConsequently, WASP does not support controls without handles (grid cells, for example). The UIAutomation module can work in Win32 mode (the -Win32 parameter).\r<br />\n<br />\nThe UIA module is a framework for software testing, it has such features out of the box as:<br />\n<ul>\n<li>automatic generation of test results ([UIAutomation.Preferences]::EveryCmdletAsTestResult)</li>\n<li>saving of screenshots automatically and on demand</li>\n<li>code generation with UIAutomationSpy</li>\n<li>support for context menus</li>\n<li>all controls Microsoft UI Automation v.1 supports (i.e., Java SWT and several others that don't have handles)</li>\n<li>\nreadability of the code (Get-UIAButton is more readable than Select-Control). Get-Help <em>button</em> provides you with the list of appropriate cmdlets.<br />\n</li>\n</ul>\nWASP is mostly for 'small automation', the case when you need to run some GUI-related code in your script that is not for GUI automation. Initially, I used WASP for software testing, however I moved to UIAutomation when I needed to automate grid and other controls without handles.\r<br />\n<br />\nYou can also try white, watin, free Telerik framework. The biggest difference is that they are library-based, not cmdlet-based frameworks.<br />\n",
+    "PostedDate": "2013-10-05T15:56:13.077-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1104110",
+    "ThreadId": "461243",
+    "Html": "Thank you for your detail.<br />\n",
+    "PostedDate": "2013-10-05T21:32:32.96-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

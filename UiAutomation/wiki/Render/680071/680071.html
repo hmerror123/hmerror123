@@ -1,0 +1,22 @@
+<div class="wikidoc">The question &quot;How do we know that the user or the test clicked?&quot; can be answered easily. The answer is InvokedEvent.<br />For example, we need to know which numeric button of calc.exe have been clicked, and the number of click performed (a completely imaginary task):<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:Gray;">[</span><span style="color:Teal;">int</span><span style="color:Gray;">]</span><span style="color:OrangeRed;">$global:clickCount</span> <span style="color:Gray;">=</span> 0;
+<span style="color:Gray;">[</span><span style="color:Teal;">string</span><span style="color:Gray;">]</span><span style="color:OrangeRed;">$global:lastClickedButton</span>;
+
+Start<span style="color:Gray;">-</span>Process calc <span style="color:Gray;">-</span>PassThru | Get<span style="color:Gray;">-</span>UIAWindow | Get<span style="color:Gray;">-</span>UIAButton <span style="color:Gray;">-</span>n <span style="color:Gray;">[</span><span style="color:Teal;">1-9</span><span style="color:Gray;">]</span> | Register<span style="color:Gray;">-</span>UIAInvokedEvent <span style="color:Gray;">-</span>EventAction { <span style="color:OrangeRed;">$global:clickCount</span><span style="color:Gray;">++</span>; },{ <span style="color:Blue;">param</span>(<span style="color:OrangeRed;">$src</span>, <span style="color:OrangeRed;">$e</span>) <span style="color:OrangeRed;">$global:lastClickedButton</span> <span style="color:Gray;">=</span> <span style="color:OrangeRed;">$src</span>.Current.Name; }; 
+<span style="color:Green;"># the delay may be needed</span>
+sleep <span style="color:Gray;">-</span>Seconds 1;
+Get<span style="color:Gray;">-</span>UIAButton <span style="color:Gray;">-</span>Name <span style="color:Gray;">[</span><span style="color:Teal;">1-9</span><span style="color:Gray;">]</span> | Invoke<span style="color:Gray;">-</span>UIAButtonClick;
+<span style="color:Green;"># this delay is usually needed as events are relatively slow to be fired</span>
+sleep <span style="color:Gray;">-</span>Seconds 1;
+
+<span style="color:Green;"># check the result</span>
+<span style="color:OrangeRed;">$global:clickCount</span>
+<span style="color:OrangeRed;">$global:lastClickedButton</span>
+</pre></div>The following <a href="http://softwaretestingusingpowershell.com/2012/03/31/daily-automation-registering-users-clicks/">example</a> demonstrates how to create a simple custom log for clicks:<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:Green;"># use the Get-UIAControlDescendants cmdlet to collect all the visible buttons</span>
+<span style="color:Green;"># use the Register-UIAInvokedEvent cmdlet to assign an event action to each button</span>
+Start<span style="color:Gray;">-</span>Process calc <span style="color:Gray;">-</span>PassThru | `
+Get<span style="color:Gray;">-</span>UIAWindow | `
+Get<span style="color:Gray;">-</span>UIAControlDescendants <span style="color:Gray;">-</span>ControlType Button | `
+Register<span style="color:Gray;">-</span>UIAInvokedEvent <span style="color:Gray;">-</span>EventAction {<span style="color:Blue;">param</span>(<span style="color:OrangeRed;">$src</span>) <span style="color:#A31515;">&quot;$($src.Current.Name) clicked&quot;</span> <span style="color:Gray;">&gt;&gt;</span> <span style="color:OrangeRed;">$env:TEMP</span>\calc.log;}
+</pre></div><br />Tags: ControlType.Window, ControlType.Button, InvokePattern, InvokedEvent</div><div class="ClearBoth"></div>

@@ -1,0 +1,26 @@
+[
+  {
+    "Id": "1462991",
+    "ThreadId": "651220",
+    "Html": "Hello.\r<br />\n<br />\nIs there a known issue with running UIAutomation module on PowerShell 4.0?\r<br />\n<br />\nWhen trying to load the module, an error occurs:\r<br />\n<br />\n<br />\nimport-module : Could not load file or assembly 'file:///C:\\Users...\\Documents\\WindowsPowerShell\\Modules\\uiautoma\r<br />\ntion\\uiautomation.dll' or one of its dependencies. Operation is not supported. (Exception from HRESULT: 0x80131515)\r<br />\nAt line:1 char:1<br />\n<ul>\n<li>import-module</li>\n<li>\n~~~~~~~~~~~~~<br />\n<ul>\n<li>CategoryInfo          : NotSpecified: (:) [Import-Module], FileLoadException</li>\n<li>\nFullyQualifiedErrorId : System.IO.FileLoadException,Microsoft.PowerShell.Commands.ImportModuleCommand<br />\n</li>\n</ul>\n</li>\n</ul>\nI am running windows 8, powershell 4.0, uiautomation 0.8.7B3.NET40\r<br />\n<br />\n<br />\nIf I use 0.8.7B3.NET35 instead and start PowerShell from cmd with -version 2.0, it works ok (same machine).<br />\n",
+    "PostedDate": "2016-02-12T07:59:27.613-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1463426",
+    "ThreadId": "651220",
+    "Html": "Hi JohnQuest, could it be that file UIAutomation.dll from the NET40 pack is blocked, i.e. you can see the Unblock button in properties of a file?\r<br />\nSorry, I didn't notice your post earlier.<br />\n",
+    "PostedDate": "2016-02-16T12:53:52.32-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1463483",
+    "ThreadId": "651220",
+    "Html": "Yes, you are right. Sorry about that.<br />\n",
+    "PostedDate": "2016-02-17T02:38:39.34-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "Id": "1470973",
+    "ThreadId": "653871",
+    "Html": "I'm trying to set an existing value in a combo box but it doesn't seem to be working.\r<br />\n$mainWindow | Get-UiaComboBox -AutomationId '5204' -Class 'ComboBox' -Name 'NewBinary12' -Win32 | Invoke-UiaComboBoxExpand | Set-UiaComboBoxText  $state \r<br />\nIt all works great except the $State isn't selected, any ideas on how to get the set value?\r<br />\nThe combo box is a selection of states.\r<br />\nPowershell 5 with the netframework version 4 of uiautmation.dll<br />\n",
+    "PostedDate": "2016-04-21T13:33:17.6-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1471067",
+    "ThreadId": "653871",
+    "Html": "Hi GScully,<br />\nif I understand your task well, you need to get a list item in the drop-down list of the combo and put it active. What I did to accomplish this in calculator's unit conversion page (now my localization is Spanish):<br />\n<pre><code>Get-UiaWindow -n *calc* -Win32 | Get-UiaComboBox -Name *selec* | Invoke-UiaComboBoxExpand | Get-UiaListItem -Name &quot;Hora&quot; | Invoke-UiaListItemClick</code></pre>\n\n<a href=\"https://drive.google.com/file/d/0B71jGomPKBo_QWR6YkZUanotY1E/view?usp=sharing\" rel=\"nofollow\">picture</a><br />\n",
+    "PostedDate": "2016-04-22T12:17:45.21-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1471286",
+    "ThreadId": "653871",
+    "Html": "Thanks that worked perfectly<br />\n",
+    "PostedDate": "2016-04-25T12:22:50.547-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

@@ -1,0 +1,11 @@
+<div class="wikidoc">The Invoke-UIAcontrolClick cmdlet supports click on a certain position. Coordinates that the cmdlet consumes are in pixels. The X-coordinate increases from the left border of the control to the right one, the Y-coordinate grows from the top border to the bottom one.<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:Green;"># this hits right</span>
+Get<span style="color:Gray;">-</span>UIAWindow <span style="color:Gray;">-</span>pn calc | Get<span style="color:Gray;">-</span>UIAButton <span style="color:Gray;">-</span>Name 1 | Invoke<span style="color:Gray;">-</span>UIAControlClick <span style="color:Gray;">-</span>X 3 <span style="color:Gray;">-</span>Y 3;
+<span style="color:Green;"># this too</span>
+Get<span style="color:Gray;">-</span>UIAWindow <span style="color:Gray;">-</span>pn calc | Get<span style="color:Gray;">-</span>UIAButton <span style="color:Gray;">-</span>Name <span style="color:Gray;">[</span><span style="color:Teal;">1-3</span><span style="color:Gray;">]</span> | Invoke<span style="color:Gray;">-</span>UIAControlClick <span style="color:Gray;">-</span>X 20 <span style="color:Gray;">-</span>Y 20;
+<span style="color:Green;"># this hits outside the lower-right corner of the control</span>
+Get<span style="color:Gray;">-</span>UIAWindow <span style="color:Gray;">-</span>pn calc | Get<span style="color:Gray;">-</span>UIAButton <span style="color:Gray;">-</span>Name 1 | Invoke<span style="color:Gray;">-</span>UIAControlClick <span style="color:Gray;">-</span>X 30 <span style="color:Gray;">-</span>Y 30;
+</pre></div>Click on position works similarly to any click the cmdlet performs: it hits the input control(s) if the control(s) has/have handle(s). If no, it searches up the hierarchy to the first control with handle, calculates the position and hits there.<br />As any click this cmdlet does, click on position
+<ul><li>returns the input by default</li>
+<li>does not guarantee that click was successful</li></ul>
+<br />Tags: ControlType.Window, ControlType.Button, SendMessage</div><div class="ClearBoth"></div>

@@ -1,0 +1,42 @@
+[
+  {
+    "Id": "988441",
+    "ThreadId": "429972",
+    "Html": "\r\n<p>OK, &nbsp;this is probably something really basic I am missing, but, how do I wait for a window to open? I have start-process which opens a file. I want to wait for that file to load. I tried '-IsCritical' but my script seems to blow past that and fail:</p>\r\n<p><span style=\"font-size:10pt\">Get-UIAWindow -Name 'Test File Window Name' -IsCritical</span></p>\r\n<p>&nbsp;</p>\r\n<p>Thanks!</p>\r\n",
+    "PostedDate": "2013-01-17T15:40:00.647-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "988449",
+    "ThreadId": "429972",
+    "Html": "\r\n<blockquote style=\"border:solid .1em #ccc; font-style:italic; margin:.25em 1em 0 1em; padding:0 .25em 0 .25em\">\r\n<strong>peakbagger wrote:</strong><br>\r\n<p>OK, &nbsp;this is probably something really basic I am missing, but, how do I wait for a window to open? I have start-process which opens a file. I want to wait for that file to load. I tried '-IsCritical' but my script seems to blow past that and fail:</p>\r\n<p><span style=\"font-size:10pt\">Get-UIAWindow -Name 'Test File Window Name' -IsCritical</span></p>\r\n<p>&nbsp;</p>\r\n<p>Thanks!</p>\r\n</blockquote>\r\n<p>Scratch that. That is not the issue. What happens is that it is failing on a 'Get-UIACustom'. Which is odd, because it works on my Windows 7 machine but fails on a Windows 2008 R2 server. Any ideas why this would be so? Same application running on both.\r\n &nbsp;</p>\r\n<p>The error is:</p>\r\n<p><span style=\"font-size:10pt\">Get-UIACustom : Get-UIACustom: timeout expired for class: ' &#43; , control type: Custom, title: DisplayAt C:\\scripts\\openMDE3.ps1:12 char:14&#43; Get-UIACustom &lt;&lt;&lt;&lt; &nbsp;-Name 'Display' | `&nbsp; &nbsp; &#43; CategoryInfo &nbsp;\r\n &nbsp; &nbsp; &nbsp; &nbsp;: OperationTimeout: (:) [Get-UIACustom], Exception&nbsp; &nbsp; &#43; FullyQualifiedErrorId : ControlIsNull,UIAutomation.Commands.GetUIACustomCommand</span></p>\r\n<p>&nbsp;</p>\r\n<p><span style=\"font-size:10pt\">UIAutomationSpy shows a Get-UIACustom -Name 'Display'&nbsp;</span></p>\r\n",
+    "PostedDate": "2013-01-17T16:05:31.967-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "988521",
+    "ThreadId": "429972",
+    "Html": "\r\n<p>Hi <a href=\"http://www.codeplex.com/site/users/view/peakbagger\">peakbagger</a>,</p>\r\n<p>I'll provide more explanation later today.</p>\r\n<p>Shortly, the -IsCritical parameter is for managing test results only |make your test results RED).</p>\r\n<p>By default, the Get-UIAWindow cmdlet uses the default timeout&nbsp;[UIAutomation.Preferences]::Timeout &nbsp;(by default, it equalts to 5000 milliseconds).</p>\r\n<p>Cmdlet searches for a window and, if succeed, returns it in 5 or less seconds. You can provide a custom value for a single run:</p>\r\n<p></p>\r\n<div style=\"color:black; background-color:white\">\r\n<pre>Start<span style=\"color:gray\">-</span>Process calc <span style=\"color:gray\">-</span>PassThru | Get<span style=\"color:gray\">-</span>UIAWindow <span style=\"color:gray\">-</span>Seconds 1\r\n</pre>\r\n</div>\r\n<p></p>\r\n<p>Get-UIA[ControlType] cmdlets also support timeouts.</p>\r\n<p>&nbsp;</p>\r\n<p>Sometimes, the schema (Start-Process app -PassThru | Get-UIAWindow) does not work, for example if a system is 64-bit and an app is 32-bit (an mmc snapin is a typical example).</p>\r\n<p>&nbsp;</p>\r\n<p>It would be nice, if you put a screenshot somewhere (you should have in yout %TEMP% folder. Screenshots are saved, by default, on fail) or to run a spot instance at Amazon with your app? Now, I don't understand what the problemous control is.</p>\r\n<p>&nbsp;</p>\r\n<p>&nbsp;</p>\r\n",
+    "PostedDate": "2013-01-17T22:38:17.09-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "989007",
+    "ThreadId": "429972",
+    "Html": "\r\n<p>I re-read your posts. If a window is too slow on start, I'd recommend to increase timeout (the -Timeout parameter is in milliseconds (as requires Cmdlet Design Guidelines), its brother -Seconds in seconds):</p>\r\n<p></p>\r\n<div style=\"color:black; background-color:white\">\r\n<pre>Start<span style=\"color:gray\">-</span>Process calc <span style=\"color:gray\">-</span>PassThru | Get<span style=\"color:gray\">-</span>UIAWindow <span style=\"color:gray\">-</span>Seconds 30;\r\n<span style=\"color:green\"># or</span>\r\nStart<span style=\"color:gray\">-</span>Process calc; Get<span style=\"color:gray\">-</span>UIAWindow <span style=\"color:gray\">-</span>pn calc <span style=\"color:gray\">-</span>Seconds 30;\r\n</pre>\r\n</div>\r\n<p></p>\r\n<p>Regarding the ControlType.Custom control, I'd recommend the following sequence of actions:</p>\r\n<p>1. use UIAutomationSpy on both hosts to recognize the control (if a control persists on both OSes and o the same type, and has the same name, go to step 2)</p>\r\n<p>2. maybe, your host is slow or the app has a number of controls</p>\r\n<p>2.1 you can increase the timeout</p>\r\n<p></p>\r\n<div style=\"color:black; background-color:white\">\r\n<pre>| Get<span style=\"color:gray\">-</span>UIACustom <span style=\"color:gray\">-</span>Name DisplayAt <span style=\"color:gray\">-</span>Seconds 20;\r\n</pre>\r\n</div>\r\n<p></p>\r\n<p>2.2 you can learn if it has handle (by using UIAutomationSpy (tab Properties), UIA Verify or code like</p>\r\n<p></p>\r\n<div style=\"color:black; background-color:white\">\r\n<pre>Get<span style=\"color:gray\">-</span>UIACustom <span style=\"color:gray\">-</span>Name DisplayAt | Read<span style=\"color:gray\">-</span>UIAControlNativeWindowHandle;\r\n</pre>\r\n</div>\r\n<p></p>\r\n<p>Often, the following instruction:</p>\r\n<p></p>\r\n<div style=\"color:black; background-color:white\">\r\n<pre>Get<span style=\"color:gray\">-</span>UIACustom <span style=\"color:gray\">-</span>Name DisplayAt <span style=\"color:gray\">-</span>Win32;\r\n</pre>\r\n</div>\r\naccelerates execution (search for handle is faster that regular MS UI Automation). However, it won't work if a control's title does not match the Name of a control.\r\n<p></p>\r\n<p>&nbsp;</p>\r\n<p>&nbsp;</p>\r\n<p>&nbsp;</p>\r\n",
+    "PostedDate": "2013-01-18T15:43:54.133-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "989032",
+    "ThreadId": "429972",
+    "Html": "\r\n<p>Ahhh..yes, thanks let my try the timeout and see how that works. Thanks very much for the pointers - it is much appreciated. I'm fairly clueless!</p>\r\n",
+    "PostedDate": "2013-01-18T20:28:26.52-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

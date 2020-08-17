@@ -1,0 +1,26 @@
+[
+  {
+    "Id": "1078327",
+    "ThreadId": "452844",
+    "Html": "I have the following powershell code which I thought would work for this purpose but I have no Idea why it doesn't work.<br />\n<pre><code>Get-UIAActiveWindow  | `\nGet-UIAListItem -Name $fileName | `\nInvoke-UIAListItemSelectItem -ItemName $fileName | `\nGet-UIASelectedItem  | `\nInvoke-UIAControlContextMenu | `\nGet-UIAMenuItem -Name 'Send to' | `\nInvoke-UIAMenuItemExpand | `\nGet-UIAMenuItem -Name 'Desktop (create shortcut)' | `\nInvoke-UIAMenuItemClick\n</code></pre>\n\nCould someone please point out where I am going wrong?\r<br />\n<br />\nThanks!!<br />\n",
+    "PostedDate": "2013-08-08T10:21:04.367-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1079917",
+    "ThreadId": "452844",
+    "Html": "Hi shadowscar,<br />\nWindows Explorer's menu and other controls are usually specific things. Even though they obey physic laws, they often disobey rules of UIAutomation. The &quot;Send to&quot; menu item offers ExpandPattern, however I found only one way to expand it: put the cursor over. The &quot;Desktop (create shortcut)&quot; menu item must be clickable via IInvokePattern, nonetheless it doesn't. I tried Invoke-UIAMenuItemClick, Invoke-UIAcontrolClick, Set-UIAControlKeys and Set-UIAControlText cmdlet, they all did nothing.<br />\nFinally, my code that works on Windows 8 x64 En (UIAutomation 0.8.6B5+) is:<br />\n<pre><code>[UIAutomation.Preferences]::Timeout = 10000; # The appearance of the &quot;Desktop&quot; menu item may take more time\n# file &quot;test.txt&quot; in the fiolder &quot;11111&quot;, file extensions are hidden by default, folders are running in another process (Explorer setting)\nGet-UIAWindow -pn explorer -Name 11111 | `\nGet-UIAListItem -n test | `\nInvoke-UIAControlContextMenu | `\nGet-UIAMenuItem -n *send*to* | `\nMove-UIACursor -X 10 -Y 10 | `\nGet-UIAMenuItem -Name *desktop* | `\nInvoke-UIACustomClick;</code></pre>\n\nThe code works for me, even throwing an error on the last call. We'll investigate into the error soon, this should be something like &quot;InvokePattern probably failed and the supporting code in behind produces a Win32 click&quot;.<br />\n<br />\nUpd: I tried this code on another Win 8 x64 in a domain, with a number of application running - the code worked not every time...<br />\n",
+    "PostedDate": "2013-08-12T22:11:42.337-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1080099",
+    "ThreadId": "452844",
+    "Html": "Thanks Xinliu!!! You are awesome!!! Your post helped point me in the right direction. I used a different version of the code and it seems to be working for me now. But the catch is that I should have selected a file in the folder which I achieved through SendKeys. Below code worked for me<br />\n<pre><code>    Get-UIAWindow -Name $folderName | `\n    Get-UIAListItem -Name $fileName | `\n    Invoke-UIAControlContextMenu | `\n    Get-UIAMenuItem -Name 'Send to' | `\n    Invoke-UIAMenuItemExpand | `\n    Get-UIAMenuItem -Name 'Desktop (create shortcut)'  | `\n    Invoke-UIAMenuItemClick; </code></pre>\n\nHope this helps others!! \r<br />\n<br />\nPS: I am using Windows 7<br />\n",
+    "PostedDate": "2013-08-13T06:45:01.85-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

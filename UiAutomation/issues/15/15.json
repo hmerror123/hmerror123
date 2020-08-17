@@ -1,0 +1,39 @@
+{
+  "WorkItem": {
+    "AffectedComponent": {
+      "Name": "",
+      "DisplayName": ""
+    },
+    "ClosedComment": "",
+    "ClosedDate": null,
+    "CommentCount": 0,
+    "Custom": null,
+    "Description": "Hi,\r\n\r\nI'm trying to access a dialog/window which is spawned as a child from the mainform. On other dialogs it works fine, but on this particular dialog the whole UIA framework seems to be freezing. Only after I close the child dialog/window, the UIAFramework continues:\r\n\r\nUsing the .net4 variant btw.\r\n\r\nWorking code for \"new package dialog\":\r\n```\r\n$global:GUIMainForm = Get-UIAWindow -ProcessName \"Automation Machine\" -TimeOut 10000 -name \"*Automation Machine*\"\r\n\r\n$GUIMainForm | Get-UiaListItem -Name 'New Package' | Invoke-UIAControlClick\r\n\t\t# Check if new package dialog was opened\r\n\t\t$GUIMainForm | Test-UIAControlState -SearchCriteria @{automationId=\"AMPackageDialog\";controltype=\"Window\";name=\"Create new Package\"} | Should be $true\r\n\t\t$NewPackageDialog = Get-UIAWindow -automationId \"AMPackageDialog\" -Name \"Create new Package\"\r\n\t\t# Add button should be disabled when no text has been entered\r\n\t\t$NewPackageDialog | Test-UIAControlState -SearchCriteria @{automationId=\"buttonOk\";controltype=\"Button\";name=\"Add\";IsEnabled=$false}\r\n\r\n```\r\n\r\nnot working code for \"Filter builder dialog\"\r\n```\r\n$global:GUIMainForm = Get-UIAWindow -ProcessName \"Automation Machine\" -TimeOut 10000 -name \"*Automation Machine*\"\r\n# clicks the filter button, opens the filter dialog\r\n$GUIMainForm | Get-UiaControl -AutomationId \"buttonFilter\" | Invoke-uiaControlClick\r\n# The following doesn't work, UIA seems to be hanging indefinately untill I close the opened dialog.\r\n\r\n$GUIMainForm | Test-UIAControlState -SearchCriteria @{automationId=\"FilterExpressionBuilderDialog\";controltype=\"Window\";name=\"Filters: Default action set\"}\r\n\r\n# This works, get's the dialog and highligts it\r\n$FilterDialog = get-uiawindow -Name \"Filters: Default action set\"\r\n# Anything I try on the $FilterDialog seems to hang the UIA indefinately, cannot get buttons or anything without haning the UIA framework.\r\n```",
+    "LastUpdatedDate": "2015-06-19T02:26:35.44-07:00",
+    "PlannedForRelease": "",
+    "ReleaseVisibleToPublic": false,
+    "Priority": {
+      "Name": "Unassigned",
+      "Severity": 0,
+      "Id": 0
+    },
+    "ProjectName": "UiAutomation",
+    "ReportedDate": "2015-06-19T02:26:35.44-07:00",
+    "Status": {
+      "Name": "Proposed",
+      "Id": 1
+    },
+    "ReasonClosed": {
+      "Name": "Unassigned"
+    },
+    "Summary": "Problem with child window",
+    "Type": {
+      "Name": "Unassigned",
+      "Id": 5
+    },
+    "VoteCount": 1,
+    "Id": 15
+  },
+  "FileAttachments": [],
+  "Comments": []
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "Id": "1444352",
+    "ThreadId": "644953",
+    "Html": "I would like to get the name of Get-UiaText and store it in a variable.<br />\n<br />\nI though the following might be how to do this:<br />\n<pre><code>$variable_name = Get-UiaText -AutomationId '1606' -Class 'Static' | Read-UiaControlName</code></pre>\n\nbut that gives me this error:<br />\n<pre><code>Get-UiaText : A part of the pipeline input is null\nAt line:1 char:1\n+ Get-UiaText -AutomationId '1606' -Class 'Static' | Read-UiaControlName;\n+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n    + CategoryInfo          : InvalidArgument: (:) [Get-UiaText], Exception\n    + FullyQualifiedErrorId : PartOfInputIsNull,UIAutomation.Commands.GetUiaTextCommand\nGet-UiaText : failed to get control in 2000 milliseconds by: title: '', automationId: '1606', className: 'Static', value: ''.\nAt line:1 char:1\n+ Get-UiaText -AutomationId '1606' -Class 'Static' | Read-UiaControlName;\n+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n    + CategoryInfo          : OperationTimeout: (:) [Get-UiaText], Exception\n    + FullyQualifiedErrorId : ControlIsNull,UIAutomation.Commands.GetUiaTextCommand</code></pre>\n\n",
+    "PostedDate": "2015-09-14T11:09:52.427-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1444355",
+    "ThreadId": "644953",
+    "Html": "So, looks like I need to add '-Name *', this works:<br />\n<pre><code>$variable_name = Get-UiaText -AutomationId '1606' -Class 'Static' -Name * | Read-UiaControlName</code></pre>\n\n",
+    "PostedDate": "2015-09-14T11:20:59.607-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

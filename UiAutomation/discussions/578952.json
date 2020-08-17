@@ -1,0 +1,18 @@
+[
+  {
+    "Id": "1347289",
+    "ThreadId": "578952",
+    "Html": "I am trying to automate checking to see if word (or any office document) is opening properly inside IE (sharepoint).  My problem is that I can detect when it loads right away and when it doesn't load right away - but I'm having a problem when it starts to load the doc but then times out.  My code reports that it loaded successfully, when it doesn't.  Is there a better way that I should be approaching this problem?  Is there something better for this than Test-UIAControlState?\r<br />\n<br />\nipmo .\\UIAutomation\\UIAutomation.dll\r<br />\nipmo .\\UIAutomation\\TMX.dll\r<br />\nSet-StrictMode -Version Latest\r<br />\n$global:Result = &quot;&quot; | out-null\r<br />\n$global:Steps = &quot;&quot; | out-null\r<br />\n[UIAutomation.Mode]::Profile = [UIAutomation.Modes]::Normal;\r<br />\n[UIAutomation.Preferences]::Highlight = $false;\r<br />\n[UIAutomation.Preferences]::HighlightParent = $false;\r<br />\n<br />\nstart-process iexplore &quot;<a href=\"http://sharepoint\" rel=\"nofollow\">http://sharepoint</a>......\r<br />\n<br />\nif (Wait-UIAWindow -Name &quot;ISEG Test Document.docx - Internet Explorer&quot; -Seconds 30) {<br />\n<pre><code>$Temp = Get-UiaWindow -Class 'IEFrame' -Name 'ISEG Test Document.docx - Internet Explorer'\n$Temp = Get-UiaPane -Class 'Frame Tab'\n$Temp = Get-UiaPane -Class 'TabWindowClass' -Name 'ISEG Test Document.docx - Internet Explorer'\n$Temp = Get-UiaPane -Class 'Shell DocObject View'\n$Temp = Get-UiaPane -Class 'Internet Explorer_Server' -Name 'ISEG Test Document.docx'\n$Temp = Get-UiaPane -Name 'ISEG Test Document.docx' \n\n$Result = Test-UIAControlState -searchCriteria @{Name='ISEG Test Document.docx'}\nif ($result) {\n    write-host &quot;Word loaded inside the browser successfully&quot; -fore green\n    $Global:Result = &quot;Working&quot;\n    $Global:Steps = &quot;The Word document loaded successfully&quot;\n} else { \n    write-host &quot;the document failed to load inside the browser&quot; -fore magenta\n    $Global:Result = &quot;Failed&quot;\n    $Global:Steps = &quot;The document failed to load inside the browser&quot;\n}</code></pre>\n\n",
+    "PostedDate": "2015-01-29T13:29:02.64-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1348350",
+    "ThreadId": "578952",
+    "Html": "I don't have Sharepoint (lucky me), but I would surmise that checking for the existence of the timeout message might be the right way to go.\r<br />\n<br />\nYou'll have to decide how much time you want to wait for such a message. Or first check the result as you have, then check for timeout...\r<br />\n<br />\nI found this Microsoft Support page that might be of interest: \r<br />\n<a href=\"http://support.microsoft.com/kb/925083\" rel=\"nofollow\">Error &quot;Request timed out&quot; when you try to upload a large file to a document library on a Windows SharePoint Services 3.0 site</a><br />\n",
+    "PostedDate": "2015-02-02T11:20:31.27-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

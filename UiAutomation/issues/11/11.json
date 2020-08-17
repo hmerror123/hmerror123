@@ -1,0 +1,50 @@
+{
+  "WorkItem": {
+    "AffectedComponent": {
+      "Name": "",
+      "DisplayName": ""
+    },
+    "ClosedComment": "",
+    "ClosedDate": null,
+    "CommentCount": 2,
+    "Custom": null,
+    "Description": "Hi\r\n\r\nHow to suppress these multiple outputs of object data?\r\n\r\nWhen I run my UIA automation, for what seems like every control, I get this \"paragraph\" or \"stanza\" of object data for ___every___ object accessed. Here is an example:\r\n\r\n```\r\nCached         : UIAutomation.UiElementInformation\r\nCurrent        : UIAutomation.UiElementInformation\r\nCachedParent   :\r\nCachedChildren :\r\nDescendants    : Castle.Proxies.UiExtendedModelHolderProxy\r\nChildren       : Castle.Proxies.UiExtendedModelHolderProxy\r\nControl        : Castle.Proxies.UiControlInputHolderProxy\r\nMouse          : Castle.Proxies.UiMouseInputHolderProxy\r\nKeyboard       : Castle.Proxies.UiKeyboardInputHolderProxy\r\n__interceptors : {UIAutomation.MethodSelectorAspect, UIAutomation.ErrorHandling\r\n                 Aspect}\r\n\r\n```\r\n\r\nThis output might seem useful at times, but it's overload. Too much. How to prevent it? (Or at least turn on or off on demand? I couldn't find any \r\n       __[UIAutomation.Preferences]::__\r\nthat seemed related to it.\r\nI usually really want to only see my own output or \"real\" error messages.\r\n\r\nThanks\r\nJoe",
+    "LastUpdatedDate": "2014-03-11T14:40:55.707-07:00",
+    "PlannedForRelease": "",
+    "ReleaseVisibleToPublic": false,
+    "Priority": {
+      "Name": "Unassigned",
+      "Severity": 0,
+      "Id": 0
+    },
+    "ProjectName": "UiAutomation",
+    "ReportedDate": "2014-03-11T11:44:24.907-07:00",
+    "Status": {
+      "Name": "Proposed",
+      "Id": 1
+    },
+    "ReasonClosed": {
+      "Name": "Unassigned"
+    },
+    "Summary": "How to prevent \"Cached:, Current:, ...\" object data?",
+    "Type": {
+      "Name": "Unassigned",
+      "Id": 5
+    },
+    "VoteCount": 1,
+    "Id": 11
+  },
+  "FileAttachments": [],
+  "Comments": [
+    {
+      "Message": "Hi Joe,\nthese outputs are not only verbose, they also consume time, as dotTrace (a .NET profiler) says.\n\nI can make all of them optional, of course, however Current, Control, Mouse and Keyboard contain properties and methods that are useful. And blocking all of them by default is not good (I'm thinking about cutting their number in half by default).\n\nThere are already two flags that turn off the latest functionality:\n1)\n```\n[UIAutomation.Preferences]::UseElementsSearchObjectModel = $false\n```\nhides Children and Descendants\n2)\n```\n[UIAutomation.Preferences]::UseElementsPatternObjectModel = $false\n```\nhides Control, Keyboard, Mouse, and works as the first flag (hides Children and Descendants)\nAfter the seconds flag being set to $false, output is as Microsoft's native.\n\nWhich style of coding do you use? Usually, there are three:\n1) 'single commands'\n```\nGet-Window\nGet-Button Next\nGet-Edit\nGet-Button OK | Invoke-UiaButtonClick\n```\n2) 'one-liners'\n```\nGet-UiaWindow | Get-UiaPane | Get-UiaButton | Invoke-UiaButtonClick\n```\n3) 'via object model'\n```\n$wnd = Get-UiaWindow\n$wnd.Descendants.Buttons['OK'][0].Invoke()\n($wnd | Get-UiaEdit 'aaa').Value = 'bbb'\n```\n\nIn addition to parametrized hiding (that I could inplement even for every single property), there are also traditional ways to eliminate output. I know three:\n```\n$null = Get-UiaButton ... | Invoke-UiaButtonClick;\nGet-UiaButton ... | Invoke-UiaButtonClick | Out-Null;\n[void](Get-UiaButton ... | Invoke-UiaButtonClick);\n```\n\nIf you want to turn off the whole output, some cmdlets (pattern cmdlets, for example) support the -PassThru:$false parameter.\n\nIn practice, I use cmds that run powershell:\n```\ncd c:\\testfolder\npowershell.exe -sta -noninteractive -executionpolicy bypass -command \"& { ... some settings... a script to start tests.ps1; }\" > c:\\testfolder\\regular_output.txt >> c:\\testfolder\\error_output.txt\n```\nMy test engine creates a cmd for every host in the current test step with common and individual settings, and pushes cmds to hosts. All output (except logging) is in these two files per host per test step.\n\nRegarding parameters to hide output, what's about such:\n```\n[UIAutomation.Preferences]::HideCurrent\n[UIAutomation.Preferences]::HideCached\n[UIAutomation.Preferences]::HideCachedParent\n[UIAutomation.Preferences]::HideCachedChildren\n[UIAutomation.Preferences]::HideControl # in parrallel with the existing flag\n[UIAutomation.Preferences]::HideKeyboard # in parrallel with the existing flag\n[UIAutomation.Preferences]::HideMouse # in parrallel with the existing flag\n[UIAutomation.Preferences]::HideChildren # in parrallel with the existing flag\n[UIAutomation.Preferences]::HideDescendands # in parrallel with the existing flag\n```\n",
+      "PostedDate": "2014-03-11T12:44:08.493-07:00",
+      "Id": 136533
+    },
+    {
+      "Message": "To answer your question, I generally use styles 2 and 3, one-liners and object-model. I haven't settled on any one method yet. Maybe I won't ever ;)\n\nI agree that blocking their output by default is likely not a good idea. But now that you have detailed how to do it, I will turnoff until I need to troubleshoot.\n\nThanks\nJoe",
+      "PostedDate": "2014-03-11T14:40:55.707-07:00",
+      "Id": 136553
+    }
+  ]
+}

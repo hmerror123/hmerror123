@@ -1,0 +1,6 @@
+<div class="wikidoc">This tutorial will use charmap.exe that is installed by default on Windows 8. On previous systems or on servers you may need to install this feature manually.<br /><img src="http://download-codeplex.sec.s-msft.com/Download?ProjectName=UiAutomation&DownloadId=600583" alt="Charmap001.jpg" title="Charmap001.jpg" />
+<h2>Getting state</h2><div style="color:Black;background-color:White;"><pre>
+Start<span style="color:Gray;">-</span>Process charmap <span style="color:Gray;">-</span>PassThru | Get<span style="color:Gray;">-</span>UIAWindow | Get<span style="color:Gray;">-</span>UIACheckBox | Get<span style="color:Gray;">-</span>UIACheckBoxToggleState;
+</pre></div><h2>Setting &#39;checked&#39; and &#39;unchecked&#39;</h2>The same code checks and unchecks a check box:<br /><div style="color:Black;background-color:White;"><pre>
+Start<span style="color:Gray;">-</span>Process charmap <span style="color:Gray;">-</span>PassThru | Get<span style="color:Gray;">-</span>UIAWindow | Get<span style="color:Gray;">-</span>UIACheckBox | Invoke<span style="color:Gray;">-</span>UIACheckBoxToggle;
+</pre></div><img src="http://download-codeplex.sec.s-msft.com/Download?ProjectName=UiAutomation&DownloadId=600584" alt="Charmap002.jpg" title="Charmap002.jpg" /><br />Tags: ControlType.Window, ControlType.CheckBox, TogglePattern</div><div class="ClearBoth"></div>

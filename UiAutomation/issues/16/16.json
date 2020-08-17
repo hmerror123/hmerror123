@@ -1,0 +1,45 @@
+{
+  "WorkItem": {
+    "AffectedComponent": {
+      "Name": "",
+      "DisplayName": ""
+    },
+    "ClosedComment": "",
+    "ClosedDate": null,
+    "CommentCount": 1,
+    "Custom": null,
+    "Description": "ipmo : Could not load file or assembly 'Castle.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc' \r\nor one of its dependencies. The system cannot find the file specified.\r\nAt line:1 char:1\r\n+ ipmo C:\\Users\\IEUser\\Downloads\\UIAutomation.0.8.7B3.NET35\\UIAutomatio ...\r\n+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : NotSpecified: (:) [Import-Module], FileNotFoundException\r\n    + FullyQualifiedErrorId : System.IO.FileNotFoundException,Microsoft.PowerShell.Commands.ImportModuleCommand\r\n\r\nI Unblocked all the DLL's too.\r\nCan anyone help me here?",
+    "LastUpdatedDate": "2016-07-19T06:22:45.27-07:00",
+    "PlannedForRelease": "",
+    "ReleaseVisibleToPublic": false,
+    "Priority": {
+      "Name": "Unassigned",
+      "Severity": 0,
+      "Id": 0
+    },
+    "ProjectName": "UiAutomation",
+    "ReportedDate": "2016-07-19T06:19:25.997-07:00",
+    "Status": {
+      "Name": "Proposed",
+      "Id": 1
+    },
+    "ReasonClosed": {
+      "Name": "Unassigned"
+    },
+    "Summary": "Powerhsell Version 5 : Issue with Castle.Core",
+    "Type": {
+      "Name": "Unassigned",
+      "Id": 5
+    },
+    "VoteCount": 1,
+    "Id": 16
+  },
+  "FileAttachments": [],
+  "Comments": [
+    {
+      "Message": "Castle.Core.dll & .xml are also in the same path of UIAutomation.dll.\n\n",
+      "PostedDate": "2016-07-19T06:22:45.27-07:00",
+      "Id": 200718
+    }
+  ]
+}

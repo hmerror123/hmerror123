@@ -1,0 +1,62 @@
+[
+  {
+    "Id": 2,
+    "Title": "The Invoke-UIAControlContextMenu cmdlet hits the highlighter"
+  },
+  {
+    "Id": 3,
+    "Title": "How to run uiautomationspy.exe on Windows RT"
+  },
+  {
+    "Id": 4,
+    "Title": "Get-UIAMenuItem is not working properly"
+  },
+  {
+    "Id": 5,
+    "Title": "Set-UIAEditText not taking effect"
+  },
+  {
+    "Id": 6,
+    "Title": "Metro Apps: The input control or window has been lost"
+  },
+  {
+    "Id": 7,
+    "Title": "Default filename for Save-UIAScreenshot uses incorrect format for date/time"
+  },
+  {
+    "Id": 8,
+    "Title": "PowerShell ISE often gets frozen"
+  },
+  {
+    "Id": 9,
+    "Title": "Set-UiaEditText not work"
+  },
+  {
+    "Id": 10,
+    "Title": "softwaretestingusingpowershell.com is locked out"
+  },
+  {
+    "Id": 11,
+    "Title": "How to prevent \"Cached:, Current:, ...\" object data?"
+  },
+  {
+    "Id": 12,
+    "Title": "Get-UiaEdit failed to get control"
+  },
+  {
+    "Id": 13,
+    "Title": "Get-UIaWindow failed to get active iexplore window when launched from mstask"
+  },
+  {
+    "Id": 14,
+    "Title": "powershell_ise has stopped working"
+  },
+  {
+    "Id": 15,
+    "Title": "Problem with child window"
+  },
+  {
+    "Id": 16,
+    "Title": "Powerhsell Version 5 : Issue with Castle.Core"
+  }
+]

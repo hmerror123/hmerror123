@@ -1,0 +1,10 @@
+[
+  {
+    "Id": "1465108",
+    "ThreadId": "651930",
+    "Html": "Hi,<br />\nCan I automate JAVA GUI AWT engine using this framework?<br />\n<br />\nI've used demo version of QF-Test and it looks like this: <a href=\"http://prntscr.com/ai06zo\" rel=\"nofollow\">http://prntscr.com/ai06zo</a><br />\nThe only window which I can get is:<br />\n$tvcLogin = Get-UIAWindow -Name '   IBM TvC Client 4.0.3.7 Release'<br />\nbut then i can't find input fields and buttons at $tvcLogin object.<br />\n",
+    "PostedDate": "2016-03-01T06:22:37.237-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

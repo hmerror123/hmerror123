@@ -1,0 +1,26 @@
+[
+  {
+    "Id": "934896",
+    "ThreadId": "401463",
+    "Html": "\r\n<p>Hello.</p>\r\n<p>I am trying to use the Get-UIAControl using AutomationId property, but I get an exception. The command is something like:</p>\r\n<p>Get-UIAWindow 'MyWindow' | Get-UIAPane -AutomationId 111 | Get-UIAControl -AutomationId 'ChildWindow1'</p>\r\n<p>This last command in the pipe crashes with: 'The given path's format is not supported.'</p>\r\n<p>I also tried with Get-UIAChildWindow, with the same result (the control is a child window in a MDI application).</p>\r\n<p>Does this has to do with the fact that AutomationId is a string, not a number here? Is it because the element is a window itself? Or is it for some other reason?</p>\r\n<p>Thanks.</p>\r\n<p>&nbsp;</p>\r\n<p>EDIT: Forgot to say - the command does seem to work up to some point. Because I can see a red border around the element I want, so I guess it does identify it correctly, but crashes after that (and the border dissapears).</p>\r\n",
+    "PostedDate": "2012-10-31T10:49:00.603-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "934952",
+    "ThreadId": "401463",
+    "Html": "\r\n<p>Are you sure that your child window is below the pane in the UI Automation tree? I'd recommend to use UIA Verify or UIAutomationSpy -&gt; the HIerarchy tab to examine the Automation tree.</p>\r\n<p>During August or September, the module has been rewritten to meet classic cmdlets: now it returns ALL the children or descendants, and some parts of PowerShell code may require editing.</p>\r\n<p>Working with child windows are a bit dubious deal: technically, ControlType.Window is a typical control, on the other hand, all windows of the process are somewhere on the top of hierarchy or near to.</p>\r\n<p>Try the following:</p>\r\n<p>1. getting all windows of an application and filtering out all but one (run as Administrator):</p>\r\n<p>&nbsp;</p>\r\n<div style=\"color:black; background-color:white\">\r\n<pre>Start<span style=\"color:gray\">-</span>Process services.msc <span style=\"color:gray\">-</span>PassThru | Get<span style=\"color:gray\">-</span>UIAWindow | Get<span style=\"color:gray\">-</span>UIAMenuItem <span style=\"color:gray\">-</span>Name help | Invoke<span style=\"color:gray\">-</span>UIAMenuItemClick;&nbsp;</pre>\r\n<pre>Get<span style=\"color:gray\">-</span>UIAWindow <span style=\"color:gray\">-</span>pn mmc | ?{ <span style=\"color:orangered\">$_</span>.Current.ClassName !like <span style=\"color:#a31515\">&quot;*#3276*&quot;</span> } | Get<span style=\"color:gray\">-</span>UIAMenuItem <span style=\"color:gray\">-</span>Name <span style=\"color:gray\">*</span>help<span style=\"color:gray\">*</span>topics<span style=\"color:gray\">*</span> | Invoke<span style=\"color:gray\">-</span>UIAMenuItemClick <span style=\"color:gray\">-</span>PassThru:<span style=\"color:orangered\">$false</span>\n</pre>\r\n</div>\r\n<p>&nbsp;</p>\r\n<p>2. getting the child window as the doctor said:</p>\r\n<p>&nbsp;</p>\r\n<div style=\"color:black; background-color:white\">\r\n<pre>Start<span style=\"color:gray\">-</span>Process calc <span style=\"color:gray\">-</span>PassThru | Get<span style=\"color:gray\">-</span>UIAWindow | Get<span style=\"color:gray\">-</span>UIAMenuItem <span style=\"color:gray\">-</span>Name Help | Invoke<span style=\"color:gray\">-</span>UIAMenuItemExpand | Get<span style=\"color:gray\">-</span>UIAMenuItem <span style=\"color:gray\">-</span>Name About<span style=\"color:gray\">*</span> | Invoke<span style=\"color:gray\">-</span>UIAMenuItemClick;\nGet<span style=\"color:gray\">-</span>UIAWindow <span style=\"color:gray\">-</span>pn calc | Get<span style=\"color:gray\">-</span>UIAChildWindow | Read<span style=\"color:gray\">-</span>UIAControlName\n</pre>\r\n</div>\r\n<p>&nbsp;</p>\r\n<p>Some windows are ready for standard actions (Get-UIAChildWindow), some aren't.</p>\r\n<p>&nbsp;</p>\r\n<p>Numbers (111) as input for a string parameter is not a problem.</p>\r\n<p>Red squares are gone by the time when cmdlet saves a screenshot on failure (it's relatively new change).</p>\r\n",
+    "PostedDate": "2012-10-31T12:20:41.237-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "935003",
+    "ThreadId": "401463",
+    "Html": "<p>Regarding the AutomationId property, Name, AutomationId and Class(Name) are brothers that are being used equally.</p>\r\n<p>MS UI Automation accepts all the properties the AutomationElement class provides for building a query (up to four parameters for query, as I have read somewhere). The UIAutomation module uses control type every time (the Get-UIAControl without the -ControlType parameter is an exception), and other three properties depending on cmdlet parameters. All the rest (IsEnabled, IsOffscreen, etc) are not used in queries. They can be used for filtering via the -SearchCriteria parameter (it's an array of hashtables: @{Name=\"aaa\";AutomaitonId=\"*bbb*\"},@{isEnabled=\"true\"},@{isOffscreen=\"false\"},@{processid=\"1???\"} ).</p>\r\n<p>In case we have difficulty getting a window of several, you might try other properties, for example, AccessKey or FrameworkId (if it makes sense, of course).</p>",
+    "PostedDate": "2012-10-31T14:18:47.03-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

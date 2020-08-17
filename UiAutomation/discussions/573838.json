@@ -1,0 +1,18 @@
+[
+  {
+    "Id": "1328136",
+    "ThreadId": "573838",
+    "Html": "I have a solution in place that works but I am thinking there must be a faster way to traverse a list. \r<br />\n<br />\nCurrently I get the Window and List and then store the List items into an array:<br />\n<pre><code>$list = Get-UIAWindow -Name myWindow | Get-UIAList;\n\n$items = $list | Get-UIAListItem;\n\nfor each ($client in $items) {\n$client | Invoke-UIAListItemSelectItem;\n# do something else \n}\n</code></pre>\n\nThe problem I am having is the list contains about 1000 items.  So storing the items into the array takes 3 - 4 minutes by itself.\r<br />\n<br />\nWhat I would like to do is get a quick count of the number of items in the list and then just do a while loop through the list and pass an index to the listitem I want to select.   I feel like that way it would not need to read in every item before we start working with it. \r<br />\n<br />\nIs this possible with one of the Cmdlets?   \r<br />\n",
+    "PostedDate": "2014-12-02T10:12:55.75-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1328234",
+    "ThreadId": "573838",
+    "Html": "Hi mkessler31,<br />\nchoosing a way to work with list items depends on what you want to do and of what type your list items are.<br />\nFor example, I created a Windows.Forms form with a standard .NET listbox, set it to support multi-selection and my code for selecting all items is:<br />\n<pre><code>[UIAutomation.Preferences]::Highlight = $false;\n[UIAutomation.Preferences]::HighlightParent = $false;\n$null = Get-UiaWindow -n testBigList | Get-UiaList | Get-UiaListItem | %{ $_.AddToSelection(); }</code></pre>\n\nIt took 69 seconds on my netbook.<br />\n<br />\nThe general rules here are below:<br />\n1) eliminate output wherever you can, i.e. use instructions like these:<br />\n$null = expression<br />\n<a href=\"expression\" rel=\"nofollow\">void</a>;<br />\nexpression | Out-Null<br />\nI measured performance someday with dotTrace and found that the worst thing is output to powershell.exe.<br />\n2) calling methods on objects could be a bit faster than passing data from a cmdlet to cmdlet because the first cmdlet in the pipeline sends object(s) to the powershell engine, which in turn sends them to the second cmdlet in the pipeline, and so on, Methods work directly with objects, not through the powershell engine.<br />\nThere could be some methods exposed on elements depending on how the author of your list items created them. In my case I was given the AddToSelection() method.<br />\n<br />\nThere are also two methods available on every container object: Children and Descendants. They look like properties, however they are methods. They are calculated dynamically, so you cannot simply call $list.Children.Count.<br />\nInstead, you could try something like<br />\n<pre><code>$items = $list.Descendants;</code></pre>\n\nI cannot predict whether you find a better way to navigate through elements as it depends on what your elements (list items) and container (list) offer. :)<br />\n<br />\nOne more way to do the same and for the same time:<br />\n<pre><code>$wnd = Get-UiaWindow -n testbiglist\n$null =  $wnd.Children.Lists[0].Children.ListItems | %{ $_.AddToSelection(); }</code></pre>\n\nAlex<br />\n",
+    "PostedDate": "2014-12-02T16:42:41.093-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

@@ -1,0 +1,3 @@
+<div class="wikidoc">The Get-UIAControlChildren cmdlet returns all controls that are one level below of the input control:<br /><div style="color:Black;background-color:White;"><pre>
+Start<span style="color:Gray;">-</span>Process calc <span style="color:Gray;">-</span>PassThru | Get<span style="color:Gray;">-</span>UIAWindow | Get<span style="color:Gray;">-</span>UIAControlChildren | <span style="color:Gray;">%</span>{ Write<span style="color:Gray;">-</span>Host <span style="color:OrangeRed;">$_</span>.Current.ControlType.ProgrammaticName <span style="color:OrangeRed;">$_</span>.Current.Name <span style="color:OrangeRed;">$_</span>.Current.AutomationId; }
+</pre></div><br />Tags: TreeScope.Children</div><div class="ClearBoth"></div>

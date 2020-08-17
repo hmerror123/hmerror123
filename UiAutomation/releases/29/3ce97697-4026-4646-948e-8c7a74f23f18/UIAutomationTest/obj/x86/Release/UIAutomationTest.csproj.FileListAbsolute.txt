@@ -1,0 +1,8 @@
+C:\Projects\PS\UIAutomation.Old\UIAutomationTest\bin\Release\UIAutomationTest.dll
+C:\Projects\PS\UIAutomation.Old\UIAutomationTest\bin\Release\CmdletUnit.dll
+C:\Projects\PS\UIAutomation.Old\UIAutomationTest\bin\Release\nunit.framework.dll
+C:\Projects\PS\UIAutomation.Old\UIAutomationTest\bin\Release\UIAutomation.dll
+C:\Projects\PS\UIAutomation.Old\UIAutomationTest\bin\Release\UIAutomationTestForms.exe
+C:\Projects\PS\UIAutomation.Old\UIAutomationTest\bin\Release\TMX.dll
+C:\Projects\PS\UIAutomation.Old\UIAutomationTest\obj\x86\Release\ResolveAssemblyReference.cache
+C:\Projects\PS\UIAutomation.Old\UIAutomationTest\obj\x86\Release\UIAutomationTest.dll

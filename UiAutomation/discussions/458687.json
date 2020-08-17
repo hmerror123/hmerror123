@@ -1,0 +1,26 @@
+[
+  {
+    "Id": "1097521",
+    "ThreadId": "458687",
+    "Html": "Hi, \r<br />\n<br />\nI see that UIAutomation has a GPLv2 license. I wanted to make sure I understand how this is expected to work in the following case. Someone writes a Powershell script and wants to make it open source. The script imports UIAutomation . It does not modify or distribute UIAutomation itself. Are the GPLv2 license terms to be understood to mean that a GPLv2 license must be used for the Powershell script? And not some other open-source license such as for example Apache 2.0 ?\r<br />\n<br />\nI don't have a problem either way, I was just looking for some clarification.\r<br />\n<br />\nThanks,\r<br />\n<br />\nJim<br />\n",
+    "PostedDate": "2013-09-21T21:15:33.737-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1097542",
+    "ThreadId": "458687",
+    "Html": "Hi Jim,<br />\npeople believe that in human-friendly English GPLv2 says: you may use binaries published under GPLv2 (i.e., publicly available) as you wish. Restrictions mostly apply to source code used in applications. For example, a programmer borrowed some code from an open-source project, and his/her manager sells the application without credits to the code originator, without mentioned the project the code was borrowed from, and sometimes with changes to that code that may make it worse than the original. :)<br />\nThe second goal, the FSF and its founder Richard Stallman set, is to motivate companies to publish commercial software with source codes - this in return allows companies to use tasty source code from free projects.<br />\n<br />\nThese rules are said in the license (a not easy language!) as follows:<br />\n&quot;However, as a special exception, the source code distributed need not include anything that is normally distributed (in either source or binary form) with the major components (compiler, kernel, and so on) of the operating system on which the executable runs, unless that component itself accompanies the executable.<br />\n<br />\nIf distribution of executable or object code is made by offering access to copy from a designated place, then offering equivalent access to copy the source code from the same place counts as distribution of the source code, even though third parties are not compelled to copy the source along with the object code.&quot;<br />\n<br />\nWhat is the best way to distribute scripts with dependencies?<br />\nYou don't need to publish our binaries. However, it would be good if you put somewhere in the script header the version of a binary module your script was tested with, and/or the link to downloads.<br />\nThis helps user of your script(s) to resolve incompatibility problems:<br />\n<ul>\n<li>sometimes, parameter sets in cmdlets change, unintentionally, despite our tests, or intentionally. This means that script may throw a specific exception. So, the easy way to check the script for a person running the script is to download the version the script was tested with and initiate a discussion on our forum (i.e. the Dicussions tab here).</li>\n<li>\nin rare cases, I remember one, some cmdlet become obsolete and need replacement for a new version with another name.<br />\n</li>\n</ul>\nThe use of GPLv2 is caused only by such cases when companies used free software without noticing. I worked in a now non-existing company where a programmer was given a task to convert free C code to commertial C++ code as if he wrote it himself. The manager was indolent to work with the legal department, the free prject was stale and chances to contact with the originator was not so good, finally, they simply rewote the code.<br />\nTheoretically, we are protected by the FSF. :) Practically, the FSF prefer struggling with serious players who used Linux code wrong (Nokia was sued, TiVo, etc).<br />\n<br />\nAnyway, the SoftwareTestingUsingPowerShell team are not going to force scripters redistribute our binaries and we are only glad that people could choose between commercial and free software in areas 'software testing' and 'software automation'.<br />\n",
+    "PostedDate": "2013-09-21T23:48:27.347-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1097625",
+    "ThreadId": "458687",
+    "Html": "Thanks Alex for the clarification.\r<br />\n<br />\nI will be sure to include references to UIAutomation version and URL, in both script header and documentation, in any script that I open-source, that imports it.\r<br />\n<br />\nRegards,\r<br />\n<br />\nJim<br />\n",
+    "PostedDate": "2013-09-22T10:15:46.563-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

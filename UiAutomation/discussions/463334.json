@@ -1,0 +1,34 @@
+[
+  {
+    "Id": "1111323",
+    "ThreadId": "463334",
+    "Html": "Hi again!\r<br />\n<br />\nI was wondering if there's any way to read a Custom object's value. I get search for the object (and find it) based on the value through Get-UIACustom -Value &lt;value&gt;, and then get its name through Read-UIAControlName. There doesn't seem to be Read-UIAControlValue cmdlet though... do you have any suggestions as to how to access that value?\r<br />\n<br />\nThanks so much!\r<br />\n<br />\n-Jonathan<br />\n",
+    "PostedDate": "2013-10-23T16:57:48.163-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1111325",
+    "ThreadId": "463334",
+    "Html": "Seems I always discover the solution shortly after posting a question here! I got the values by the following:\r<br />\n<br />\n$dataTable | Get-UIAPatternGet\r<br />\n<br />\nThanks anyway (:\r<br />\n<br />\n-Jonathan<br />\n",
+    "PostedDate": "2013-10-23T17:02:25-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1111399",
+    "ThreadId": "463334",
+    "Html": "Hi Jonathan,\r<br />\nUI Automation (both '1.0' and '2.0') is a complicated framework in terms of naming. Especially patterns that are classes, their lever could be a method, a property, both method and property, or even a set of methods and properties.\r<br />\nAt the same time, Microsoft insists on naming cmdlet as Verb-Noun, its Cmdlet Design Guidelines requires the schema Verb-[YourCompany/Project]Noun.\r<br />\nWhereas many teams in Microsoft outside the PowerShell division don't follow these guidelines (especially, names of parameters deviate), and the PowerShell division published the first cmdlets (PS 1.0) before these guidelines were out, we amateurs struggle to follow these guidelines. :)\r<br />\n<br />\nHere are rules we followed in naming:<br />\n<ul>\n<li>Read- cmdlets return the properties of AutomationElement (i.e., the properties you could get via $element.Current, for example, AutomaitonId, ProcessId, AccessKey)</li>\n<li>patterns are Invoke- cmdlets (Invoke-UIA[PatternName]Pattern, Invoke-UIA[PatternName]PatternSet, Invoke-UIA[PatternName]PatternGet)</li>\n<li>\nfor readability and searchability, there are cmdlets (just classes derived from Pattern- cmdlets) like Get-UIA[...]Value, Get-UIA[...]SelectionItem, etc<br />\n</li>\n</ul>\nRegarding the topic you raised, this is definitely a bug.\r<br />\nInitially, the matrix which control should have such a pattern was pulled from MSDN. However, some controls in real life supported patterns that they weren't supposed to support (and a lot controls didn't support patterns they were supposed to suppport). After all, there were 'invented' 'Custom' cmdlets: they are not ties to the type (Custom), it's just for readability.\r<br />\n<br />\nThere is the Get-UIAValuePatternGet (I just renamed it to Invoke-UIAValuePatternGet), but further is a mess-up.\r<br />\nSome cmdlets are 'Value', same are 'Text'.\r<br />\nGet-UIACustomValue is now Get-UIACustomText\r<br />\n<br />\nI'll change some names of cmdlet today and publish one more beta. All old names will be marked obsolete, not removed.\r<br />\nFor example, the following are new names of previously Get- (now obsolete) cmdlets:\r<br />\nInvoke-UIARangeValuePatternGet\r<br />\nInvoke-UIARangeValuePatternSet\r<br />\nInvoke-UIATextPatternGet\r<br />\nInvoke-UIATextPatternSet\r<br />\nInvoke-UIASelectionPattern\r<br />\nInvoke-UIAValuePatternGet\r<br />\nInvoke-UIAValuePatternSet\r<br />\n<br />\nSome other cmdlets (unpopular, as I think. I, for instance, never used in practice some patterns) are separated by the action they perform:\r<br />\nInvoke-UIADockPattern -&gt; Invoke-UIADockPatternSet\r<br />\nGet-UIADockPattern -&gt; Invoke-UIADockPatternGet\r<br />\n<br />\nThank you for pointing to the naming problem!\r<br />\n<br />\nAlexander<br />\n",
+    "PostedDate": "2013-10-23T23:11:51.417-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1111402",
+    "ThreadId": "463334",
+    "Html": "As I remember, Value cmdlets were called Text intentionally (in fact, Value is single-line text).\r<br />\nI'll be thinking how to make names clear.<br />\n",
+    "PostedDate": "2013-10-23T23:25:42.27-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

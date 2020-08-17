@@ -1,0 +1,17 @@
+<div class="wikidoc">By default, the module saves a screenshot on every fail of a cmdlet:<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:Gray;">[</span><span style="color:Teal;">UIAutomation.Preferences</span><span style="color:Gray;">]</span><span style="color:Gray;">::</span>OnErrorScreenShot
+<span style="color:Green;"># default: $true</span>
+</pre></div>The default format is jpeg and you can change the format as shown in the following example:<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:Gray;">[</span><span style="color:Teal;">UIAutomation.Preferences</span><span style="color:Gray;">]</span><span style="color:Gray;">::</span>OnErrorScreenShotFormat <span style="color:Gray;">=</span> <span style="color:Gray;">[</span><span style="color:Teal;">System.Drawing.Imaging.ImageFormat</span><span style="color:Gray;">]</span><span style="color:Gray;">::</span>Png;
+<span style="color:Green;"># default: jpg</span>
+</pre></div>There is also the possibility to save screenshot on a successful run of a cmdlet. The format settings is independent from OnErrorScreenShot:<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:Gray;">[</span><span style="color:Teal;">UIAutomation.Preferences</span><span style="color:Gray;">]</span><span style="color:Gray;">::</span>OnSuccessScreenShot
+<span style="color:Green;"># default: $false</span>
+<span style="color:Gray;">[</span><span style="color:Teal;">UIAutomation.Preferences</span><span style="color:Gray;">]</span><span style="color:Gray;">::</span>OnSuccessScreenShotFormat
+<span style="color:Green;"># default: jpg</span>
+</pre></div>By default, screenshots are stored in the user&#39;s temp folder. Here is the setting:<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:Gray;">[</span><span style="color:Teal;">UIAutomation.Preferences</span><span style="color:Gray;">]</span><span style="color:Gray;">::</span>ScreenShotFolder
+</pre></div>Sometimes, we need controls&#39; images to be saved without the red square. The following option hides or shows the square dring the time the module takes a screenshot:<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:Gray;">[</span><span style="color:Teal;">UIAutomation.Preferences</span><span style="color:Gray;">]</span><span style="color:Gray;">::</span>HideHighlighterOnScreenShotTaking
+<span style="color:Green;"># default: $true</span>
+</pre></div></div><div class="ClearBoth"></div>

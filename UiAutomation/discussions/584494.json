@@ -1,0 +1,26 @@
+[
+  {
+    "Id": "1359601",
+    "ThreadId": "584494",
+    "Html": "Hi, I am stumped on how/if you can access the contents of a pane. The code I have for accessing this is as follows but I cant seem to do anything with it once its highlighted;\r<br />\n<br />\nGet-UiaPane -AutomationId '102' -Class 'VW32ANSI'\r<br />\n<br />\nWhat is happening is once a button on the UI is pressed after a few seconds the pane is created and populated with content, I just need to be able to see that the pane has content - possibly to search for some test that is displayed inside the pane.\r<br />\n<br />\nIm not sure if this is the best way forward to achieve this.\r<br />\n<br />\nPlease help!<br />\n",
+    "PostedDate": "2015-03-03T17:31:37.05-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1359913",
+    "ThreadId": "584494",
+    "Html": "Hi cameronk,\r<br />\nas I understood, you can't access inner controls of the pane, right?\r<br />\nHave you tried UIAutomationSpy or <a href=\"https://uiautomationverify.codeplex.com/releases/view/11366\" rel=\"nofollow\">UIA Verify</a> to get its content? If these tools find something inside the pane, there is hope.\r<br />\n<br />\nIf you are asking HOW to get content, you can use the following samples, depending on what of these better works with your pane:<br />\n<pre><code>Get-UiaPane -AutomationId '102' -Class 'VW32ANSI' | Read-UiaControlName\n# or another Read-UiaControl.... cmdlet, it outputs data as a string</code></pre>\n\n<pre><code># instead of getting the pane you can test for its existence, for example\nTest-UiaControlState -SearchCriteria @{automationId=&quot;102&quot;;class=&quot;vw32ansi&quot;;[another property]=&quot;some value&quot;}\n# if there's a control inside pane, test for such a control\nGet-UiaPane -AutomationId '102' -Class 'VW32ANSI' | Test-UiaControlState -SearchCriteria @{name=&quot;inner control name&quot;}</code></pre>\n\n<pre><code># if your content is shown after an interval, there is a Wait-brother of the Test-UiaControlState cmdlet\nWait-UiaControlState -SearchCriteria @{automationId=&quot;102&quot;;class=&quot;vw32ansi&quot;;[another property]=&quot;some value&quot;} -Seconds 30;</code></pre>\n\nIf the control highligher is your problem, simply turn it off:<br />\n<pre><code>[UIAutomation.Preferences]::Highlight = $false;\n[UIAutomation.Preferences]::HighlightParent = $false;</code></pre>\n\n",
+    "PostedDate": "2015-03-04T15:15:05.877-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1361987",
+    "ThreadId": "584494",
+    "Html": "Hi, thanks for the info with UIA Verify!! I have found the only thing that seems to return from the pane is a slider bar so assume that the only thing that can be done is to use the panes' size/co-ordinates and work out where button clicks can take place.\r<br />\n<br />\nRegards, Cameron.<br />\n",
+    "PostedDate": "2015-03-09T17:22:01.677-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

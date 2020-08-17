@@ -1,0 +1,34 @@
+[
+  {
+    "Id": "1239070",
+    "ThreadId": "543665",
+    "Html": "I have a window that when opened starts a dialog box for user feedback.\r<br />\n<br />\nHow do I pipe to the dialog box to do edits since it is not classifed as a window (in which case I would use UIAChildWindow).\r<br />\n<br />\nIs there a function to pipe to a dialog box?<br />\n",
+    "PostedDate": "2014-04-28T17:00:22.667-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1243799",
+    "ThreadId": "543665",
+    "Html": "Hi,\r<br />\nthere have been added <a href=\"http://softwaretestingusingpowershell.wordpress.com/2013/03/09/desktop-automation-towards-code-simplicity-part-3/\" rel=\"nofollow\">new parameters to the get-uiawindow cmdlet</a>. A dialog is usually a window, and the spy needs updating to support these new parameters.\r<br />\n<br />\nMost likely, your problem could be resolved as:<br />\n<pre><code>Get-UiaWindow -pn process_name_of_your_app -Name &quot;*your*dialog*name*&quot;</code></pre>\n\nor<br />\n<pre><code>Get-UiaWindow -pn process_name_of_your_app -Name &quot;*your*dialog*name*&quot; -WithControl @{controlType=&quot;button&quot;;name=&quot;OK&quot;}</code></pre>\n\nYou could use -Name, -AutomationId and/or -Class as parameters for a cmdlet and any properties of control(s) on the dialog.\r<br />\nThe only restriciton is not to use the Get-UiaWindow without procecc name (-ProcessName, -pn), or process id (-ProcessId, -pid), or process (-InputObject, -p_ parameters - this would lead tovery deep search (new parameters activate the -Recurse parameter automatically).<br />\n",
+    "PostedDate": "2014-05-10T05:34:39.88-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1244382",
+    "ThreadId": "543665",
+    "Html": "I'm excited to try this as I think it might work, but my process isn't as simple as a calculator for example. \r<br />\n<br />\nWould the process name show up under in Inspector for a given window or would I have to know the process name?<br />\n",
+    "PostedDate": "2014-05-12T07:28:28.7-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1244534",
+    "ThreadId": "543665",
+    "Html": "Does your dialog grow from another process?\r<br />\nI dealt with such windows: they are usually seen as a window from another process (a custom action in a setup, for example. The setup program grows from msiexec, but the custom action window grows from another process).\r<br />\nThe best way is to get it via Get-UiaWindow -pn ... -n ...\r<br />\n<br />\nIf your dialog is a window in your process, you could simply get it using Get-UiaWindow -pn ... -n/-au/-class (a combination of process name and necessary parameters: Name, AutomationId, Class)\r<br />\n<br />\nif your dialog is a pane, menu or another container floating around, there are two options: the previous (the Get-UiaWindow cmdlet counts top-level menus (a context menu on the desktop for example) and panes (Taskbar, for examples) as windows.\r<br />\nAnother option is to use Get-UiaWindow | Get-UIaYourDialogType\r<br />\n<br />\nThe worst case I ever met was a snap-in to mmc.exe 32-bit on 64-bit window, throwing a form before the main mmc window appears. The process id of the first window was not the same as process id of the main window, and the first window was very hard to get. I solved it via a series of Get-UiaWindow with various parameters...<br />\n",
+    "PostedDate": "2014-05-12T12:46:23.87-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

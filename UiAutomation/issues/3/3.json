@@ -1,0 +1,50 @@
+{
+  "WorkItem": {
+    "AffectedComponent": {
+      "Name": "",
+      "DisplayName": ""
+    },
+    "ClosedComment": "",
+    "ClosedDate": null,
+    "CommentCount": 2,
+    "Custom": null,
+    "Description": "Hi Xin Liu,\r\n\r\nThanks for this useful tool. I just have a question that is how can we deploy this on Windows RT? Is it possible to distribute an ARM version of this tool? Thanks.",
+    "LastUpdatedDate": "2012-12-23T01:33:42.227-08:00",
+    "PlannedForRelease": "",
+    "ReleaseVisibleToPublic": false,
+    "Priority": {
+      "Name": "Low",
+      "Severity": 50,
+      "Id": 1
+    },
+    "ProjectName": "UiAutomation",
+    "ReportedDate": "2012-12-10T05:45:24.803-08:00",
+    "Status": {
+      "Name": "Proposed",
+      "Id": 1
+    },
+    "ReasonClosed": {
+      "Name": "Unassigned"
+    },
+    "Summary": "How to run uiautomationspy.exe on Windows RT",
+    "Type": {
+      "Name": "Issue",
+      "Id": 3
+    },
+    "VoteCount": 1,
+    "Id": 3
+  },
+  "FileAttachments": [],
+  "Comments": [
+    {
+      "Message": "Hi yolkfull,\nunfortunately, the tool is built upon .NET Framework (UIAutomationClient, System.Windows.Forms, WindowBase and similar assemblies) and Studio 2012 doesn't even provide these assemblies for ARM (the full list of what we have for ARM is here: \"%ProgramFiles(x86)%\\Reference Assemblies\\Microsoft\\Framework\\.NETCore\\v4.5\\\" ).\n\nFor what reason do you use UIAutomationSpy, to spy your Metro app or to test it via scripting? For spying, there is Microsoft's Inspect.exe (\"%ProgramFiles(x86)%\\Windows Kits\\8.0\\bin\\arm\\inspect.exe\" in my case). I never used it on ARM (not having one, I can't even run code for ARM on the simulator or whatever else). Microsoft should have an instruction on how to deploy and use Inspect for ARM.\n\nThe success of UIAutomationSpy and UIARunner is a result of a hole left for Accessibility developers. And this hole is between two technologies: the classical one (Win32/Windows.Forms/WPF/UI Automation) and the modern one (WinRT). \nWinRT (WinRT is a technology and Windows RT is a platform, what a collision :)) is built with security in mind: it's running in a sandbox, i.e. every app is in its own container and inactive the time the focus is gone.\n\nFor now, the only thing I can to do is try to implement a library that would click automatically on controls (and support something like a macro language). It's just an idea, I didn't try it yet. Or a library (in-proc, i.e., with access to source code) that could record clicks during UIAutomationSpy session and replay them on a device. I wonder if there would be demand for such library...",
+      "PostedDate": "2012-12-11T13:07:19.747-08:00",
+      "Id": 83984
+    },
+    {
+      "Message": "Hi Xin,\n\nThank you so much for detailed explanation.  I'm using UIAutomation on windows 8 x86 for automation testing code development.  And this project helps us a lot although so far we can only run it on x86 platform. So I think if we can find a solution to deploy this library on Windows RT platform.  If yes, we can run automation directly on Surface RT tablet.  I'll do some attempt later.  Again, thank you very very much for answer. :-) It's a good and useful project.",
+      "PostedDate": "2012-12-23T01:33:42.227-08:00",
+      "Id": 84841
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+<div class="wikidoc">Sometimes, it&#39;s useful to search for a window or a top-level control (a pane or context menu) from the top of the Automation tree.<br /><div style="color:Black;background-color:White;"><pre>
+Get<span style="color:Gray;">-</span>UIADesktop | Get<span style="color:Gray;">-</span>UIAControlChildren | <span style="color:Gray;">%</span>{ <span style="color:OrangeRed;">$_</span> | Read<span style="color:Gray;">-</span>UIAControlName; <span style="color:OrangeRed;">$_</span> | Read<span style="color:Gray;">-</span>UIAControlAutomationId; }
+</pre></div>The above script read names and automationIds of all top-level objects that are available, like menus and panes (TaskBar, etc).<br /><br />Working with Metro UI, it&#39;s even a must to start from the top as Metro UI applications grow from non-Metro UI top of the Automation tree:<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:Green;"># from BGShell or UIARunner</span>
+Get<span style="color:Gray;">-</span>UIADesktop;
+Show<span style="color:Gray;">-</span>UIAMetroStartScreen;
+Get<span style="color:Gray;">-</span>UIAListItem Music;
+</pre></div></div><div class="ClearBoth"></div>

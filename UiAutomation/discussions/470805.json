@@ -1,0 +1,106 @@
+[
+  {
+    "Id": "1127804",
+    "ThreadId": "470805",
+    "Html": "Hi All,<br />\n  I have an application, which has a static text &quot;ABC&quot; . I have to double click on that to invoke an application. \r<br />\n<br />\n  There is no invokable patterns observed when i run &quot;UIAutomationSpy&quot;, and point to that statis text. Please let me know how can i achived that.\r<br />\n<br />\nThanks a lot<br />\n",
+    "PostedDate": "2013-11-22T00:28:22.937-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1127807",
+    "ThreadId": "470805",
+    "Html": "Infact... i would like to move a mouse to a point anywhere in the window using &quot;Move-UIACursor&quot; and want to do the following  click, double click, right click (with / without control)... please let me way to do it...<br />\n",
+    "PostedDate": "2013-11-22T00:37:21.277-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1127810",
+    "ThreadId": "470805",
+    "Html": "Hi,\r<br />\ntry Invoke-UIAControlClick with parameters. It usually consumes an AutomationElement, and also can work after Move-UIACursor.\r<br />\nSometimes, an application has it's own opinion what is a double click - in this case, I need a piece of output of Spy++.\r<br />\nUsually, the standard double click works.<br />\n",
+    "PostedDate": "2013-11-22T00:44:45.507-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1127813",
+    "ThreadId": "470805",
+    "Html": "Sure.. will provide spy++ output soon, in the meanwhile.. just wonder.. can i go to any place in window and click blindly (irrespective of control).. that helps a lot in automation.. i feel...<br />\n",
+    "PostedDate": "2013-11-22T00:53:35.093-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1127843",
+    "ThreadId": "470805",
+    "Html": "The Get-UIAControlClick cmdlet needs a handle.<br />\nHow to get a handle of a thing that has no handle?<br />\nThere are two ways:<br />\n1) if your label is recognizable as AutomationElement, you could simply run the following:<br />\n<pre><code>Get-UIAWindow ..... | Get-UIA[your static label] | Invoke-UIAControlClick -DoubleClick;</code></pre>\n\nEven if your control does not have handle, the Invoke-UIAControlClick cmdlet gets its parent, or its 'grandparent', etc, until it gets a control with handle. After that, the cmdlet calculates X and Y and hits to the place your handless control is.<br />\n2) If your label is not recognizable as AutomationElement, you need to get an upper element (on what your label is painted), move the cursor and use the same cmdlet:<br />\n<pre><code>Get-UIAWindow ..... | Get-UIA[the parent of your static label] | Move-UIACursor -X ... -Y ... | Invoke-UIAControlClick -DoubleClick;</code></pre>\n\nHere could be a problem: if you selected its further ancestor, on which its parent is placed, and both parent and further ancestor have handles, the cmdlet hits ancestor, not the parent. This could be heard as a glass sound (as when you click onto that is not considered to be clickable like a window under a modal window).<br />\nShortly, you need to choose exactly the control with handle on that your label is painted, and hit there.<br />\n<br />\nSometimes, an app has its own opinion about what the double click is. Double click is usually two clicks with WM_MOUSEMOVE in between (as spy++ says). However, automated double click on calc.exe is not the same as you perform it manually (your hand is simply too slow for calc :)).<br />\n<pre><code>Start-Process calc -PassThru | Get-UiaWindow | Get-UiaButton 5 | Invoke-UiaControlClick -DoubleClick;</code></pre>\n\nIf you perform a double click on a button, you've got two digits in the text box.<br />\n",
+    "PostedDate": "2013-11-22T02:53:06.893-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1128027",
+    "ThreadId": "470805",
+    "Html": "Ohh.. if the automated double click is not same as manual DoubleClick.. how do i achieve manualClick effect....\r<br />\nIs there any way...\r<br />\n<br />\nI tried the following code...\r<br />\n<br />\nStart-Process services.msc -PassThru | Get-UIAWindow | Move-UIACursor -X 400 -Y 475 ;\r<br />\nGet-UIAControlFromPoint |  Invoke-UIAControlClick -DoubleClick;\r<br />\n<br />\nManual double click invokes the program, where as the above code didnt work as manual. &quot; Single Click and Right click&quot; working fine..<br />\n",
+    "PostedDate": "2013-11-22T11:04:35.817-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1128052",
+    "ThreadId": "470805",
+    "Html": "it looks... when we start services.. immediately... we are not able to double click.. this code works\r<br />\n<br />\n<br />\nStart-Process services.msc -PassThru | Get-UIAWindow | Move-UIACursor -X 400 -Y 475 ;\r<br />\nGet-UIAControlFromPoint |  Invoke-UIAControlClick;\r<br />\nGet-UIAControlFromPoint |  Invoke-UIAControlClick -DoubleClick;<br />\n",
+    "PostedDate": "2013-11-22T12:15:56.723-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1128077",
+    "ThreadId": "470805",
+    "Html": "The last code you provided performs double click on my host (Win 8 x64).\r<br />\nThe second line of code clicks out the tooltip, and the third line of code opens the dialog (i.e., performs a double click).\r<br />\n<br />\nThe problem is that out double click is a 'classic' double click, it was got from spy++ output.\r<br />\nHowever, some apps like that there was a bigger time interval between the first and the second click, as a user clicks. This is as if we run the following:<br />\n<pre><code>Get-Uia.... | Invoke-UIAControlClick | Invoke-UIAControlClick</code></pre>\n\nIn this case, services.msc, the first click was needed to get rid of the tooltip, right?<br />\n",
+    "PostedDate": "2013-11-22T13:27:52.68-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1128148",
+    "ThreadId": "470805",
+    "Html": "My Object retruning Get-UIAText, Can i invoke , Click and DoubleClick on this?\r<br />\nI been trying from past 1 hr, \r<br />\n<br />\nGet-UIAWIndow...| Get-UIAText -Name ... | Invoke-UIAControlClick -DoubleClick;\r<br />\n<br />\nIt is not throwing any error.. where as action not taking place.....<br />\n",
+    "PostedDate": "2013-11-23T02:49:08.53-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1128183",
+    "ThreadId": "470805",
+    "Html": "What type of control is this Text?<br />\nIt's unlikely to have InvokePattern (what do UIAutomationSpy and UIAVerify say about the control?).<br />\nHowever, if your control accepts clicks, there should be one that fits.<br />\nAre you sure that the control accepting clicks is Text? Maybe, this is one of visible controls under the Text or a control you couldn't see as it's under the Text and has the same size and shape? Sometimes what is clickable could be not the same control you expect to be clickable.<br />\n<br />\nThe Invoke-UIAControlClick cmdlet works with handle. If you think that you need to click Text and you click Text via its handle, the control that in fact is awaiting for click gets nothing.<br />\n",
+    "PostedDate": "2013-11-23T05:58:49.387-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1128187",
+    "ThreadId": "470805",
+    "Html": "UIAutomationSpy - showing \r<br />\n<br />\nGet-UIAText -AutomationId '...' -Class 'Static' -Name 'Start Application' -Win32;\r<br />\n<br />\nThis window has a pane, in that pane there are some icon with start and stop application, when i do mouse click, it is getting selected, when i do double click, then it is opening up a new window.\r<br />\n<br />\nThanks and Regards,\r<br />\nRavi Kumar Malla<br />\n",
+    "PostedDate": "2013-11-23T06:17:53.517-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1128569",
+    "ThreadId": "470805",
+    "Html": "Some applications accept two clicks as a double click. I played with explorer.exe on Windows 8 x64, having a folder opened and its items in the 'Big Icons' mode:<br />\n<pre><code># in the folder C:\\1, trying to open folder C:\\1\\1\n# this does not work:\nGet-UiaWindow -n 1 | Get-UiaListItem -n 1 | Invoke-UiaControlClick -DoubleClick;\n\n# this works\nGet-UiaWindow -n 1 | Get-UiaListItem -n 1 | Invoke-UiaControlClick | Invoke-UiaControlClick</code></pre>\n\nI even added the interval between the time mouse's button is moving down and up (the left button gets down, after that a half of interval, after that a mousemove action that always was there , after that the second hald of the interval, after that the button goes up), explorer ignores the double click, accepting only two single clicks :)<br />\n<pre><code>Get-UiaWindow -n 1 | Get-UiaListItem -n 1 | Invoke-UiaControlClick -DoubleClick -DoubleClickInterval 100;\nGet-UiaWindow -n 1 | Get-UiaListItem -n 1 | Invoke-UiaControlClick -DoubleClick -DoubleClickInterval 500;\nGet-UiaWindow -n 1 | Get-UiaListItem -n 1 | Invoke-UiaControlClick -DoubleClick -DoubleClickInterval 1000;\nGet-UiaWindow -n 1 | Get-UiaListItem -n 1 | Invoke-UiaControlClick -DoubleClick -DoubleClickInterval 2000;</code></pre>\n\nIt's better that you spy the control with spy++ when you do what it accepts as a double click.<br />\n",
+    "PostedDate": "2013-11-25T00:29:32.383-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1222222",
+    "ThreadId": "470805",
+    "Html": "Hi,\r<br />\nversions of UIAutomation 0.8.7 Beta 2 and higher bring to the community new ways to click and send keys.\r<br />\nLook at this <a href=\"https://uiautomation.codeplex.com/wikipage?title=the%20Mouse%20property&amp;referringTitle=Object%20model\" rel=\"nofollow\">[the Mouse property]</a><br />\n",
+    "PostedDate": "2014-03-13T00:34:32.357-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

@@ -1,0 +1,18 @@
+[
+  {
+    "Id": "1140214",
+    "ThreadId": "476718",
+    "Html": "<a href=\"http://softwaretestingusingpowershell.com/category/ui-automation/uiautomation-module/\" rel=\"nofollow\">http://softwaretestingusingpowershell.com/category/ui-automation/uiautomation-module/</a>\r<br />\n<br />\n<img src=\"http://softwaretestingusingpowershell.files.wordpress.com/2013/01/pipeline001.jpg?w=620\" alt=\"Image\" /><br />\n",
+    "PostedDate": "2013-12-20T01:01:34.08-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1140237",
+    "ThreadId": "476718",
+    "Html": "Hi,\r<br />\nthis is Microsoft's UIA <a href=\"https://uiautomationverify.codeplex.com/\" rel=\"nofollow\">UIA Verify</a>.\r<br />\n<br />\nThe first version works exactly over the same .NET 3.0+ as UIAutomaiton cmdlets work.\r<br />\nThe second version that works over <a href=\"https://uiacomwrapper.codeplex.com/\" rel=\"nofollow\">UIA COM wrapper</a> has been removed and, as promised, is placed to a Windows SDK.\r<br />\n<br />\nUIAutomationSpy also has a simple UIAutomation tree on one of tabs, however, UIA Verify is more useful when you need an overview of what you are testing.<br />\n",
+    "PostedDate": "2013-12-20T03:12:19.703-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": "2013-12-20T06:52:43.773-08:00"
+  }
+]

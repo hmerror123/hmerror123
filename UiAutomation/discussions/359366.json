@@ -1,0 +1,42 @@
+[
+  {
+    "Id": "848164",
+    "ThreadId": "359366",
+    "Html": "\r\n<p>Hi, can you confirm that the current release works with windows 8 release preview? I'm trying to import the module as instructed but I get the error below:</p>\r\n<pre>PS C:\\WINDOWS\\system32&gt; ipmo 'C:\\Program Files\\1\\UIAutomation.0.7.6.NET35\\UIAutomation.dll'\r\nipmo : Could not load file or assembly 'file:///C:\\Program Files\\1\\UIAutomation.0.7.6.NET35\\UIAutomation.dll' or one\r\nof its dependencies. Operation is not supported. (Exception from HRESULT: 0x80131515)\r\nAt line:1 char:1\r\n&#43; ipmo 'C:\\Program Files\\1\\UIAutomation.0.7.6.NET35\\UIAutomation.dll'\r\n&#43; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    &#43; CategoryInfo          : NotSpecified: (:) [Import-Module], FileLoadException\r\n    &#43; FullyQualifiedErrorId : System.IO.FileLoadException,Microsoft.PowerShell.Commands.ImportModuleCommand\r\n</pre>\r\n<p>The same steps work fine on my win7 machine. Could it have something to do with the fact that in win8, .NET 4.0 is used by default?</p>\r\n<pre>PS C:\\WINDOWS\\system32&gt; $psversiontable\r\n\r\nName                           Value\r\n----                           -----\r\nPSVersion                      3.0\r\nWSManStackVersion              3.0\r\nSerializationVersion           1.1.0.1\r\nCLRVersion                     4.0.30319.17626\r\nBuildVersion                   6.2.8400.0\r\nPSCompatibleVersions           {1.0, 2.0, 3.0}\r\nPSRemotingProtocolVersion      2.2\r\n</pre>\r\n<pre>Thanks!</pre>\r\n",
+    "PostedDate": "2012-06-12T14:04:12.867-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "848172",
+    "ThreadId": "359366",
+    "Html": "<p>Hello,</p>\r\n<p>I uploaded the .NET 4.0 version. I didn't test these binaries, because now I'm sitting on Windows 7 with PowerShell 2.0 (they should work as always).</p>\r\n<p>Regarding your question, if you'd had the .NET 3.5 feature on, cmdlets would work on Windows 8. The .NET 4.0 version is for pure Windows 8 environments (if the configuration is a requirement).</p>\r\n<p>&nbsp;</p>\r\n<p>If you need version for testing Metro UI, the latest is 0.7.5 (the ability to get a window by wildcarded name is, IMHO, not the biggest thing in Metro testing). If you need so, I can compile 0.7.6 Metro too.</p>",
+    "PostedDate": "2012-06-12T14:34:20.377-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "848378",
+    "ThreadId": "359366",
+    "Html": "<p>Well, there is definitely a problem. Code that was built on 7 (3.5)&nbsp;refuses to load into PowerShell 3.0 unless you are specifying the -version 2.0 command-line parameter.</p>\r\n<p>Code that is built on 7 (4.0) can't be loaded at all. There is something missing for PowerShell 3.0 and PowerShell 3.0 version 2.0 doesn't want to work with cmdlets built with 4.0.</p>\r\n<p>Okay, I need to upgrade my Windows 8 Consumer Preview workstation, where I build, to Release Preview, and build further on this host.</p>",
+    "PostedDate": "2012-06-13T05:12:30.56-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "848460",
+    "ThreadId": "359366",
+    "Html": "\r\n<p>Nice, thanks for the prompt response. Unfortunately the .NET 4 build still won't ipmo for me in win8 release preview, same error. Trying the 3.5 bits using -version 2.0 doesn't help either. (I do have .NET 3.5 enabled as a windows feature) In fact, running\r\n powershell -version 2.0 in win8 release preview doesn't behave the way I'd expected:</p>\r\n<p>&nbsp;</p>\r\n<pre>PS C:\\WINDOWS\\system32&gt; powershell -version 2.0\nWindows PowerShell\nCopyright (C) 2012 Microsoft Corporation. All rights reserved.\n\nPS C:\\WINDOWS\\system32&gt; $psversiontable\n\nName                           Value\n----                           -----\nPSVersion                      3.0\nWSManStackVersion              3.0\nSerializationVersion           1.1.0.1\nCLRVersion                     4.0.30319.17626\nBuildVersion                   6.2.8400.0\nPSCompatibleVersions           {1.0, 2.0, 3.0}\nPSRemotingProtocolVersion      2.2</pre>\r\n<p>&nbsp;</p>\r\n<p>I was however able to ipmo the module from PoshConsole (<a href=\"http://poshconsole.codeplex.com/\">http://poshconsole.codeplex.com/</a>), so that's unblocked me for now,&nbsp;but it seems something must have changed between consumer preview and release preview.\r\n I'll stay tuned.</p>\r\n",
+    "PostedDate": "2012-06-13T07:45:13.76-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "848494",
+    "ThreadId": "359366",
+    "Html": "<p>I have uploaded the 0.7.8 that is built on Windows 8 Consumer Preview and tested on Windows 8 Release Preview (and 3.5 on 7 also).</p>\r\n<p>I'll be cleaning up the disk space on my main Windows 8 host to upgrade it to 8 Release Preview (the upgrade process required mere 20(!) gigabytes of space as if this is a new installation :) I'm running this Windows 8 on 64GB SSD and such generosity is&nbsp;beyond my usual intents... :)</p>",
+    "PostedDate": "2012-06-13T09:07:22.317-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

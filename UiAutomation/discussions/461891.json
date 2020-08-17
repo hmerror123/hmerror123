@@ -1,0 +1,18 @@
+[
+  {
+    "Id": "1106416",
+    "ThreadId": "461891",
+    "Html": "If there are 10 ListItems in a List, and only 7 are visible, and the other 3 items need to scroll to see them.\r<br />\nThe following code will case click on the outer of the List box. So how to click the 3 invisible items?<br />\n<pre><code>$_ | Invoke-UIAListItemClick | Invoke-UIAListItemClick</code></pre>\n\n",
+    "PostedDate": "2013-10-11T07:16:42.78-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1106461",
+    "ThreadId": "461891",
+    "Html": "HI VictorWoo,\r<br />\nUI Automation works with those items whose property Visible is True. If a control is just out of screen or in the background, UI Automation could work with it.\r<br />\n<br />\nFor example, a simple Windows Forms form with a ListBox and ten items inside (the most of them are out of the list box border):<br />\n<pre><code>$list = Get-UIAWindow -Name listItemOutOfScreen | Get-UIAList;\n\n# the state of items:\n$list | Get-UIAListItem | Get-UIAListItemSelectionItemState;\n\n# selecting item one by one (by default, a list box is single-valued)\n$list | Get-UIAListItem | Invoke-UIAListItemSelectItem;\n\n# checking the state of items:\n$list | Get-UIAListItem | Get-UIAListItemSelectionItemState;\n# (in my case, only the tenth is selected)</code></pre>\n\nI need to mention that while UI Automation works with controls that are not shown to the user, Win32 often doesn't.\r<br />\nCmdlets with 'Control' in the name (Invoke-UIAControlClick, for example) won't work with such controls.\r<br />\n<br />\nThere is another pitfall: if a control doesn't support a pattern (pattern is a typical set of properties and methods the control could but not obliged to support), in several cmdlets are used Win32 clicks. For example, Invoke-UIA[Button,ListItem,etc]Click cmdlets use InvokePattern. If pattern fails or there is none, they use a Win32 click.\r<br />\nI mean, in such cases (mostly related to third-party or old controls), there is a cane for controls displayed and no cane for controls that are not shown to the user.\r<br />\n<br />\nHowever, there is ScrollItemPattern:<br />\n<pre><code># if we have name of the list item:\n$list | Get-UIAListItem -n *010* | Invoke-UIAListItemScrollItem;\n\n# if we don't have name:\n($list | Get-UIAListItem)[9] | Invoke-UIAListItemScrollItem;</code></pre>\n\nFinally, if list items are not of a usable type (i.e., they don't support patterns we used above), there is ScrollPattern for a container control (our list box):<br />\n<pre><code>$list | Invoke-UIAListScroll -VerticalPercent 100 -HorizontalPercent 0;</code></pre>\n\n",
+    "PostedDate": "2013-10-11T08:53:26.283-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": "2013-10-11T23:36:17.543-07:00"
+  }
+]

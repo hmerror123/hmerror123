@@ -1,0 +1,26 @@
+[
+  {
+    "Id": "1104127",
+    "ThreadId": "461298",
+    "Html": "I think web automation is as important as desktop application automation.\r<br />\nIs it possible for UIA to support web automation? Or is there any advice?\r<br />\nThanks.<br />\n",
+    "PostedDate": "2013-10-05T23:15:54.993-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1104132",
+    "ThreadId": "461298",
+    "Html": "You can use UIAutomation for web automation to some extent. However, there appears the speed problem: UIAutomation is getting slower geometrically with the number of controls (grid for desktop, many other controls for web).\r<br />\nFor &quot;small automation&quot; (a particular need) UIA might fit: I worked with SharePoint 2007 via IE and FF for very small tasks like getting a list of scrum stories, parse it and build a report.\r<br />\nChrome is worse here, though you may try link config:accessibility or its command-line brother.\r<br />\n<br />\nThese days Selenium and Selenium-based frameworks rule. There are a number of examples how to use Selenium dotNet (a name of archive) via PowerShell. There is also SePSX, but it has not been updated to the latest Selenium.<br />\n",
+    "PostedDate": "2013-10-05T23:27:40.477-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1104137",
+    "ThreadId": "461298",
+    "Html": "Thank you for your advice, I'll try Selenium.<br />\n",
+    "PostedDate": "2013-10-05T23:42:53.623-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

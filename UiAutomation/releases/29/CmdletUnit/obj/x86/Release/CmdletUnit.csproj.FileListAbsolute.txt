@@ -1,0 +1,5 @@
+C:\Projects\PS\UIAutomation.Old\CmdletUnit\bin\Release\CmdletUnit.dll
+C:\Projects\PS\UIAutomation.Old\CmdletUnit\bin\Release\nunit.framework.dll
+C:\Projects\PS\UIAutomation.Old\CmdletUnit\bin\Release\nunit.framework.xml
+C:\Projects\PS\UIAutomation.Old\CmdletUnit\obj\x86\Release\ResolveAssemblyReference.cache
+C:\Projects\PS\UIAutomation.Old\CmdletUnit\obj\x86\Release\CmdletUnit.dll

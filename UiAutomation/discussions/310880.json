@@ -1,0 +1,34 @@
+[
+  {
+    "Id": "761177",
+    "ThreadId": "310880",
+    "Html": "\r\n<p>The wish list</p>\r\n",
+    "PostedDate": "2012-02-13T11:59:55.737-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "804038",
+    "ThreadId": "310880",
+    "Html": "<p>Three features:</p>\n<p>1) Get-UIAWindows -PID 1234 is the same as Get-UIAWindow -ProcessName (Get-Process -Id 1234).ProcessName</p>\n<p>2) Get-UIAControl -Handle 12345678 is awaiting a wider explanation</p>\n<p>3) caching the Automation tree for speeding up the powershell code</p>\n<p>We'll conduct some experiments the next week or so, however, there should be understanding that if you have usability (small pieces of code with user-friendly names, with parameters - i.e. cmdlets), you should pay in some other way, somehow.</p>\n<p>Consider the typical case: we test an applications that works with network or web services, a database or the environment.</p>\n<p>we get the main window: Get-UIAWindow</p>\n<p>Cmdlets are not human beings: if they must cache the tree, they will cache the tree. Excluding the case where caching is manually controlled through a set of parameters. Okay, we cache the tree. now.</p>\n<p>After that we start some processing.</p>\n<p>One minute is gone, or twenty. We have the cache. Should we use the cache? For example, the application under test gathered the data, especially into its controls. There is no worth in our cache. The application changed significantly.</p>\n<p>&nbsp;</p>\n<p>Possibly, caching is a great feature if you need fast clicking. I mean combinatorial tests like calc.exe. The most of control are not subject of change all the time of the test suite, only the output box is being changed (okay, calc.exe also has from two  to four modes). These tests may be the reason to cache the tree.</p>\n<p>Nonetheless, the user can cache it manually:</p>\n<p>$calc = Get-UIAWindow -p calc;</p>\n<p>$b1 = Get-UIAButon -n 1;&nbsp;$b2 = Get-UIAButon -n 2;&nbsp;$b3 = Get-UIAButon -n 3;</p>\n<p>$b1 | Invoke-UIAButtonClick;</p>\n<p>Furthermore, you can wrap it inside functions:</p>\n<p>$script:calc = Get-UIAWindow -p calc;</p>\n<p>$script:b1 = Get-UIAButon -n 1;&nbsp;$script:b2 = Get-UIAButon -n 2;&nbsp;$script:b3 = Get-UIAButon -n 3;</p>\n<p>function sum {&nbsp;param($a, $b)</p>\n<p><span style=\"white-space: pre;\">&nbsp;</span>function selectButton {&nbsp;param($b)&nbsp;switch ($b){# return the button by name}}</p>\n<p>$null =&nbsp;$button1 = selectButton $a;</p>\n<p><span>&nbsp;</span><span style=\"white-space: pre;\"> $null =&nbsp;</span>$button2 = selectButton $b;</p>\n<p><span style=\"white-space: pre;\">$null =&nbsp;</span>Invoke-UIAButtonClick -InputObject $button1</p>\n<p><span style=\"white-space: pre;\">$null =&nbsp;</span>Invoke-UIAButtonClick -InputObject $buttonPlus</p>\n<p><span style=\"white-space: pre;\">$null =&nbsp;</span>Invoke-UIAButtonClick -InputObject $button2</p>\n<p><span style=\"white-space: pre;\">$null =&nbsp;</span>Invoke-UIAButtonClick -InputObject $buttonEquality</p>\n<p>$result = Get-UIATextBox ....</p>\n<p>return $result;</p>\n<p>}</p>\n<p>$sum = sum 1 2</p>",
+    "PostedDate": "2012-03-01T14:27:40.023-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "804733",
+    "ThreadId": "310880",
+    "Html": "<p>I just changed OnSuccessDelay to 5 and now its fast enough. The only thing I need now is to find the UIAwindow main object by processID, MainWindowHandleHWND or process object!</p>\r\n<p>I also have a problem. When I run the script under SchTasks in the background, it doesn't work.</p>",
+    "PostedDate": "2012-03-02T16:39:30.517-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "804807",
+    "ThreadId": "310880",
+    "Html": "<p>Okay, using concrete things like handles and PIDs makes sense in cases where the application under test (AUT) is a page in the browser, an MDi child or frame, or several instances of the AUT are permitted simultaneously.</p>\r\n<p>However, using PID or process is not allmighty thing:</p>\r\n<p>Start-Process calc -PassThru | Get-UIAWindow&nbsp;</p>\r\n<p>will work (not in the current version), but</p>\r\n<p>Get-UIAWindow -pid (Start-Process c:\\windows\\system32\\mmc.exe -PassThru).Id</p>\r\n<p>never will work since start-process returns not the same PID that we can see in the Task Manager.</p>\r\n<p>&nbsp;</p>\r\n<p>&nbsp;</p>\r\n<p>UIAutomaiton module/library (and GUI applications at all) won't work in the background, or on the locked screen, on before the user logged. I never investigate deeply into it, just dare think that it can't create the RootObject.</p>\r\n<p>In our tests we use hosts where the user already logged-in or with auto logon and no screensaver enabled.</p>\r\n<p>Possibly, it will work through a service interacting with the desktop (in some future release), but the user should be logged-in and the Windows GUI should be seen.</p>",
+    "PostedDate": "2012-03-03T00:03:02.003-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

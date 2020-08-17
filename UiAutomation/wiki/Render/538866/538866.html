@@ -1,0 +1,74 @@
+<div class="wikidoc">
+<p>Schematically, the Wizard cmdlets work in the typical sequence:</p>
+<p><strong>New-UIAWizard</strong> - creates a new wizard object, gives it the name and initial script (Start-Process of an independent wizard-application or click anywhere in the program to call an embedded wizard)</p>
+<p><strong>Add-UIAWizardStep</strong> - takes the wizard object through the pipeline (or the InputObject parameter), sets the name to a step and the order (not used in this version). After that ad the step to the wizard.</p>
+<p><strong>Remove-UIAWizardStep</strong> - removes a step from the collection</p>
+<p><strong>Get-UIAWizard</strong> - returns a wizard by name</p>
+<p><strong>Invoke-UIAWizard</strong> - start the wizard by running code in the start action, returns the wizard object.</p>
+<p><strong>Step-UIAWizard</strong> - performs the step given as a name. Firstly searches and waits for the condition from the parameter WaitCriteria, after that runs its step action. Returns the wizard object.</p>
+<div style="color:black; background-color:white">
+<pre>ipmo <span style="color:gray">-</span>Name <span style="color:orangered">$UIAmodule</span>; <span style="color:green"># path to the module</span>
+<span style="color:orangered">$VerbosePreference</span> <span style="color:gray">=</span> <span style="color:gray">[</span><span style="color:teal">System.Management.Automation.ActionPreference</span><span style="color:gray">]</span><span style="color:gray">::</span>Continue;
+
+<span style="color:green">#region Creating a wizard</span>
+Write<span style="color:gray">-</span>Host <span style="color:#a31515">&quot;=======================================================================================&quot;</span>;
+Write<span style="color:gray">-</span>Host <span style="color:#a31515">&quot;Creating a wizard`r`n&quot;</span>;
+New<span style="color:gray">-</span>UIAWizard <span style="color:gray">-</span>Name wzd <span style="color:gray">-</span>StartAction {Write<span style="color:gray">-</span>Host <span style="color:#a31515">&quot;starting the wizard code&quot;</span>;} | `
+	Add<span style="color:gray">-</span>UIAWizardStep <span style="color:gray">-</span>Name step1 <span style="color:gray">-</span>Order 10 <span style="color:gray">-</span>WaitCriteria @{Name<span style="color:gray">=</span><span style="color:#a31515">'welcomePane'</span>;IsEnabled<span style="color:gray">=</span><span style="color:orangered">$true</span>} <span style="color:gray">-</span>StepAction {Write<span style="color:gray">-</span>Host <span style="color:#a31515">&quot;step 1 code&quot;</span>;} | `
+	Add<span style="color:gray">-</span>UIAWizardStep <span style="color:gray">-</span>Name step2 <span style="color:gray">-</span>Order 20 <span style="color:gray">-</span>WaitCriteria @{Name<span style="color:gray">=</span><span style="color:#a31515">'I accept'</span>;IsEnabled<span style="color:gray">=</span><span style="color:orangered">$false</span>} <span style="color:gray">-</span>StepAction {Write<span style="color:gray">-</span>Host <span style="color:#a31515">&quot;step 2 code&quot;</span>;} | `
+	Add<span style="color:gray">-</span>UIAWizardStep <span style="color:gray">-</span>Name step3 <span style="color:gray">-</span>Order 30 <span style="color:gray">-</span>WaitCriteria @{Name<span style="color:gray">=</span><span style="color:#a31515">'User name'</span>;IsEnabled<span style="color:gray">=</span><span style="color:orangered">$true</span>},@{Name<span style="color:gray">=</span><span style="color:#a31515">'Organization'</span>;IsEnabled<span style="color:gray">=</span><span style="color:orangered">$true</span>} <span style="color:gray">-</span>StepAction {Write<span style="color:gray">-</span>Host <span style="color:#a31515">&quot;step 3&quot;</span>;},{Write<span style="color:gray">-</span>Host <span style="color:#a31515">&quot;step 3 code&quot;</span>;} | `
+	Remove<span style="color:gray">-</span>UIAWizardStep <span style="color:gray">-</span>Name step2 | `
+	Add<span style="color:gray">-</span>UIAWizardStep <span style="color:gray">-</span>Name step4 <span style="color:gray">-</span>Order 40 <span style="color:gray">-</span>WaitCriteria @{ControlType<span style="color:gray">=</span>Tree} <span style="color:gray">-</span>StepAction {Write<span style="color:gray">-</span>Host <span style="color:#a31515">&quot;step 4 code&quot;</span>;};
+<span style="color:green">#endregion Creating a wizard</span>
+
+<span style="color:green">#region Running the wizard</span>
+Write<span style="color:gray">-</span>Host <span style="color:#a31515">&quot;=======================================================================================&quot;</span>;
+Write<span style="color:gray">-</span>Host <span style="color:#a31515">&quot;Running the wizard`r`n&quot;</span>;
+Invoke<span style="color:gray">-</span>UIAWizard <span style="color:gray">-</span>Name wzd | `
+	Step<span style="color:gray">-</span>UIAWizard <span style="color:gray">-</span>Name step1 | `
+	Step<span style="color:gray">-</span>UIAWizard <span style="color:gray">-</span>Name step3 | `
+	Step<span style="color:gray">-</span>UIAWizard <span style="color:gray">-</span>Name step4 | `
+	Step<span style="color:gray">-</span>UIAWizard <span style="color:gray">-</span>Name step3 <span style="color:gray">-</span>Forward:<span style="color:orangered">$false</span> | `
+	Step<span style="color:gray">-</span>UIAWizard <span style="color:gray">-</span>Name step4;
+<span style="color:green">#endregion Running the wizard	</span>
+
+<span style="color:green">#region How to access and/or modify the variables</span>
+Write<span style="color:gray">-</span>Host <span style="color:#a31515">&quot;steps&quot;</span>;
+<span style="color:gray">[</span><span style="color:teal">UIAutomation.WizardCollection</span><span style="color:gray">]</span><span style="color:gray">::</span>Wizards<span style="color:gray">[</span><span style="color:teal">0</span><span style="color:gray">]</span>.Steps
+Write<span style="color:gray">-</span>Host <span style="color:#a31515">&quot;start action&quot;</span>;
+<span style="color:orangered">$wzd</span>.StartAction
+Write<span style="color:gray">-</span>Host <span style="color:#a31515">&quot;steps&quot;</span>;
+<span style="color:orangered">$wzd</span> <span style="color:gray">=</span> Get<span style="color:gray">-</span>UIAWizard <span style="color:gray">-</span>Name <span style="color:#a31515">&quot;wzd&quot;</span>;
+<span style="color:orangered">$wzd</span>.Steps
+Write<span style="color:gray">-</span>Host <span style="color:#a31515">&quot;step actions&quot;</span>;
+<span style="color:orangered">$wzd</span>.Steps<span style="color:gray">[</span><span style="color:teal">0</span><span style="color:gray">]</span>.StepAction
+<span style="color:orangered">$wzd</span>.Steps<span style="color:gray">[</span><span style="color:teal">1</span><span style="color:gray">]</span>.StepAction
+<span style="color:orangered">$wzd</span>.Steps<span style="color:gray">[</span><span style="color:teal">2</span><span style="color:gray">]</span>.StepAction
+Write<span style="color:gray">-</span>Host <span style="color:#a31515">&quot;fail - one step was removed in the example&quot;</span>;
+<span style="color:orangered">$wzd</span>.Steps<span style="color:gray">[</span><span style="color:teal">3</span><span style="color:gray">]</span>.StepAction
+<span style="color:green">#endregion How to access and/or modify the variables</span>
+</pre>
+</div>
+<p>There is an easy way to create a hashtable is to pipeline a window or a control to the ConvertTo-UIASearchCriteria cmdlet.</p>
+<p>This can be done as for one control:</p>
+<p></p>
+<div style="color:black; background-color:white">
+<pre>Get<span style="color:gray">-</span>UIAWindow <span style="color:gray">-</span>p <span style="color:orangered">$procName</span> | ConvertTo<span style="color:gray">-</span>UIASearchCriteria
+
+Get<span style="color:gray">-</span>UIAWindow <span style="color:gray">-</span>p <span style="color:orangered">$procName</span> | Get<span style="color:gray">-</span>UIAChildWindow | ConvertTo<span style="color:gray">-</span>UIASearchCriteria
+
+Get<span style="color:gray">-</span>UIAWindow <span style="color:gray">-</span>p <span style="color:orangered">$procName</span> | Get<span style="color:gray">-</span>UIAChildWindow | Get<span style="color:gray">-</span>UIAButton <span style="color:gray">-</span>Name OK | ConvertTo<span style="color:gray">-</span>UIASearchCriteria
+</pre>
+</div>
+<p></p>
+<p>as well for a bunch of controls:</p>
+<p></p>
+<div style="color:black; background-color:white">
+<pre>Get<span style="color:gray">-</span>UIAWindow <span style="color:gray">-</span>p <span style="color:orangered">$procName</span> | Get<span style="color:gray">-</span>UIAChildWindow | Get<span style="color:gray">-</span>UIAControlChildren | ConvertTo<span style="color:gray">-</span>UIASearchCriteria
+
+Get<span style="color:gray">-</span>UIAWindow <span style="color:gray">-</span>p <span style="color:orangered">$procName</span> | Get<span style="color:gray">-</span>UIAChildWindow | Get<span style="color:gray">-</span>UIAControlDescendants | ConvertTo<span style="color:gray">-</span>UIASearchCrite
+ria
+</pre>
+</div>
+<p></p>
+</div><div class="ClearBoth"></div>

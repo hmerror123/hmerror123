@@ -1,0 +1,26 @@
+[
+  {
+    "Id": "1134119",
+    "ThreadId": "472818",
+    "Html": "The documentation seems to indicate that you can specify a ControlType.  However it doesn't seem to work.  For example:\r<br />\n<br />\nGet-UIAControlChildren -ControlType Text #works and returns a list of Text elements\r<br />\nGet-UIAControlFirstChild -ControlType Text #fails to load the first from the above list  Appears to load the first child ignoring the filtering\r<br />\n<br />\nAm I missing something? \r<br />\n<br />\nVerbose is below.  Shows it doesn't pick up the filter properly:\r<br />\nVERBOSE: Get-UIAControlFirstChild: ControlType = System.String[]\r<br />\nVERBOSE: Get-UIAControlFirstChild: Class = \r<br />\nVERBOSE: Get-UIAControlFirstChild: Name = \r<br />\nVERBOSE: Get-UIAControlFirstChild: AutomationId = \r<br />\nVERBOSE: Get-UIAControlFirstChild: [checking the control] the input control is of the ControlType.Custom type\r<br />\nVERBOSE: Get-UIAControlFirstChild: outputting the object\r<br />\nVERBOSE: Get-UIAControlFirstChild: the output object is not null\r<br />\nVERBOSE: Get-UIAControlFirstChild: is going to run scriptblocks\r<br />\nVERBOSE: Get-UIAControlFirstChild: cmdlet is of the HasScriptBlockCmdletBase type\r<br />\nVERBOSE: Get-UIAControlFirstChild: run OnSuccess script blocks\r<br />\nVERBOSE: Get-UIAControlFirstChild: preparing scriptblocks\r<br />\nVERBOSE: Get-UIAControlFirstChild: scriptblocks were prepared\r<br />\nVERBOSE: Get-UIAControlFirstChild: running scriptblocks\r<br />\nVERBOSE: Get-UIAControlFirstChild: Scriptblocks finished successfully\r<br />\nVERBOSE: Get-UIAControlFirstChild: WriteObjectMethod045OnSuccessScreenshot UIAutomation\r<br />\nVERBOSE: Get-UIAControlFirstChild: cmdlet as HasTimeoutCmdletBase\r<br />\nVERBOSE: Get-UIAControlFirstChild: (CurrentData.CurrentWindow != null &amp;&amp; CurrentData.LastResult != null) || (outputObject as AutomationElement) != null\r<br />\nVERBOSE: Get-UIAControlFirstChild: sleeping if sleep time is provided\r<br />\nVERBOSE: Get-UIAControlFirstChild: outputting the result object\r<br />\nVERBOSE: Get-UIAControlFirstChild: getting the element again to ensure that it still exists\r<br />\nVERBOSE: Get-UIAControlFirstChild: System.Windows.Automation.AutomationElement\r<br />\nVERBOSE: Get-UIAControlFirstChild: returning the object<br />\n",
+    "PostedDate": "2013-12-10T19:05:39.357-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1134167",
+    "ThreadId": "472818",
+    "Html": "Hi TBlackbird,<br />\nthis is a bug.<br />\nAll three lines do the same:<br />\n<pre><code>Start-Process calc -PassThru | Get-UiaWindow | Get-UiaButton 1 | Get-UiaControlParent | Get-UiaControlFirstChild\nStart-Process calc -PassThru | Get-UiaWindow | Get-UiaButton 1 | Get-UiaControlParent | Get-UiaControlFirstChild -ControlType Button\nStart-Process calc -PassThru | Get-UiaWindow | Get-UiaButton 1 | Get-UiaControlParent | Get-UiaControlFirstChild -ControlType Text</code></pre>\n\n",
+    "PostedDate": "2013-12-10T23:38:31.167-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1134203",
+    "ThreadId": "472818",
+    "Html": "Yep, the TreeWalker, the thing we use here, does not support filtering by ControlType. It's just a parameter that inherited from above, namely the class from Get-Uia[ControlType] cmdlets grow. \r<br />\nThe parameter will be removed since 0.8.7 alpha 2 (the nearest version), thank you, TBlackbird.\r<br />\n<br />\nIf you need to get a child of a certain type, use the Get-UiaControlChildren cmdlet with the -ControlType parameter, and, starting from an item of the result, you could navigate on this level via Get-UiaControlPreviousSibling and Get-UiaControlNextSibling cmdlets.<br />\n",
+    "PostedDate": "2013-12-11T01:41:20.62-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

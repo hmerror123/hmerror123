@@ -1,0 +1,18 @@
+[
+  {
+    "Id": "1492439",
+    "ThreadId": "661248",
+    "Html": "I am trying to control on my local PC a remote application that is running on a remote PC.\r<br />\n<br />\nThe following code is working when controlling the same application locally.\r<br />\n<br />\nGet-UiaWindow -Class 'Window' -Name 'Archiver Collector Tool' |Get-UiaButton -AutomationId '_startButton' -Class 'Button' -Name 'Start'| Invoke-UiaButtonClick\r<br />\n<br />\nBut when trying to run it through invoke command on an open session (New-PSSession) it does not work.\r<br />\n<br />\nInvoke-Command -Session $job {Import-Module &quot;C:\\UIAutomation\\UIAutomation.dll&quot; ; Get-UiaWindow -Class 'Window' -Name 'Archiver Collector Tool'| get-UiaButton -AutomationId '_startButton' -Class 'Button' -Name 'Start'| Get-UiaText -Class 'TextBlock' -Name 'Start'}\r<br />\n<br />\nFollowing error is seen.\r<br />\n<br />\n_Failed to get window in 5000 milliseconds by: process name: '', process Id: , window title: 'Archiver Collector Tool', automationId: '', className: 'Window'.<br />\n<pre><code>+ CategoryInfo          : InvalidResult: (:) [Get-UiaWindow], Exception\n+ FullyQualifiedErrorId : FailedToGetWindow,UIAutomation.Commands.GetUiaWindowCommand\n+ PSComputerName        : remotePC</code></pre>\n\n",
+    "PostedDate": "2017-02-09T09:28:06.92-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1493393",
+    "ThreadId": "661248",
+    "Html": "Hi alangelier61,\r<br />\nthe PowerShell Remoting session works as a service and it's 'session 0'. In the session 0 there's no normal desktop and any used-side activity is limited. Moreover, the Microsoft UI Automaiton framework, the basement of UIAutomation PowerShell, has its own restriction that it doesn't work in general with what the user can't see. It's a consequence of the fact that Microsoft UI Automation is firstly an accessibility framework and it doesn't make sense to access anything the user can't access, and only the second goal initially was testing automation.\r<br />\n<br />\nTo be honest, a bit of functionality could work in session 0, for example, those parameters that initiate usage of Win32 API (the -Win32 parameter, for example). Anyway, it's not a good idea to rely on part of functionality.\r<br />\nThe way automators use more often is to use 1) RemoteApp or 2) autologon session with a script being run automatically<br />\n",
+    "PostedDate": "2017-02-28T07:08:34.64-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

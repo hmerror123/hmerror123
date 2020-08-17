@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <ProjectGuid>{526AD0F0-8A14-417F-816B-7FA9543561C4}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <OutputType>Library</OutputType>
+    <RootNamespace>UIAutomationTest</RootNamespace>
+    <AssemblyName>UIAutomationTest</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <NoStdLib>False</NoStdLib>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <RegisterForComInterop>False</RegisterForComInterop>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <BaseAddress>4194304</BaseAddress>
+    <FileAlignment>4096</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>Full</DebugType>
+    <Optimize>False</Optimize>
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <StartAction>Program</StartAction>
+    <StartProgram>C:\Program Files\NUnit 2.5.10\bin\net-2.0\nunit-x86.exe</StartProgram>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType>None</DebugType>
+    <Optimize>True</Optimize>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <DefineConstants>TRACE</DefineConstants>
+    <StartAction>Program</StartAction>
+    <StartProgram>C:\Program Files\NUnit 2.5.10\bin\net-2.0\nunit-x86.exe</StartProgram>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management.Automation" />
+    <Reference Include="System.Windows.Presentation">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationClient">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="UIAutomationTypes">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\UIAutomation\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Commands\Common\MoveUIACursorCommandTestFixture.cs" />
+    <Compile Include="Commands\Common\OutUIAControlAutomationIdCommandTextFixture.cs" />
+    <Compile Include="Commands\Common\OutUIAControlClassCommandTestFixture.cs" />
+    <Compile Include="Commands\Common\OutUIAControlTitleCommandTestFixture.cs" />
+    <Compile Include="Commands\Common\SetUIAFocusCommandTextFixture.cs" />
+    <Compile Include="Commands\Convert\ConvertFromUIADataGridCommandTestFixture.cs" />
+    <Compile Include="Commands\Convert\ConvertFromUIAListCommandTestFixture.cs" />
+    <Compile Include="Commands\Convert\ConvertFromUIATableCommandTestFixture.cs" />
+    <Compile Include="Commands\Discovery\GetUIAControlFromPointCommandTestFixture.cs" />
+    <Compile Include="Commands\Discovery\GetUIACurrentPatternCommandTestFixture.cs" />
+    <Compile Include="Commands\Discovery\GetUIACurrentPatternFromPointCommandTestFixture.cs" />
+    <Compile Include="Commands\Patern\GetUIAGridCellTestFixture.cs" />
+    <Compile Include="Commands\Patern\GetUIAGridRowCommandTestFixture.cs" />
+    <Compile Include="Commands\Patern\InvokeUIACollapsePatternCommandTestFixture.cs" />
+    <Compile Include="Commands\Patern\InvokeUIAExpandPatternCommandTestFixture.cs" />
+    <Compile Include="Commands\Patern\InvokeUIAInvokePatternCommandTestFixture.cs" />
+    <Compile Include="Commands\Patern\InvokeUIASelectionItemPatternCommandTestFixture.cs" />
+    <Compile Include="Commands\Patern\InvokeUIATogglePatternCommandTestFixture.cs" />
+    <Compile Include="Commands\Patern\InvokeUIATransformPatternMoveCommandTestFixture.cs" />
+    <Compile Include="Commands\Patern\InvokeUIATransformPatternResizeCommandTestFixture.cs" />
+    <Compile Include="Commands\Patern\InvokeUIATransformPatternRotateCommandTestFixture.cs" />
+    <Compile Include="Commands\Patern\InvokeUIAValuePatternGetCommandTestFixture.cs" />
+    <Compile Include="Commands\Patern\InvokeUIAValuePatternSetCommandTestFixture.cs" />
+    <Compile Include="Commands\Patern\InvokeUIAWindowPatternCommandTestFixture.cs" />
+    <Compile Include="Commands\Get\SelectUIAControlCommandTestFixture.cs" />
+    <Compile Include="Commands\Get\SelectUIAControlsCommandTestFixture.cs" />
+    <Compile Include="Commands\Get\SelectUIAWindowCommandTestFixture.cs" />
+    <Compile Include="Commands\Get\SelectUIAWindowsCommandTestFixture.cs" />
+    <Compile Include="Commands\Transcript\StartUIATranscriptCommandTestFixture.cs" />
+    <Compile Include="Commands\Transcript\StopUIATranscriptCommandTestFixture.cs" />
+    <Compile Include="Commands\Wait\WaitUIAControlIsEnabledCommandTestFixture.cs" />
+    <Compile Include="Helpers\CommonCmdletBaseTestFixture.cs" />
+    <Compile Include="StartUp.cs" />
+    <Compile Include="TestClasses.cs" />
+    <Compile Include="TestRunspace.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UIAutomationTestForms\UIAutomationTestForms.csproj">
+      <Project>{93D529FA-32F9-41AA-BCF9-6271572503CA}</Project>
+      <Name>UIAutomationTestForms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UIAutomation\UIAutomation.csproj">
+      <Project>{BF63F595-4A58-49E8-97F2-7701F51F0CD1}</Project>
+      <Name>UIAutomation</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Commands" />
+    <Folder Include="Commands\Common" />
+    <Folder Include="Commands\Discovery" />
+    <Folder Include="Commands\Convert" />
+    <Folder Include="Commands\Wait" />
+    <Folder Include="Commands\Transcript" />
+    <Folder Include="Commands\Get" />
+    <Folder Include="Commands\Patern" />
+    <Folder Include="Helpers" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+  <PropertyGroup>
+    <PostBuildEvent>rem D:\_test_\testproject.cmd</PostBuildEvent>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,10 @@
+[
+  {
+    "Id": "1278103",
+    "ThreadId": "554312",
+    "Html": "Have you looked into solving the issues with UI Automation working through RDP sessions reliably or made it work without the window having focus? Is the UI Automation Framework itself the issue?\r<br />\n<br />\nI had to solve that problem a few years ago and I did so with a scripting tool called AutoIT. They have the standard SendKey functions but they have a another one called &quot;ControlSend&quot; that sends the messages directly to the window. That made it work with RDP minimized or &quot;disconnected&quot; for true automation. The benefit even made it possible where the window didn't have to be active/focus so I can do other things as well.\r<br />\n<br />\nFor various reasons, I would love to see that capability in these extensions so that I can leverage PowerShell fully for my automation needs. I know not all types of controls may work but the major ones should. \r<br />\n<br />\nThe link to the AutoIT function is below:\r<br />\n<a href=\"http://www.autoitscript.com/autoit3/docs/functions/ControlSend.htm\" rel=\"nofollow\">http://www.autoitscript.com/autoit3/docs/functions/ControlSend.htm</a><br />\n",
+    "PostedDate": "2014-07-27T01:24:22.817-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

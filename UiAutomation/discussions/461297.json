@@ -1,0 +1,50 @@
+[
+  {
+    "Id": "1104126",
+    "ThreadId": "461297",
+    "Html": "I think the highlight box is useful in debug process.\r<br />\nBut <strong>after</strong> execution, the box remains there, which is annoying.\r<br />\nIs there any way to turn it off, manually (just one time) by a command?<br />\n",
+    "PostedDate": "2013-10-05T23:12:16.577-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1104129",
+    "ThreadId": "461297",
+    "Html": "At any time, you could use these setting<br />\n<pre><code>[UIAutomation.Preferences]::Highlight\n[UIAutomation.Preferences]::HighlightParent</code></pre>\n\nMany cmdlets have the -Highlight parameter (though I'm not sure that it still works):<br />\n<pre><code>Get-UIAButton -Name aaaa -Highlight:$false</code></pre>\n\nIn practice, highlighting is useful. A typical situation that test found a control, highlighted it, searches for the next control (it's gone for some reason), test fails and saves the screenshot of the full screen with the last successful control bordered.<br />\n",
+    "PostedDate": "2013-10-05T23:19:20.133-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1104139",
+    "ThreadId": "461297",
+    "Html": "I mean after debugging, the  boxes still lies there, I can't drive it away, can I?\r<br />\nFor example:<br />\n<pre><code>[UIAutomation.Preferences]::Highlight = $true\n[UIAutomation.Preferences]::HighlightParent = $true\n\n# test code...\n\n[UIAutomation.Preferences]::Highlight = $false\n[UIAutomation.Preferences]::HighlightParent = $false</code></pre>\n\nAfter execution, the boxes still there. Will there be a Cmdlet like<br />\n<pre><code>Clear-UIAHighlight</code></pre>\n\nThat become effect immediately?<br />\n",
+    "PostedDate": "2013-10-05T23:57:51.77-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1104144",
+    "ThreadId": "461297",
+    "Html": "the Hide-UIACurrentHighlighter cmdlet\r<br />\n<br />\nUse the following construct to express your wishes :)<br />\n<pre><code>Get-Command *your wish*</code></pre>\n\nfor example<br />\n<pre><code>Get-Command *highlight*</code></pre>\n\n",
+    "PostedDate": "2013-10-06T00:12:40.66-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": "2013-10-06T00:28:23.007-07:00"
+  },
+  {
+    "Id": "1104148",
+    "ThreadId": "461297",
+    "Html": "Yes, bingo, thanks!<br />\n",
+    "PostedDate": "2013-10-06T00:28:53.473-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1104172",
+    "ThreadId": "461297",
+    "Html": "After practicing it a while, I think Clear-UIAHighlight is not convenient, though, specially in PowerShell command line. It needs manual intervention every time.\r<br />\nIf it can be turned off automatically after execution in 30 sec, it must awesome, not disturbing.<br />\n",
+    "PostedDate": "2013-10-06T02:26:28.307-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

@@ -1,0 +1,164 @@
+<div class="wikidoc"><div style="color:Black;background-color:White;"><pre>
+ipmo UIAutomation;
+
+<span style="color:Gray;">[</span><span style="color:Teal;">scriptblock</span><span style="color:Gray;">]</span><span style="color:OrangeRed;">$backwardAction</span> <span style="color:Gray;">=</span> { Get<span style="color:Gray;">-</span>UIAButton <span style="color:Gray;">-</span>AutomationId <span style="color:#A31515;">&#39;backbutton&#39;</span> | Invoke<span style="color:Gray;">-</span>UIAButtonClick; };
+<span style="color:Gray;">[</span><span style="color:Teal;">scriptblock</span><span style="color:Gray;">]</span><span style="color:OrangeRed;">$cancelAction</span> <span style="color:Gray;">=</span> { Get<span style="color:Gray;">-</span>UIAButton <span style="color:Gray;">-</span>AutomationId <span style="color:#A31515;">&#39;cancelbutton&#39;</span> | Invoke<span style="color:Gray;">-</span>UIAButtonClick; };
+<span style="color:Gray;">[</span><span style="color:Teal;">scriptblock</span><span style="color:Gray;">]</span><span style="color:OrangeRed;">$getWindowAction</span> <span style="color:Gray;">=</span> { Wait<span style="color:Gray;">-</span>UIAWindow <span style="color:Gray;">-</span>pn <span style="color:#A31515;">&quot;rundll32&quot;</span> <span style="color:Gray;">-</span>Seconds 10; };
+<span style="color:Gray;">[</span><span style="color:Teal;">UIAutomation.WizardCollection</span><span style="color:Gray;">]</span><span style="color:Gray;">::</span>ResetData();
+
+New<span style="color:Gray;">-</span>UIAWizard <span style="color:Gray;">-</span>Name AddPrinterWizard `
+    <span style="color:Gray;">-</span>GetWindowAction <span style="color:OrangeRed;">$getWindowAction</span> `
+    <span style="color:Gray;">-</span>StartAction { Start<span style="color:Gray;">-</span>Process <span style="color:#A31515;">&quot;$($env:SystemRoot)\System32\rundll32.exe&quot;</span> <span style="color:Gray;">-</span>ArgumentList <span style="color:#A31515;">&quot;printui.dll`,PrintUIEntry&quot;</span>,<span style="color:#A31515;">&quot;/il&quot;</span> <span style="color:Gray;">-</span>PassThru | Get<span style="color:Gray;">-</span>UIAWindow; } | `
+    Add<span style="color:Gray;">-</span>UIAWizardStep <span style="color:Gray;">-</span>Name Step01Initial `
+        <span style="color:Gray;">-</span>Description <span style="color:#A31515;">&quot;Searching for available printers...&quot;</span> `
+        <span style="color:Gray;">-</span>SearchCriteria @{controlType<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;pane&quot;</span>;class<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;Button&quot;</span>;name<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;*the*printer*that*i*want*isn&#39;t*listed*&quot;</span>} `
+        <span style="color:Gray;">-</span>StepForwardAction { Get<span style="color:Gray;">-</span>UIAPane <span style="color:Gray;">-</span>Name <span style="color:#A31515;">&quot;*the*printer*that*i*want*isn&#39;t*listed*&quot;</span> | Invoke<span style="color:Gray;">-</span>UIAControlClick; } `
+        <span style="color:Gray;">-</span>StepBackwardAction {} `
+        <span style="color:Gray;">-</span>StepCancelAction <span style="color:OrangeRed;">$cancelAction</span> | `
+    Add<span style="color:Gray;">-</span>UIAWizardStep <span style="color:Gray;">-</span>Name Step02Initial2 `
+        <span style="color:Gray;">-</span>Description <span style="color:#A31515;">&quot;No printers were found.&quot;</span> `
+        <span style="color:Gray;">-</span>SearchCriteria @{controlType<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;pane&quot;</span>;class<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;Button&quot;</span>;name<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;*the*printer*that*i*want*isn&#39;t*listed*&quot;</span>} `
+        <span style="color:Gray;">-</span>StepForwardAction { Get<span style="color:Gray;">-</span>UIAPane <span style="color:Gray;">-</span>Name <span style="color:#A31515;">&quot;*the*printer*that*i*want*isn&#39;t*listed*&quot;</span> | Invoke<span style="color:Gray;">-</span>UIAControlClick; } `
+        <span style="color:Gray;">-</span>StepBackwardAction {} `
+        <span style="color:Gray;">-</span>StepCancelAction <span style="color:OrangeRed;">$cancelAction</span> | `
+    Add<span style="color:Gray;">-</span>UIAWizardStep <span style="color:Gray;">-</span>Name Step03ChooseSettings `
+        <span style="color:Gray;">-</span>Description <span style="color:#A31515;">&quot;Find a printer by other options&quot;</span> `
+        <span style="color:Gray;">-</span>SearchCriteria @{controlType<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;radiobutton&quot;</span>;name<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;*add*manual*settings*&quot;</span>} `
+        <span style="color:Gray;">-</span>StepForwardAction { 
+            Get<span style="color:Gray;">-</span>UIARadioButton <span style="color:Gray;">-</span>Name <span style="color:#A31515;">&quot;*add*manual*settings*&quot;</span> | Set<span style="color:Gray;">-</span>UIARadioButtonToggleState <span style="color:OrangeRed;">$true</span>;
+            Get<span style="color:Gray;">-</span>UIAButton <span style="color:Gray;">-</span>AutomationId <span style="color:#A31515;">&#39;nextbutton&#39;</span> | Invoke<span style="color:Gray;">-</span>UIAButtonClick;
+                           } `
+        <span style="color:Gray;">-</span>StepBackwardAction <span style="color:OrangeRed;">$backwardAction</span> `
+        <span style="color:Gray;">-</span>StepCancelAction <span style="color:OrangeRed;">$cancelAction</span> | `
+    Add<span style="color:Gray;">-</span>UIAWizardStep <span style="color:Gray;">-</span>Name Step04ChoosePort `
+        <span style="color:Gray;">-</span>Description <span style="color:#A31515;">&quot;Choose a printer port&quot;</span> `
+        <span style="color:Gray;">-</span>SearchCriteria @{controlType<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;RadioButton&quot;</span>;name<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;*create*new*port*&quot;</span>} `
+        <span style="color:Gray;">-</span>StepForwardAction {
+            Get<span style="color:Gray;">-</span>UIARadioButton <span style="color:Gray;">-</span>Name <span style="color:#A31515;">&quot;*create*new*port*&quot;</span> | Set<span style="color:Gray;">-</span>UIARadioButtonToggleState <span style="color:OrangeRed;">$true</span>;
+            Get<span style="color:Gray;">-</span>UIAComboBox <span style="color:Gray;">-</span>Name <span style="color:#A31515;">&quot;*type*of*port*&quot;</span> | Get<span style="color:Gray;">-</span>UIAButton | Invoke<span style="color:Gray;">-</span>UIAButtonClick;
+            Get<span style="color:Gray;">-</span>UIAComboBox <span style="color:Gray;">-</span>Name <span style="color:#A31515;">&quot;*type*of*port*&quot;</span> | Get<span style="color:Gray;">-</span>UIAListItem <span style="color:Gray;">-</span>Name <span style="color:#A31515;">&quot;*standard*tcp*port*&quot;</span> | Invoke<span style="color:Gray;">-</span>UIAListItemClick;
+            sleep <span style="color:Gray;">-</span>Seconds 2;
+            Get<span style="color:Gray;">-</span>UIAButton <span style="color:Gray;">-</span>AutomationId <span style="color:#A31515;">&#39;nextbutton&#39;</span> | Invoke<span style="color:Gray;">-</span>UIAButtonClick;
+                           } `
+        <span style="color:Gray;">-</span>StepBackwardAction <span style="color:OrangeRed;">$backwardAction</span> `
+        <span style="color:Gray;">-</span>StepCancelAction <span style="color:OrangeRed;">$cancelAction</span> | `
+    Add<span style="color:Gray;">-</span>UIAWizardStep <span style="color:Gray;">-</span>Name Step05PrinterData `
+        <span style="color:Gray;">-</span>Description <span style="color:#A31515;">&quot;Type a printer hostname or IP address&quot;</span> `
+        <span style="color:Gray;">-</span>SearchCriteria @{controlType<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;text&quot;</span>;name<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;*hostname*or*ip*address*&quot;</span>} `
+        <span style="color:Gray;">-</span>StepForwardAction {
+            <span style="color:Blue;">param</span>(
+                  <span style="color:Gray;">[</span><span style="color:Teal;">string</span><span style="color:Gray;">]</span><span style="color:OrangeRed;">$PrinterName</span>,
+                  <span style="color:Gray;">[</span><span style="color:Teal;">string</span><span style="color:Gray;">]</span><span style="color:OrangeRed;">$PortName</span>
+                  )
+            Get<span style="color:Gray;">-</span>UIAEdit <span style="color:Gray;">-</span>AutomationId <span style="color:#A31515;">&#39;4690&#39;</span> | Set<span style="color:Gray;">-</span>UIAEditText <span style="color:OrangeRed;">$PrinterName</span>;
+            Get<span style="color:Gray;">-</span>UIAEdit <span style="color:Gray;">-</span>AutomationId <span style="color:#A31515;">&#39;4692&#39;</span> | Set<span style="color:Gray;">-</span>UIAEditText <span style="color:OrangeRed;">$PortName</span>;
+            Get<span style="color:Gray;">-</span>UIACheckBox <span style="color:Gray;">-</span>Name <span style="color:#A31515;">&quot;*query*&quot;</span> | Set<span style="color:Gray;">-</span>UIACheckBoxToggleState <span style="color:OrangeRed;">$true</span>;
+            Get<span style="color:Gray;">-</span>UIAButton <span style="color:Gray;">-</span>AutomationId <span style="color:#A31515;">&#39;nextbutton&#39;</span> | Invoke<span style="color:Gray;">-</span>UIAButtonClick;
+                           } `
+        <span style="color:Gray;">-</span>StepBackwardAction <span style="color:OrangeRed;">$backwardAction</span> `
+        <span style="color:Gray;">-</span>StepCancelAction <span style="color:OrangeRed;">$cancelAction</span> | `
+    Add<span style="color:Gray;">-</span>UIAWizardStep <span style="color:Gray;">-</span>Name Step06DetectingPort `
+        <span style="color:Gray;">-</span>Description <span style="color:#A31515;">&quot;Detecting TCP/IP port&quot;</span> `
+        <span style="color:Gray;">-</span>SearchCriteria @{controlType<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;text&quot;</span>;name<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;*Detecting*the*TCP/IP*port*&quot;</span>} `
+        <span style="color:Gray;">-</span>StepForwardAction {} `
+        <span style="color:Gray;">-</span>StepBackwardAction {} `
+        <span style="color:Gray;">-</span>StepCancelAction <span style="color:OrangeRed;">$cancelAction</span> | `
+    Add<span style="color:Gray;">-</span>UIAWizardStep <span style="color:Gray;">-</span>Name Step07AdditionalPortInformation `
+        <span style="color:Gray;">-</span>Description <span style="color:#A31515;">&quot;Additional port information required&quot;</span> `
+        <span style="color:Gray;">-</span>SearchCriteria @{controlType<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;text&quot;</span>;name<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;*The*device*is*not*found*on*the*network*&quot;</span>} `
+        <span style="color:Gray;">-</span>StepForwardAction {
+            Get<span style="color:Gray;">-</span>UIARadioButton <span style="color:Gray;">-</span>Name <span style="color:#A31515;">&quot;Standard&quot;</span> | Set<span style="color:Gray;">-</span>UIARadioButtonToggleState <span style="color:OrangeRed;">$true</span>;
+            Get<span style="color:Gray;">-</span>UIAComboBox <span style="color:Gray;">-</span>Name <span style="color:#A31515;">&quot;*Device*type*&quot;</span> | Get<span style="color:Gray;">-</span>UIAListItem <span style="color:Gray;">-</span>Name <span style="color:#A31515;">&quot;*generic*&quot;</span> | Invoke<span style="color:Gray;">-</span>UIAListItemSelectItem <span style="color:#A31515;">&quot;*generic*&quot;</span>;
+            Get<span style="color:Gray;">-</span>UIAButton <span style="color:Gray;">-</span>AutomationId <span style="color:#A31515;">&#39;nextbutton&#39;</span> | Invoke<span style="color:Gray;">-</span>UIAButtonClick;
+                           } `
+        <span style="color:Gray;">-</span>StepBackwardAction <span style="color:OrangeRed;">$backwardAction</span> `
+        <span style="color:Gray;">-</span>StepCancelAction <span style="color:OrangeRed;">$cancelAction</span> | `
+    Add<span style="color:Gray;">-</span>UIAWizardStep <span style="color:Gray;">-</span>Name Step08DetectingDriverModel `
+        <span style="color:Gray;">-</span>Description <span style="color:#A31515;">&quot;Detecting the driver model...&quot;</span> `
+        <span style="color:Gray;">-</span>SearchCriteria @{controlType<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;text&quot;</span>;name<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;*Windows*is*communicating*with*the*printer*&quot;</span>} `
+        <span style="color:Gray;">-</span>StepForwardAction {} `
+        <span style="color:Gray;">-</span>StepBackwardAction {} `
+        <span style="color:Gray;">-</span>StepCancelAction <span style="color:OrangeRed;">$cancelAction</span> | `
+    Add<span style="color:Gray;">-</span>UIAWizardStep <span style="color:Gray;">-</span>Name Step09InstallPrinterDriver `
+        <span style="color:Gray;">-</span>Description <span style="color:#A31515;">&quot;Install the printer driver&quot;</span> `
+        <span style="color:Gray;">-</span>SearchCriteria @{controlType<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;text&quot;</span>;name<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;*choose*your*printer*from*the*list*&quot;</span>} `
+        <span style="color:Gray;">-</span>StepForwardAction {
+            <span style="color:Blue;">param</span>(
+                  <span style="color:Gray;">[</span><span style="color:Teal;">string</span><span style="color:Gray;">]</span><span style="color:OrangeRed;">$PrinterVendor</span>,
+                  <span style="color:Gray;">[</span><span style="color:Teal;">string</span><span style="color:Gray;">]</span><span style="color:OrangeRed;">$PrinterModel</span>
+                  )
+            Get<span style="color:Gray;">-</span>UIADataGrid <span style="color:Gray;">-</span>AutomationId <span style="color:#A31515;">&#39;1580&#39;</span> <span style="color:Gray;">-</span>Class <span style="color:#A31515;">&#39;SysListView32&#39;</span> | Get<span style="color:Gray;">-</span>UIADataItem <span style="color:Gray;">-</span>Name <span style="color:#A31515;">&#39;Canon&#39;</span> | Invoke<span style="color:Gray;">-</span>UIADataItemSelectItem <span style="color:#A31515;">&quot;$($PrinterVendor)&quot;</span>;
+            Get<span style="color:Gray;">-</span>UIADataGrid <span style="color:Gray;">-</span>AutomationId <span style="color:#A31515;">&#39;1581&#39;</span> <span style="color:Gray;">-</span>Class <span style="color:#A31515;">&#39;SysListView32&#39;</span> | Get<span style="color:Gray;">-</span>UIADataItem <span style="color:Gray;">-</span>Name <span style="color:#A31515;">&#39;*0303*&#39;</span> | Invoke<span style="color:Gray;">-</span>UIADataItemSelectItem <span style="color:#A31515;">&quot;$($PrinterModel)&quot;</span>;
+            Get<span style="color:Gray;">-</span>UIAButton <span style="color:Gray;">-</span>AutomationId <span style="color:#A31515;">&#39;nextbutton&#39;</span> | Invoke<span style="color:Gray;">-</span>UIAButtonClick;
+                           } `
+        <span style="color:Gray;">-</span>StepBackwardAction <span style="color:OrangeRed;">$backwardAction</span> `
+        <span style="color:Gray;">-</span>StepCancelAction <span style="color:OrangeRed;">$cancelAction</span> | `
+    Add<span style="color:Gray;">-</span>UIAWizardStep <span style="color:Gray;">-</span>Name Step10DriverVersion `
+        <span style="color:Gray;">-</span>Description <span style="color:#A31515;">&quot;Which version of the driver do you want to use?&quot;</span> `
+        <span style="color:Gray;">-</span>SearchCriteria @{controlType<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;text&quot;</span>;name<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;*Windows*detected*driver*already*installed*printer*&quot;</span>} `
+        <span style="color:Gray;">-</span>StepForwardAction {
+            Get<span style="color:Gray;">-</span>UIARadioButton <span style="color:Gray;">-</span>Name <span style="color:#A31515;">&#39;*Use*driver*currently*installed*recommended*&#39;</span> | Set<span style="color:Gray;">-</span>UIARadioButtonToggleState <span style="color:OrangeRed;">$true</span>;
+            Get<span style="color:Gray;">-</span>UIAButton <span style="color:Gray;">-</span>AutomationId <span style="color:#A31515;">&#39;nextbutton&#39;</span> | Invoke<span style="color:Gray;">-</span>UIAButtonClick;
+                           } `
+        <span style="color:Gray;">-</span>StepBackwardAction <span style="color:OrangeRed;">$backwardAction</span> `
+        <span style="color:Gray;">-</span>StepCancelAction <span style="color:OrangeRed;">$cancelAction</span> | `
+    Add<span style="color:Gray;">-</span>UIAWizardStep <span style="color:Gray;">-</span>Name Step11PrinterName `
+        <span style="color:Gray;">-</span>Description <span style="color:#A31515;">&quot;Type a printer name&quot;</span> `
+        <span style="color:Gray;">-</span>SearchCriteria @{controlType<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;text&quot;</span>;name<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;*printer*name*:*&quot;</span>} `
+        <span style="color:Gray;">-</span>StepForwardAction {
+            <span style="color:Blue;">param</span>(
+                  <span style="color:Gray;">[</span><span style="color:Teal;">string</span><span style="color:Gray;">]</span><span style="color:OrangeRed;">$PrinterName</span>
+                  )
+            Get<span style="color:Gray;">-</span>UIAEdit <span style="color:Gray;">-</span>AutomationId <span style="color:#A31515;">&#39;1046&#39;</span> | Set<span style="color:Gray;">-</span>UIAEditText <span style="color:#A31515;">&quot;$($PrinterName)&quot;</span>;
+            Get<span style="color:Gray;">-</span>UIAButton <span style="color:Gray;">-</span>AutomationId <span style="color:#A31515;">&#39;nextbutton&#39;</span> | Invoke<span style="color:Gray;">-</span>UIAButtonClick;
+                           } `
+        <span style="color:Gray;">-</span>StepBackwardAction <span style="color:OrangeRed;">$backwardAction</span> `
+        <span style="color:Gray;">-</span>StepCancelAction <span style="color:OrangeRed;">$cancelAction</span> | `
+    Add<span style="color:Gray;">-</span>UIAWizardStep <span style="color:Gray;">-</span>Name Step12InstallingDriver `
+        <span style="color:Gray;">-</span>Description <span style="color:#A31515;">&quot;&quot;</span> `
+        <span style="color:Gray;">-</span>SearchCriteria @{controlType<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;text&quot;</span>;name<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;*installing*&quot;</span>} `
+        <span style="color:Gray;">-</span>StepForwardAction {} `
+        <span style="color:Gray;">-</span>StepBackwardAction {} `
+        <span style="color:Gray;">-</span>StepCancelAction <span style="color:OrangeRed;">$cancelAction</span> | `
+    Add<span style="color:Gray;">-</span>UIAWizardStep <span style="color:Gray;">-</span>Name Step13PrinterSharing `
+        <span style="color:Gray;">-</span>Description <span style="color:#A31515;">&quot;Printer Sharing&quot;</span> `
+        <span style="color:Gray;">-</span>SearchCriteria @{controlType<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;radiobutton&quot;</span>;name<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;*share*printer*&quot;</span>} `
+        <span style="color:Gray;">-</span>StepForwardAction {
+            <span style="color:Blue;">param</span>(
+                  <span style="color:Gray;">[</span><span style="color:Teal;">string</span><span style="color:Gray;">]</span><span style="color:OrangeRed;">$ShareName</span>,
+                  <span style="color:Gray;">[</span><span style="color:Teal;">string</span><span style="color:Gray;">]</span><span style="color:OrangeRed;">$Location</span>,
+                  <span style="color:Gray;">[</span><span style="color:Teal;">string</span><span style="color:Gray;">]</span><span style="color:OrangeRed;">$Comment</span>
+                  )
+            Get<span style="color:Gray;">-</span>UIARadioButton <span style="color:Gray;">-</span>Name <span style="color:#A31515;">&quot;*share*printer*others*can*find*&quot;</span> | Set<span style="color:Gray;">-</span>UIARadioButtonToggleState <span style="color:OrangeRed;">$true</span>;
+            Get<span style="color:Gray;">-</span>UIAEdit <span style="color:Gray;">-</span>AutomationId <span style="color:#A31515;">&#39;3302&#39;</span> | Set<span style="color:Gray;">-</span>UIAEditText <span style="color:#A31515;">&quot;$($ShareName)&quot;</span>;
+            Get<span style="color:Gray;">-</span>UIAEdit <span style="color:Gray;">-</span>AutomationId <span style="color:#A31515;">&#39;4553&#39;</span> | Set<span style="color:Gray;">-</span>UIAEditText <span style="color:#A31515;">&quot;$($Location)&quot;</span>;
+            Get<span style="color:Gray;">-</span>UIAEdit <span style="color:Gray;">-</span>AutomationId <span style="color:#A31515;">&#39;4552&#39;</span> | Set<span style="color:Gray;">-</span>UIAEditText <span style="color:#A31515;">&quot;$($Comment)&quot;</span>;
+            Get<span style="color:Gray;">-</span>UIAButton <span style="color:Gray;">-</span>AutomationId <span style="color:#A31515;">&#39;nextbutton&#39;</span> | Invoke<span style="color:Gray;">-</span>UIAButtonClick;
+                           } `
+        <span style="color:Gray;">-</span>StepBackwardAction <span style="color:OrangeRed;">$backwardAction</span> `
+        <span style="color:Gray;">-</span>StepCancelAction <span style="color:OrangeRed;">$cancelAction</span> | `
+    Add<span style="color:Gray;">-</span>UIAWizardStep <span style="color:Gray;">-</span>Name Step14Finish `
+        <span style="color:Gray;">-</span>Description <span style="color:#A31515;">&quot;&quot;</span> `
+        <span style="color:Gray;">-</span>SearchCriteria @{controlType<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;button&quot;</span>;name<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;*finish*&quot;</span>} `
+        <span style="color:Gray;">-</span>StepForwardAction {
+            <span style="color:Blue;">try</span> {
+                Get<span style="color:Gray;">-</span>UIACheckBox <span style="color:Gray;">-</span>Name <span style="color:#A31515;">&quot;*set*as*the*default*printer*&quot;</span> | Set<span style="color:Gray;">-</span>UIACheckBoxToggleState <span style="color:OrangeRed;">$true</span>;
+            }
+            <span style="color:Blue;">catch</span> {}
+            Get<span style="color:Gray;">-</span>UIAButton <span style="color:Gray;">-</span>AutomationId <span style="color:#A31515;">&#39;finishbutton&#39;</span> | Invoke<span style="color:Gray;">-</span>UIAButtonClick;
+                           } `
+        <span style="color:Gray;">-</span>StepBackwardAction <span style="color:OrangeRed;">$backwardAction</span> `
+        <span style="color:Gray;">-</span>StepCancelAction <span style="color:OrangeRed;">$cancelAction</span>;
+
+    Invoke<span style="color:Gray;">-</span>UIAWizard <span style="color:Gray;">-</span>Name AddPrinterWizard `
+        <span style="color:Gray;">-</span>Parameters @{step<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;Step05PrinterData&quot;</span>;action<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;forward&quot;</span>;parameters<span style="color:Gray;">=</span>@(<span style="color:#A31515;">&quot;printer_1&quot;</span>,<span style="color:#A31515;">&quot;port_1&quot;</span>)},
+                    @{step<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;Step09InstallPrinterDriver&quot;</span>;action<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;forward&quot;</span>;parameters<span style="color:Gray;">=</span>@(<span style="color:#A31515;">&#39;Canon&#39;</span>,<span style="color:#A31515;">&#39;*0303*&#39;</span>)},
+                    @{step<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;Step11PrinterName&quot;</span>;action<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;forward&quot;</span>;parameters<span style="color:Gray;">=</span>@(<span style="color:#A31515;">&quot;one more printer&quot;</span>)},
+                    @{step<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;Step13PrinterSharing&quot;</span>;action<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;forward&quot;</span>;parameters<span style="color:Gray;">=</span>@(<span style="color:#A31515;">&#39;share$$&#39;</span>,<span style="color:#A31515;">&#39;location01&#39;</span>,<span style="color:#A31515;">&#39;my comment&#39;</span>)} <span style="color:Gray;">-</span>Verbose;
+
+    Invoke<span style="color:Gray;">-</span>UIAWizard <span style="color:Gray;">-</span>Name AddPrinterWizard `
+        <span style="color:Gray;">-</span>Parameters @{step<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;Step05PrinterData&quot;</span>;action<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;forward&quot;</span>;parameters<span style="color:Gray;">=</span>@(<span style="color:#A31515;">&quot;printer_2&quot;</span>,<span style="color:#A31515;">&quot;port_2&quot;</span>)},
+                    @{step<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;Step09InstallPrinterDriver&quot;</span>;action<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;forward&quot;</span>;parameters<span style="color:Gray;">=</span>@(<span style="color:#A31515;">&#39;Canon&#39;</span>,<span style="color:#A31515;">&#39;*0303*&#39;</span>)},
+                    @{step<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;Step11PrinterName&quot;</span>;action<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;forward&quot;</span>;parameters<span style="color:Gray;">=</span>@(<span style="color:#A31515;">&quot;the second one&quot;</span>)},
+                    @{step<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;Step13PrinterSharing&quot;</span>;action<span style="color:Gray;">=</span><span style="color:#A31515;">&quot;forward&quot;</span>;parameters<span style="color:Gray;">=</span>@(<span style="color:#A31515;">&#39;share$$$&#39;</span>,<span style="color:#A31515;">&#39;location02&#39;</span>,<span style="color:#A31515;">&#39;my new comment&#39;</span>)} <span style="color:Gray;">-</span>Verbose;
+</pre></div></div><div class="ClearBoth"></div>

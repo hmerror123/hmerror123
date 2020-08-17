@@ -1,0 +1,18 @@
+[
+  {
+    "Id": "1466092",
+    "ThreadId": "652297",
+    "Html": "I am automating a setup wizard. The process is basically\r<br />\n<br />\n1 - Launch the setup\r<br />\n2 - Search for the window using<br />\n<pre><code>Get-UiaWindow -Name &quot;Setup Wizard&quot; -WithControl @{controltype=&quot;text&quot;;name=&quot;Some text on the window&quot;} -Seconds 900</code></pre>\n\nThe reason we search for a control on the window is that the name of the window and most of it's properties don't change, only the content.\r<br />\n<br />\n3 - Click on the Next button\r<br />\n4 - Repeat number 2 and 3 for all steps in the setup\r<br />\n<br />\nThis goes well until we get to the &quot;Setup completed&quot; screen. On this screen, Get-UiaWindow doesn't work anymore. The command doesn't succeed, but it doesn't fail either, <em>even if I wait for the timeout to finish!</em>\r<br />\n<br />\nThe strange part is that if I retry the Get-UiaWindow command with the &quot;Setup completed&quot; screen already present, <em>it does work</em>.\r<br />\n<br />\nSo it looks like the long wait until the &quot;Setup completed&quot; screen (about 8 minutes) causes the Get-UiaWindow command to fail, while a small wait (in previous steps) or no wait (when launching the command with the screen already present) works.\r<br />\n<br />\nAny ideas on what could be going on, or how to debug this further?\r<br />\n<br />\nThanks a lot in advance!<br />\n",
+    "PostedDate": "2016-03-08T08:04:35.47-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1471117",
+    "ThreadId": "652297",
+    "Html": "Hi cristiannice,<br />\nI'm sorry I missed your request.<br />\nI think this is because the last step's window belongs to another process. Check its process id (PID) in Task Manager. Setup frameworks sometimes do such a trick, probably with the last screen or with a screen that is seen only sometimes (only in the back direction6 for example, or an automatic screen with names of files and without the Next button).<br />\n<br />\nAlternatively, your last screen may have a new handle.<br />\n",
+    "PostedDate": "2016-04-23T10:40:14.323-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

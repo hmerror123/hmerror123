@@ -1,0 +1,45 @@
+{
+  "WorkItem": {
+    "AffectedComponent": {
+      "Name": "UIAutomation.dll",
+      "DisplayName": "UIAutomation.dll"
+    },
+    "ClosedComment": "Fixed in 0.8.2",
+    "ClosedDate": "2012-10-12T07:52:07.513-07:00",
+    "CommentCount": 1,
+    "Custom": null,
+    "Description": "Sometimes, the Invoke-UIAControlContextMenu cmdlet is unable to invoke the menu and the only thing we are seeing is the waiting cursor near the red line of the square.\r\nThis is because the Invoke-UIAControlContextMenu and Invoke-UIAControlClick menu hit by default exactly into the upper-left corner.",
+    "LastUpdatedDate": "2017-12-10T19:01:52.363-08:00",
+    "PlannedForRelease": "UIAutomation 0.8.1",
+    "ReleaseVisibleToPublic": true,
+    "Priority": {
+      "Name": "Medium",
+      "Severity": 100,
+      "Id": 2
+    },
+    "ProjectName": "UiAutomation",
+    "ReportedDate": "2012-10-12T07:48:13.667-07:00",
+    "Status": {
+      "Name": "Closed",
+      "Id": 4
+    },
+    "ReasonClosed": {
+      "Name": "Unassigned"
+    },
+    "Summary": "The Invoke-UIAControlContextMenu cmdlet hits the highlighter",
+    "Type": {
+      "Name": "Issue",
+      "Id": 3
+    },
+    "VoteCount": 1,
+    "Id": 2
+  },
+  "FileAttachments": [],
+  "Comments": [
+    {
+      "Message": "Since now, there are two settings:\r\n[UIAutomation.Preferences]::ClickOnControlByCoordX = 3 and \r\n[UIAutomation.Preferences]::ClickOnControlByCoordY = 3.\r\nThese settings are always used in the Invoke-UIAcontrolContextMenu cmdlet and in the Invoke-UIAControlClick cmdlet when no values were specified for parameters -X or -Y.",
+      "PostedDate": "2012-10-12T07:51:50.02-07:00",
+      "Id": 79614
+    }
+  ]
+}

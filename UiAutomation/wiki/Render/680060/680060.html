@@ -1,0 +1,15 @@
+<div class="wikidoc">MS UI Automation offers InvokePattern for controls that are considered &#39;click-ready&#39;. If a control supports InvokePattern, we are aware whether the control accepted click on didn&#39;t. Use of this pattern is extremely easy:<br /><div style="color:Black;background-color:White;"><pre>
+Get<span style="color:Gray;">-</span>UIAWindow <span style="color:Gray;">-</span>pn calc | Get<span style="color:Gray;">-</span>UIAButton <span style="color:Gray;">-</span>Name 1 | Invoke<span style="color:Gray;">-</span>UIAButtonClick;
+</pre></div>There is an option for output. By default, the Invoke-UIA[ControlType]Click cmdlet returns the control(s) a successful click was performed against to the pipeline:<br /><div style="color:Black;background-color:White;"><pre>
+Get<span style="color:Gray;">-</span>UIAWindow <span style="color:Gray;">-</span>pn calc | Get<span style="color:Gray;">-</span>UIAButton <span style="color:Gray;">-</span>Name 1 | Invoke<span style="color:Gray;">-</span>UIAButtonClick | Read<span style="color:Gray;">-</span>UIAControlName;
+</pre></div>Similarly, we can click on every numerical button, one by one:<br /><div style="color:Black;background-color:White;"><pre>
+Get<span style="color:Gray;">-</span>UIAWindow <span style="color:Gray;">-</span>pn calc | Get<span style="color:Gray;">-</span>UIAButton <span style="color:Gray;">-</span>Name <span style="color:Gray;">[</span><span style="color:Teal;">1-9</span><span style="color:Gray;">]</span> | Invoke<span style="color:Gray;">-</span>UIAButtonClick | Read<span style="color:Gray;">-</span>UIAControlName;
+</pre></div>This behavior can be changed to output the true/false result ($true on success and $false on fail):<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:Blue;">if</span> (Get<span style="color:Gray;">-</span>UIAWindow <span style="color:Gray;">-</span>pn calc | Get<span style="color:Gray;">-</span>UIAButton <span style="color:Gray;">-</span>Name 1 | Invoke<span style="color:Gray;">-</span>UIAButtonClick <span style="color:Gray;">-</span>PassThru:<span style="color:OrangeRed;">$false</span>) {
+    <span style="color:Green;"># on successful click</span>
+}
+</pre></div>Alternatively, an if condition could be built around null/not null state:<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:Blue;">if</span> (<span style="color:OrangeRed;">$null</span> <span style="color:Gray;">-ne</span> (Get<span style="color:Gray;">-</span>UIAWindow <span style="color:Gray;">-</span>pn calc | Get<span style="color:Gray;">-</span>UIAButton <span style="color:Gray;">-</span>Name 1 | Invoke<span style="color:Gray;">-</span>UIAButtonClick)) {
+    <span style="color:Green;"># on successful click</span>
+}
+</pre></div>As it&#39;s said on the <a href="http://msdn.microsoft.com/en-us/library/ms523365.aspx">InvokePattern</a> page, if a control supports another pattern with similar behavior (for example ExpandCollapsePattern for tree items or menu items), there is no InvokePattern provided.<br /><br />Tags: ControlType.Window, ControlType.Button, InvokePattern</div><div class="ClearBoth"></div>

@@ -1,0 +1,26 @@
+[
+  {
+    "Id": "1224092",
+    "ThreadId": "539398",
+    "Html": "Hi,\r<br />\n<br />\nFor the life of me, I am stuck. Must be something simple I am overlooking. \r<br />\n<br />\nI cannot seem to get the text content from a SysTreeView32 Tree or TreeItem into a variable. How can I get the text? I see that the text in the TreeItem is in the Name property. But I cannot seem to get it.\r<br />\n<br />\nUsing UIAUtomationSpy, I see one of many TreeItems as follows:<br />\n<pre><code>Get-UiaWindow -Class '#32770' -Name 'myapp*' | `\nGet-UiaTree -AutomationId '1475' -Class 'SysTreeView32' -Name 'Tree1' | `\nGet-UiaTreeItem -Name 'my text here'\n</code></pre>\n\nI've tried every method and property and cmdlet I could find, but no luck. What can I use to get that 'my text here' into a variable? Or, what am I overlooking?\r<br />\n<br />\nThanks for your help,\r<br />\nJoe<br />\n",
+    "PostedDate": "2014-03-18T11:31:51.707-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1224096",
+    "ThreadId": "539398",
+    "Html": "Hi,\r<br />\nI tried compmgmt.msc and hand-made Windows Forms app. In both cases the name of a tree node is just Name ($element.Current.Name). There is also the Read-UiaControlName cmdlet:<br />\n<pre><code>Get-UiaWindow -pn mmc -n *comp*manag* | Get-UiaTree | Get-UiaTreeItem -Name *event*viewer* | Read-UiaControlName</code></pre>\n\n",
+    "PostedDate": "2014-03-18T11:41:26.843-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1224101",
+    "ThreadId": "539398",
+    "Html": "Thanks for your quick reply. \r<br />\n<br />\nMy error. Works as described. <br />\n",
+    "PostedDate": "2014-03-18T11:47:40.077-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

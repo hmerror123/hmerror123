@@ -1,0 +1,16 @@
+<div class="wikidoc">This type of search requires the least learning curve: you only need to have the exact phrase that is displayed on a control:<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:Green;"># run an application&#39;s instance and prepare it for search</span>
+Start<span style="color:Gray;">-</span>Process calc <span style="color:Gray;">-</span>PassThru | Get<span style="color:Gray;">-</span>UIAWindow | Get<span style="color:Gray;">-</span>UIAButton <span style="color:Gray;">-</span>Name <span style="color:Gray;">[</span><span style="color:Teal;">1-3</span><span style="color:Gray;">]</span> | Invoke<span style="color:Gray;">-</span>UIAButtonClick;
+<span style="color:Green;"># perform search for a control</span>
+Get<span style="color:Gray;">-</span>UIAText 123;
+</pre></div>This types of search investigates into values containing in the following properties:
+<ul><li>Name</li>
+<li>AutomationId</li>
+<li>Class (ClassName)</li>
+<li>Value (ValuePattern.Value)</li></ul>
+If any of properties of the control contains the string given, the control is outputted.<br /><br />Alternatively, you can use the name of parameter:<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:Green;"># run an application&#39;s instance and prepare it for search</span>
+Start<span style="color:Gray;">-</span>Process calc <span style="color:Gray;">-</span>PassThru | Get<span style="color:Gray;">-</span>UIAWindow | Get<span style="color:Gray;">-</span>UIAButton <span style="color:Gray;">-</span>Name <span style="color:Gray;">[</span><span style="color:Teal;">1-3</span><span style="color:Gray;">]</span> | Invoke<span style="color:Gray;">-</span>UIAButtonClick;
+<span style="color:Green;"># perform search for a control</span>
+Get<span style="color:Gray;">-</span>UIAText <span style="color:Gray;">-</span>ContainsText 123;
+</pre></div><br />Tags: ControlType.Window, ControlType.Button, ValuePattern.Pattern.Value, InvokePattern</div><div class="ClearBoth"></div>

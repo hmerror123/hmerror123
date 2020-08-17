@@ -1,0 +1,18 @@
+[
+  {
+    "Id": "1126885",
+    "ThreadId": "470534",
+    "Html": "Hi everyone,\r<br />\n<br />\nI am new to uiautomation and powershell.\r<br />\nCan anyone please tell me how to select the address bar and enter any site's url. I am using google chrome .\r<br />\n<br />\nThanks in advance.<br />\n",
+    "PostedDate": "2013-11-19T21:24:45.53-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1126888",
+    "ThreadId": "470534",
+    "Html": "Hi,\r<br />\noppositely to IE and FF, Chrome is an almost closed-box application. That means that Chrome doesn't generally expose its inner controls.\r<br />\nHowever, there is a tip on how to turn on accessibility: <a href=\"https://uiautomation.codeplex.com/discussions/451074\" rel=\"nofollow\">https://uiautomation.codeplex.com/discussions/451074</a> (the last answer).\r<br />\nYou could turn it on constantly or temporarily, via a command-line parameter or its config in GUI.<br />\n",
+    "PostedDate": "2013-11-19T21:37:33.687-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

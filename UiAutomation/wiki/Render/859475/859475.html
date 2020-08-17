@@ -1,0 +1,25 @@
+<div class="wikidoc">The Keyboard property holder exposes methods that are similar to SendKeys. UIAutomation tries to set the focus on a control and thereafter puts keys on it.<br /><br />The Keyboard property exposes several method of <a href="http://inputsimulator.codeplex.com">Input Simulator&#39;s</a> InputSimulator.Keyboard object:<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:Green;"># just any text</span>
+<span style="color:OrangeRed;">$element</span>.Keyboard.TypeText(string text);
+<span style="color:Green;"># any character</span>
+<span style="color:OrangeRed;">$element</span>.Keyboard.TypeChar(char character);
+<span style="color:Green;"># these methods allow you to press specific keys like Control, </span>
+<span style="color:OrangeRed;">$element</span>.Keyboard.KeyDown(VirtualKeyCode virtualKeyCode);
+<span style="color:OrangeRed;">$element</span>.Keyboard.KeyPress(VirtualKeyCode virtualKeyCode);
+<span style="color:OrangeRed;">$element</span>.Keyboard.KeyPress(VirtualKeyCode[] virtualKeyCodes);
+<span style="color:OrangeRed;">$element</span>.Keyboard.KeyUp(VirtualKeyCode virtualKeyCode);
+</pre></div>These method consume the [WindowsInput.Native.VirtualKeyCode] enumeration for both alphanumeric characters and for control keys like RETURN.<br />You can use the methods on controls that accept input like text boxes as well as controls that accept input for the window they are in, for example:<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:OrangeRed;">$wnd</span> <span style="color:Gray;">=</span> Start<span style="color:Gray;">-</span>Process calc <span style="color:Gray;">-</span>PassThru | Get<span style="color:Gray;">-</span>UiaWindow
+<span style="color:OrangeRed;">$btn1</span> <span style="color:Gray;">=</span> Get<span style="color:Gray;">-</span>UiaButton 1
+<span style="color:Green;"># sending &quot;222&quot; to the window</span>
+<span style="color:OrangeRed;">$wnd</span>.Keyboard.TypeText(<span style="color:#A31515;">&quot;222&quot;</span>);
+<span style="color:Green;"># sending &quot;333&quot; to the button 1</span>
+<span style="color:OrangeRed;">$btn1</span>.Keyboard.TypeText(<span style="color:#A31515;">&quot;333&quot;</span>);
+</pre></div>As can be seen, if controls accept keyboard input, even button 1 accepts number 3. :)<br /><br />To illustrate the use of KeyDown, KeyPress and KeyUp method, there is the following code that types &quot;AAA&quot; to notepad.exe:<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:OrangeRed;">$wnd</span> <span style="color:Gray;">=</span> Start<span style="color:Gray;">-</span>Process notepad <span style="color:Gray;">-</span>PassThru | Get<span style="color:Gray;">-</span>UiaWindow
+<span style="color:OrangeRed;">$wnd</span>.Keyboard.KeyDown(<span style="color:Gray;">[</span><span style="color:Teal;">WindowsInput.Native.VirtualKeyCode</span><span style="color:Gray;">]</span><span style="color:Gray;">::</span>SHIFT);
+<span style="color:OrangeRed;">$wnd</span>.Keyboard.KeyPress(<span style="color:Gray;">[</span><span style="color:Teal;">WindowsInput.Native.VirtualKeyCode</span><span style="color:Gray;">]</span><span style="color:Gray;">::</span>VK_A);
+<span style="color:OrangeRed;">$wnd</span>.Keyboard.KeyPress(<span style="color:Gray;">[</span><span style="color:Teal;">WindowsInput.Native.VirtualKeyCode</span><span style="color:Gray;">]</span><span style="color:Gray;">::</span>VK_A);
+<span style="color:OrangeRed;">$wnd</span>.Keyboard.KeyPress(<span style="color:Gray;">[</span><span style="color:Teal;">WindowsInput.Native.VirtualKeyCode</span><span style="color:Gray;">]</span><span style="color:Gray;">::</span>VK_A);
+<span style="color:OrangeRed;">$wnd</span>.Keyboard.KeyUp(<span style="color:Gray;">[</span><span style="color:Teal;">WindowsInput.Native.VirtualKeyCode</span><span style="color:Gray;">]</span><span style="color:Gray;">::</span>SHIFT);
+</pre></div>Without lines that works with the Shift key, we would see &quot;aaa&quot; instead of &quot;AAA&quot;.<br /><br />These method are priceless when working with controls that don&#39;t support pattern.<br /><br />Please refer to the <a href="https://uiautomation.codeplex.com/wikipage?title=Key%20Codes&referringTitle=the%20Keyboard%20property">Key Codes</a> page for the list of key codes.</div><div class="ClearBoth"></div>

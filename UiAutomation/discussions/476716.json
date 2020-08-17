@@ -1,0 +1,42 @@
+[
+  {
+    "Id": "1140209",
+    "ThreadId": "476716",
+    "Html": "How to walk / filter on a TreeView, like the left side of File Explorer?<br />\n",
+    "PostedDate": "2013-12-20T00:31:50.553-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1140244",
+    "ThreadId": "476716",
+    "Html": "To walk through tree nodes you can use 'navigation' cmdlets: Get-UiaControlParent, Get-UiaControlFirstChild, Get-UiaControlLastChild, Get-UiaControlPreviousSibling, Get-UiaControlNextSibling and, of course, any of Get- cmdlets to go down the tree, for example:<br />\n<pre><code>Get-UiaWindow -n folder_name | Get-UiaTree | Get-UiaTreeItem Desktop | Get-UiaControlNextSibling | Get-UiaControlNextSibling;</code></pre>\n\nUIAutomation works only with controls that are visible, were visible or would be visible (i.e., out of screen).<br />\nWhen working with tree, it's often a necessity to get a node, expand it (Invoke-UiaTreeItemExpand) and only after that you could access its children.<br />\n<pre><code>Get-UiaTreeItem bla-bla-bla | Invoke-UiaTreeItemExpand | Get-UiaTreeItem some_child</code></pre>\n\nor sometimes<br />\n<pre><code>Get-UiaTreeItem bla-bla-bla | Invoke-UiaControlClick | Get-UiaTreeItem some_child</code></pre>\n\nWhat did you mean when mentioned filtering? Which action in Explorer (or another tree)?<br />\n",
+    "PostedDate": "2013-12-20T03:19:46.143-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1140301",
+    "ThreadId": "476716",
+    "Html": "Thank you, the &quot;filtering&quot; I mentioned means pick a node which has a pattern of &quot;MyDisk_XXX&quot;.\r<br />\nIs that clear?<br />\n",
+    "PostedDate": "2013-12-20T06:56:40.083-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1140325",
+    "ThreadId": "476716",
+    "Html": "This is sooner search with filtering (I initially thought about a feature of tree view GUI to filter on a condition).\r<br />\nGet- cmdlets support wildcards:<br />\n<pre><code>Get-UiaTreeItem -Name &quot;MyDisk_*&quot;;</code></pre>\n\nAdditional options are:\r<br />\n1) search with additional criteria<br />\n<pre><code>Get-UiaTreeItem -SearchCriteria @{name=&quot;mydisk_*&quot;;automationid=&quot;*a*&quot;;isoffscreen=$false};</code></pre>\n\nThese criteria are given as a standard PowerShell hashtable @{param_name=&quot;value&quot;;bool_param_name=$true;param_name_2=&quot;value_@&quot;}, their names are the list of properties you get by running:<br />\n<pre><code>(Get-UiaTreeItem -Name some_node).Current</code></pre>\n\n2) the traditional PowerShell filtering:<br />\n<pre><code>Get-UiaTreeItem -some_param some_value | ?{ $_.Current.Name -like &quot;*aaa*&quot; }</code></pre>\n\nIf you want to have the -Filter parameter, there's no such now (however, if you find all above is not enough to meet your needs, we can create the -Filter parameter).\r<br />\n<br />\nVersion 0.8.7 also supports regular expressions (I'm not sure about 0.8.7 alpha 1, the soonest will support):<br />\n<pre><code>Get-UiaTreeItem -Name &quot;MyDisk|otherdisk&quot; -Regex;</code></pre>\n\nBefore the new version is here, you could use PowerShell filtering as shown in the example 2:<br />\n<pre><code>Get-UiaTreeItem -some_param some_value | ?{ $_.Current.Name -match &quot;aaa&quot; }</code></pre>\n\n",
+    "PostedDate": "2013-12-20T07:57:25.617-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1140326",
+    "ThreadId": "476716",
+    "Html": "\r\n<div>really good, thanks!<br>\r\n<br>\r\n发自我的 iPhone</div>\r\n<div><br>\r\n在 2013-12-20，23:57，&quot;apetrovskiy&quot; &lt;[email removed]&gt; 写道：<br>\r\n<br>\r\n</div>\r\n<blockquote type=\"cite\">\r\n<div>\r\n<p>From: apetrovskiy</p>\r\n<div id=\"ThreadNotificationPostBody\">This is sooner search with filtering (I initially thought about a feature of tree view GUI to filter on a condition).\r\n<br>\r\nGet- cmdlets support wildcards:<br>\r\n<pre><code>Get-UiaTreeItem -Name &quot;MyDisk_*&quot;;</code></pre>\r\nAdditional options are: <br>\r\n1) search with additional criteria<br>\r\n<pre><code>Get-UiaTreeItem -SearchCriteria @{name=&quot;mydisk_*&quot;;automationid=&quot;*a*&quot;;isoffscreen=$false};</code></pre>\r\nThese criteria are given as a standard PowerShell hashtable @{param_name=&quot;value&quot;;bool_param_name=$true;param_name_2=&quot;value_@&quot;}, their names are the list of properties you get by running:<br>\r\n<pre><code>(Get-UiaTreeItem -Name some_node).Current</code></pre>\r\n2) the traditional PowerShell filtering:<br>\r\n<pre><code>Get-UiaTreeItem -some_param some_value | ?{ $_.Current.Name -like &quot;*aaa*&quot; }</code></pre>\r\nIf you want to have the -Filter parameter, there's no such now (however, if you find all above is not enough to meet your needs, we can create the -Filter parameter).\r\n<br>\r\n<br>\r\nVersion 0.8.7 also supports regular expressions (I'm not sure about 0.8.7 alpha 1, the soonest will support):<br>\r\n<pre><code>Get-UiaTreeItem -Name &quot;MyDisk|otherdisk&quot; -Regex;</code></pre>\r\nBefore the new version is here, you could use PowerShell filtering as shown in the example 2:<br>\r\n<pre><code>Get-UiaTreeItem -some_param some_value | ?{ $_.Current.Name -match &quot;aaa&quot; }</code></pre>\r\n</div>\r\n</div>\r\n</blockquote>\r\n",
+    "PostedDate": "2013-12-20T08:13:03.197-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

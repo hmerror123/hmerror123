@@ -1,0 +1,34 @@
+[
+  {
+    "Id": "1445226",
+    "ThreadId": "645282",
+    "Html": "I'm trying to do something based on the output of Test-UiaControlState, but the output of Test-UiaControlState seems to be formatted strangely or something.<br />\n<br />\nI have something like:<br />\n<pre><code>$exists = Get-UiaWindow -Seconds 30 -Name 'Microsoft OneDrive for Business' | Test-UiaControlState -SearchCriteria @{automationId=&quot;1606&quot;;class=&quot;static&quot;;name=&quot;*&quot;;}\n\nif($exists -eq 'False')\n{\n     echo &quot;Tested False&quot;;\n}\nelse \n{\n    echo &quot;Tested True&quot;;\n}</code></pre>\n\nI tested the value of $exists and it outputs 'False' as expected; however, the if/else test outputs 'Tested True'.<br />\n<br />\nAny ideas what is going on or what I'm doing wrong?<br />\n<br />\nThanks!<br />\n",
+    "PostedDate": "2015-09-21T11:33:11.717-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1445227",
+    "ThreadId": "645282",
+    "Html": "Note:\r<br />\n<br />\nJust tried changing<br />\n<pre><code>if($exists -eq 'False')</code></pre>\n\nto <br />\n<pre><code>if($exists -like 'False')</code></pre>\n\nand now the if/else outputs 'Tested False' like it should, so it seems there is indeed something about the Test-UiaControlState output that isn't 'Pure' - though I have no idea what.  I'll just use -like for now, but would be interested to know if there is something else I should be doing or why it acts like that.<br />\n",
+    "PostedDate": "2015-09-21T11:38:30.287-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1445535",
+    "ThreadId": "645282",
+    "Html": "Hi xevilrobotx, you invented a very rare way of misuse. Why do you use strings for comparison instead of native boolean? 'True' and 'False' are string representation of values of boolean data, no matter PowerShell or C#.<br />\nWe have embedded variables in PowerShell, $true and $false, and we also can use expressions that return boolean results for conditions. Here is an example:<br />\n<pre><code>$button1State = Start-Process calc -PassThru | Get-UiaWindow | Test-UiaControlState -SearchCriteria @{name=&quot;1&quot;}\n$button1state.GetType()\n\n# as can be seen, the result is Boolean, so that we can use the result directly\nif ($button1state) {\n    Write-Host &quot;Button 1 is here&quot;\n} else {\n    Write-Host &quot;Button 1 is out now&quot;\n}\n\n# or we can compare the result with some boolean value\nif ($button1state -eq $true) {\n    Write-Host &quot;Button 1 is here&quot;\n} else {\n    Write-Host &quot;Button 1 is out now&quot;\n}\n\n# we even can put the whole one-liner into our 'if', just after decorating it with parentheses:\nif ((Start-Process calc -PassThru | Get-UiaWindow | Test-UiaControlState -SearchCriteria @{name=&quot;1&quot;})) {\n    Write-Host &quot;Button 1 is here&quot;\n} else {\n    Write-Host &quot;Button 1 is out now&quot;\n}\n\n# sure, we can write something like if ($true -eq (expression)) {} and sometimes this is also useful\n# it's sooner for style and readabilty as the result is the same\n\n# we can also use search by a wider rule:\n$allButtonsState = Start-Process calc -PassThru | Get-UiaWindow | Test-UiaControlState -SearchCriteria @{class=&quot;button&quot;}\n$allButtonsState.GetType()\nif ($allButtonsState) {\n    Write-Host &quot;there are some buttons shown on the window&quot;\n}</code></pre>\n\n",
+    "PostedDate": "2015-09-23T04:26:29.493-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1445554",
+    "ThreadId": "645282",
+    "Html": "Thank you!!<br />\n\r<br />\nNow it makes sense to me :)\r<br />\n<br />\nI just started with PowerShell/C#/Scripting a couple of weeks ago and am very new to all of this.  My boss said I needed to come up with a way to deploy OneDrive for Business to our staff and make it sync without them having to do anything... so here I am.<br />\n\r<br />\nI very much appreciate the existence of UIAutomation and the help you have given me to work through this.<br />\n",
+    "PostedDate": "2015-09-23T06:10:02.613-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

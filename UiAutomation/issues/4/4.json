@@ -1,0 +1,65 @@
+{
+  "WorkItem": {
+    "AffectedComponent": {
+      "Name": "",
+      "DisplayName": ""
+    },
+    "ClosedComment": "",
+    "ClosedDate": null,
+    "CommentCount": 5,
+    "Custom": null,
+    "Description": "Induced with build 0.8.5 and also with 0.8.6 beta2.\r\n\r\nI have ToolBar control wit several MeniItem children in it, but Get-UIAMenuItem fails to return them. I've checked ToolBar with UIAutomationSpy and it sees menu items without any problem and generates following script:\r\n\r\n```\r\nGet-UIAWindow -Class '#32770' -Name 'AVG Internet Security Business Edition 2013' | `\r\nGet-UIAPane -Class 'Afx:00A70000:800:00010005:00000010:00000000' | `\r\nGet-UIAToolBar -AutomationId '1' -Class 'Afx:ToolBar:a70000:8:10005:10' | `\r\nGet-UIAMenuItem -Name 'Scan computer'\r\n```\r\n\r\nGet-UIAMenuItem however fails:\r\n\r\n```\r\nGet-UIAMenuItem : Get-UIAMenuItem: timeout expired for control with class: + ''\r\n, control type: 'MenuItem', title: '', automationId: '', value: ''\r\nAt line:1 char:104\r\n+             Get-UIAWindow -ProcessName \"avgui\" | Get-UIAToolBar -Class \"Afx:T\r\noolbar*\" | Get-UIAMenuItem <<<<\r\n    + CategoryInfo          : OperationTimeout: (:) [Get-UIAMenuItem], Excepti\r\n   on\r\n    + FullyQualifiedErrorId : ControlIsNull,UIAutomation.Commands.GetUIAMenuIt\r\n   emCommand\r\n```\r\n\r\nI tried increasing timeout but it didn't help. The last object that is returned properly in pipe is ToolBar.",
+    "LastUpdatedDate": "2013-09-22T14:13:39.95-07:00",
+    "PlannedForRelease": "",
+    "ReleaseVisibleToPublic": false,
+    "Priority": {
+      "Name": "Unassigned",
+      "Severity": 0,
+      "Id": 0
+    },
+    "ProjectName": "UiAutomation",
+    "ReportedDate": "2013-02-28T07:54:05.333-08:00",
+    "Status": {
+      "Name": "Proposed",
+      "Id": 1
+    },
+    "ReasonClosed": {
+      "Name": "Unassigned"
+    },
+    "Summary": "Get-UIAMenuItem is not working properly",
+    "Type": {
+      "Name": "Issue",
+      "Id": 3
+    },
+    "VoteCount": 1,
+    "Id": 4
+  },
+  "FileAttachments": [],
+  "Comments": [
+    {
+      "Message": "I've found that issue is not in cmdlets but in UIAutomation itself. For some reason it's unable to get parent for these MenuItems, I've workarounded it via position based parent that I know should have the controls so there is nothing to fix here.",
+      "PostedDate": "2013-03-06T01:57:27.757-08:00",
+      "Id": 92396
+    },
+    {
+      "Message": "It seems to be broken between 0.7.x and 0.8.0. It worked in services.msc in 0.7.x, now it's broken (since ~0.8.0).\nIn the version 0.8.0 have been introduced changes, the goal of which is to wotk 'like Get-ChildItem': return all controls.\nI'll try to find what was changed (however, the most of of sources are on a hard drive that is inaccessible to me due to partition lost...).\n\nGetting a menuitem works well in applications like calc.exe but not in services.msc (seemingly, another type of menu).",
+      "PostedDate": "2013-03-12T03:44:10.2-07:00",
+      "Id": 93017
+    },
+    {
+      "Message": "Probably, I missed the original idea of the issue in my previous post. Nonetheless, I fixed menu and context menu-related problem (0.8.6 Beta 3).\nOn Windows 8 box (I noticed that on three hosts), right click and, therefore, the Invoke-UIAcontrolContextMenu cmdlet didn't work. After looking stupidly at spy++'s output, the solution was found: just to insert WM_MOUSEMOVE after WM_MOUSEDOWN and before WM_MOUSEUP.\n\nRegarding the issue, may it be possible that there are two+ toolbars, one with the menu item of interest, and one without? Sometimes such things happen: UI Automation walks in the Automation tree branch, gets similar control and fails to get its descendant(s).",
+      "PostedDate": "2013-03-12T12:43:14.287-07:00",
+      "Id": 93064
+    },
+    {
+      "Message": "I have the same problem with an MFC application. \n\nCan I get clarification on the \"I've workarounded it via position based parent\". How do I do this?\n\nIt is possible that there are two+ toolbars in the application as suggested above. If that is true and I have the sources for the application, how do I identify it?\n\n\n",
+      "PostedDate": "2013-09-20T15:17:05.78-07:00",
+      "Id": 115204
+    },
+    {
+      "Message": "An example of the position-based approach is instead the code\n```\nGet-UIAToolBar -AutomationId '1' -Class 'Afx:ToolBar:a70000:8:10005:10' | `\nGet-UIAMenuItem -Name 'Scan computer'\n```\nyou get the parent of the control of your interest, or the parent of the parent, etc. After that you calculate the place where the control of your interest is and hit this point by the mouse:\n```\nGet-UIAToolBar -AutomationId '1' -Class 'Afx:ToolBar:a70000:8:10005:10' | `\nMove-UIACursor -X 50 -Y 10 | Invoke-UIAControlClick\n```\nRelative coordinates are usually fixed, I mean that if a menu item is 50 point right from the upper-left corner of the toolbar, this position is going to be the same during the whole test. Therefore, if you hit fifty points right, you every time hit the same menu item.",
+      "PostedDate": "2013-09-22T14:13:39.95-07:00",
+      "Id": 115297
+    }
+  ]
+}

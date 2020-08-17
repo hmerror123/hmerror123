@@ -1,0 +1,42 @@
+[
+  {
+    "Id": "1216409",
+    "ThreadId": "535974",
+    "Html": "How i can input the function key like F1 ??<br />\n",
+    "PostedDate": "2014-03-01T00:57:16.813-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1216422",
+    "ThreadId": "535974",
+    "Html": "For example,<br />\n<pre><code>(start-process calc -pass | get-uiawindow).Keyboard.KeyPress([WindowsInput.Native.VirtualKeyCode]::F1)</code></pre>\n\n",
+    "PostedDate": "2014-03-01T02:57:37.963-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1216425",
+    "ThreadId": "535974",
+    "Html": "Thanks for your help<br />\n",
+    "PostedDate": "2014-03-01T03:14:36.037-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1243753",
+    "ThreadId": "535974",
+    "Html": "ALT+F ?<br />\n",
+    "PostedDate": "2014-05-10T01:00:51.487-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1243791",
+    "ThreadId": "535974",
+    "Html": "Hi,\r<br />\nfirst of all, the source of names of key codes is up to the author of <a href=\"http://inputsimulator.codeplex.com/\" rel=\"nofollow\">the InputSimulator framework</a>. He made names similar to vendor's, however without some parts like &quot;VK_&quot;.\r<br />\nFor example, <a href=\"http://msdn.microsoft.com/en-us/library/dd375731%28VS.85%29.aspx\" rel=\"nofollow\">the vendor's list is here:</a> It contains a bug with both Alt buttons! Look at the upper comment.\r<br />\nA better list is <a href=\"http://www.kbdedit.com/manual/low_level_vk_list.html\" rel=\"nofollow\">this</a>.\r<br />\n<br />\nAs the author of InputSimulator cut out some parts, the algorithm of search is\r<br />\n1) found the key of your interest on the pages following the first or the second link.\r<br />\n2) try to find it in the enum: [WindowsInput.Native.VirtualKeyCode]::\r<br />\n3) if you failed, cut out the &quot;VK_&quot; part and try to find it again\r<br />\nI'll put a table on the wiki within several days, it's a too ugly algorithm to find keys. :)\r<br />\n<br />\nThe sample below is tested on Far (farmanager.com). By pressing Alt+F, the active string is the first the starts with F:<br />\n<pre><code>$wnd = Get-UiaWindow -n *far*\n$wnd.Keyboard.KeyDown([WindowsInput.Native.VirtualKeyCode]::RMENU)\n$wnd.Keyboard.KeyPress([WindowsInput.Native.VirtualKeyCode]::VK_F)\n$wnd.Keyboard.KeyUp([WindowsInput.Native.VirtualKeyCode]::RMENU)</code></pre>\n\n",
+    "PostedDate": "2014-05-10T05:14:46.883-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

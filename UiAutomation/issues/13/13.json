@@ -1,0 +1,50 @@
+{
+  "WorkItem": {
+    "AffectedComponent": {
+      "Name": "",
+      "DisplayName": ""
+    },
+    "ClosedComment": "",
+    "ClosedDate": null,
+    "CommentCount": 2,
+    "Custom": null,
+    "Description": "Hi,\r\n\r\nMicrosoft Windows Server 2003 R2 Enterprise x64 Edition + Internet Explorer 8\r\n\r\nWhen I run the powerscript from a task scheduled in mstask, an InternetExplorer window is opened in background with \"Start-Process iexplore\" but Get-UIaWindow did not find this window, except when the user is already logged.\r\n\r\nBecause of a bug found in the Perl Module Win32::ActAcc which is no more maintained, I am trying to rewrite under Powershell a Perl script which runs scenarios on Internet Explorer window in background tasks without logged user.\r\n\r\nIs there any way to deal with background window with UIAutomation ?\r\n",
+    "LastUpdatedDate": "2014-03-24T08:50:56.233-07:00",
+    "PlannedForRelease": "",
+    "ReleaseVisibleToPublic": false,
+    "Priority": {
+      "Name": "Unassigned",
+      "Severity": 0,
+      "Id": 0
+    },
+    "ProjectName": "UiAutomation",
+    "ReportedDate": "2014-03-20T10:14:47.983-07:00",
+    "Status": {
+      "Name": "Proposed",
+      "Id": 1
+    },
+    "ReasonClosed": {
+      "Name": "Unassigned"
+    },
+    "Summary": "Get-UIaWindow failed to get active iexplore window when launched from mstask",
+    "Type": {
+      "Name": "Unassigned",
+      "Id": 5
+    },
+    "VoteCount": 1,
+    "Id": 13
+  },
+  "FileAttachments": [],
+  "Comments": [
+    {
+      "Message": "Hi,\nI have never heard whether MSAA could work without a user session (why do screen readers and magnifiers support a session nothing is visible in?). If so, MSAA is a subset of UIAutomation  ([\"UI Automation providers offer some support for Microsoft Active Accessibility client applications, through a built-in bridging service.\"](http://msdn.microsoft.com/en-us/library/ms747327(v=vs.110).aspx)) and the parts Microsoft adopted don't work without a user session.\n\nAnyway, MSAA is left only for compatibility and is [partially supported on Windows 8+](http://msdn.microsoft.com/en-us/library/windows/desktop/hh848051(v=vs.85).aspx).\n\nI could suggest three ways:\n1) [use MSAA via COM interfaces](http://msdn.microsoft.com/en-us/library/windows/desktop/dd318038(v=vs.85).aspx)\n2) use tools that partially work in background (they create a limited user session what might be enough for  not very heavy-loaded with controls applications and web pages) - RemCom/PaExec/PsExec\n3) if your pages don't use ssl (https), why you need to click if you can send HTTP requests? For example, by catching them via WireShark or Fiddler, modifying and using in tests.",
+      "PostedDate": "2014-03-24T02:31:23.99-07:00",
+      "Id": 138073
+    },
+    {
+      "Message": "Hi,\n\nI have already created a Perl script to send HTTPS requests, but the scenario is sometimes very difficult to reproduce with some sites, especially because of the multiple existing types of authentification.\n\nI tried PaExec, without specifying host, user and password (so using the credencials of the launching user), and UIautomation is working nice in background with it.\n\nThank you for your quick answer, and I am now very impatient to work with the next versions of UIautomation.\n\nBest regards\n",
+      "PostedDate": "2014-03-24T08:50:56.233-07:00",
+      "Id": 138104
+    }
+  ]
+}

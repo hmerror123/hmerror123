@@ -1,0 +1,11 @@
+<div class="wikidoc">The Descendants property returns all control of the selected type down the hierarchy:<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:OrangeRed;">$wnd</span> <span style="color:Gray;">=</span> Start<span style="color:Gray;">-</span>Process calc <span style="color:Gray;">-</span>PassThru | Get<span style="color:Gray;">-</span>UiaWindow
+<span style="color:OrangeRed;">$wnd</span>.Descendants.Buttons
+</pre></div>The oupput type is collection, so that to get a single control or several controls we need to feed the expression with numeric values:<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:OrangeRed;">$wnd</span>.Descendants.Buttons<span style="color:Gray;">[</span><span style="color:Teal;">0</span><span style="color:Gray;">]</span>
+<span style="color:OrangeRed;">$wnd</span>.Descendants.Buttons<span style="color:Gray;">[</span><span style="color:Teal;">5..8</span><span style="color:Gray;">]</span>
+</pre></div>or a fragment of their Name, AutomationId or ClassName properties<br /><div style="color:Black;background-color:White;"><pre>
+<span style="color:Green;"># only numeric button</span>
+<span style="color:Green;"># through their AutomationIds</span>
+<span style="color:OrangeRed;">$wnd</span>.Descendants.Buttons<span style="color:Gray;">[</span><span style="color:Teal;">&#39;13*&#39;</span><span style="color:Gray;">]</span> | Read<span style="color:Gray;">-</span>UiaControlName
+</pre></div><br /></div><div class="ClearBoth"></div>

@@ -1,0 +1,26 @@
+[
+  {
+    "Id": "1482046",
+    "ThreadId": "657410",
+    "Html": "Hi, \r<br />\n<br />\nI making C# application that like the UIAutomationSpy.\r<br />\nMy application 's function is to make UIAutomation scripts and to run the scripts.\r<br />\nBefore run PowerShell scripts, PowerShell instance imports UIAutomation.dll.\r<br />\nIf I redistribute UI Automation PowerShell Extensions binaries with my application, Should I open C# source code?\r<br />\n<br />\nThanks,<br />\n",
+    "PostedDate": "2016-08-24T23:44:14.813-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1482195",
+    "ThreadId": "657410",
+    "Html": "Hi yukinoou1976, as far as I know, GPL does not require you open your source code if you use binaries.<br />\n",
+    "PostedDate": "2016-08-27T11:59:54.523-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1482306",
+    "ThreadId": "657410",
+    "Html": "Thank you for your reply.\r<br />\n<br />\nRegards, \r<br />\n<br />\nyukinoou1976<br />\n",
+    "PostedDate": "2016-08-29T00:49:19.74-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

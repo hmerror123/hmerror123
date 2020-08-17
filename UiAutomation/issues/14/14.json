@@ -1,0 +1,39 @@
+{
+  "WorkItem": {
+    "AffectedComponent": {
+      "Name": "",
+      "DisplayName": ""
+    },
+    "ClosedComment": "",
+    "ClosedDate": null,
+    "CommentCount": 0,
+    "Custom": null,
+    "Description": "\r\nHi All,\r\nI get this issue while running UIAutomation tests and it happens a lot, any chance what cause it?\r\nHere is the error:\r\nProblem signature:\r\n  Problem Event Name:\tPowerShell\r\n  NameOfExe:\tPowerShell_ISE.exe\r\n  FileVersionOfSystemManagementAutomation:\t6.1.7601.17514\r\n  InnermostExceptionType:\tm.Windows.Automation.ElementNotAvailable\r\n  OutermostExceptionType:\tm.Windows.Automation.ElementNotAvailable\r\n  DeepestPowerShellFrame:\tunknown\r\n  DeepestFrame:\tMS.Internal.Automation.UiaCoreApi.CheckError\r\n  ThreadName:\tunknown\r\n  OS Version:\t6.1.7601.2.1.0.256.4\r\n  Locale ID:\t1033\r\n\r\nRead our privacy statement online:\r\n  http://go.microsoft.com/fwlink/?linkid=104288&clcid=0x0409\r\n\r\nIf the online privacy statement is not available, please read our privacy statement offline:\r\n  C:\\Windows\\system32\\en-US\\erofflps.txt\r\n",
+    "LastUpdatedDate": "2014-11-02T06:41:04.99-08:00",
+    "PlannedForRelease": "",
+    "ReleaseVisibleToPublic": false,
+    "Priority": {
+      "Name": "Unassigned",
+      "Severity": 0,
+      "Id": 0
+    },
+    "ProjectName": "UiAutomation",
+    "ReportedDate": "2014-11-02T06:41:04.99-08:00",
+    "Status": {
+      "Name": "Proposed",
+      "Id": 1
+    },
+    "ReasonClosed": {
+      "Name": "Unassigned"
+    },
+    "Summary": "powershell_ise has stopped working",
+    "Type": {
+      "Name": "Unassigned",
+      "Id": 5
+    },
+    "VoteCount": 1,
+    "Id": 14
+  },
+  "FileAttachments": [],
+  "Comments": []
+}

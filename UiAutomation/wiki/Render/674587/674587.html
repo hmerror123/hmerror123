@@ -1,0 +1,25 @@
+<div class="wikidoc"><h1>How to install the module</h1>
+<h2>Prepare your system</h2><h3>Install or run PowerShell</h3>Please find out in the Internet how to get PowerShell for your system and how to run it. Here are the links to
+<ul><li>WMF 2.0: <a href="http://support.microsoft.com/kb/968929/en">http://support.microsoft.com/kb/968929/en</a></li>
+<li>WMF 3.0: <a href="http://www.microsoft.com/en-us/download/details.aspx?id=34595">http://www.microsoft.com/en-us/download/details.aspx?id=34595</a></li></ul>
+<h3>Set the execution policy</h3>that is feasible for your needs:
+<ol><li>run PowerShell via &quot;Run as Administrator&quot;</li>
+<li>issue the following command:</li></ol>
+<div style="color:Black;background-color:White;"><pre>
+Set<span style="color:Gray;">-</span>ExecutionPolicy Bypass
+<span style="color:Green;"># or</span>
+Set<span style="color:Gray;">-</span>ExecutionPolicy RemoteSigned
+<span style="color:Green;"># or</span>
+Set<span style="color:Gray;">-</span>ExecutionPolicy Unrestricted
+</pre></div><h3>Load the module</h3>by running the following command:<br /><div style="color:Black;background-color:White;"><pre>
+ipmo .\UIAutomation.dll
+<span style="color:Green;"># or specify the full path to the library</span>
+ipmo C:\1\2\3\UIAutomation.dll
+</pre></div>For general-purpose testing, the module can be placed in the following folder structure:<br />%userprofile%&quot;\Documents\WindowsPowerShell\Modules\UIAutomation,<br />i.e. the full path to UIAutomation.dll would be:<br />%userprofile%&quot;\Documents\WindowsPowerShell\Modules\UIAutomation\UIAutomation.dll
+<h3>How to check that all is OK</h3>Run the following command<br /><div style="color:Black;background-color:White;"><pre>
+(gmo uia<span style="color:Gray;">*</span>).Name
+(gmo uia<span style="color:Gray;">*</span>).ExportedCommands.Count
+</pre></div>The output should contains the name of module and the number of cmdlet found (may vary depending on the module evolution):<br /><div style="color:Black;background-color:White;"><pre>
+UIAutomation
+434
+</pre></div><h3>How to automate loading the module</h3>If you need to automate the process of loading the module, consider learning the topic &quot;PowerShell profiles&quot; and simply add to a profile you preferred to the ipmo line from samples above.<br />Follow, for example, the link <a href="http://technet.microsoft.com/en-us/library/ee692764.aspx">http://technet.microsoft.com/en-us/library/ee692764.aspx</a><br />The good post about profiles: <a href="http://vmin.wordpress.com/2012/05/28/understanding-the-six-powershell-profiles-technet-blogs">http://vmin.wordpress.com/2012/05/28/understanding-the-six-powershell-profiles-technet-blogs</a><br /><br />Note, for most applications you&#39;ll never need to run PowerShell as Administrator. However sometimes, for example for testing services.msc, you need to run it as Run As Administrator or under domain admin credentials)</div><div class="ClearBoth"></div>

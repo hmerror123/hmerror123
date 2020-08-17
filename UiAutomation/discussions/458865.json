@@ -1,0 +1,18 @@
+[
+  {
+    "Id": "1098343",
+    "ThreadId": "458865",
+    "Html": "Hi\r<br />\n<br />\nWhen I click on the &quot;Start&quot; Button of UIAutomationSpy, it does not start, but rather displays the following in the bottom panel:\r<br />\n<br />\n&quot;Could not load file or assembly 'System.Management.Automation', Version=3.0.0.0&quot;\r<br />\n<br />\nCould someone clue me in on :<br />\n<ul>\n<li>\nWho (or what) is expected to install this assembly?<br />\n</li>\n<li>\nWhere is it expected to be found?<br />\n</li>\n</ul>\nThanks very much\r<br />\n<br />\nJim<br />\n",
+    "PostedDate": "2013-09-23T21:12:19.133-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1098364",
+    "ThreadId": "458865",
+    "Html": "Hi Jim,\r<br />\nthis assembly is packaged with .NET 3+.\r<br />\n<br />\nNormally, UIAutomationSpy should be running from the folder where all files are placed (i.e. UIAutomation.dll, TMX.dll, other libraries). UIAutomationSpy calls to UIAutomation.dll, UIAutomation.dll in turn calls to System.Management.Automation of the version UIAutomation.dll was build with.\r<br />\nAs the exception is displayed in the box (not in the exception window), I suppose the exception was thrown from UIAutomation.dll.\r<br />\n<br />\nSystem.Management.Automation is the core library of PowerShell. It's placed in GAC and visible across the whole system.\r<br />\n<br />\nPackage UIAutomation.X.Y.Z.NET35.zip requires .NET 3.5 and PowerShell 2.0, package UIAutomation.X.Y.Z.NET40.zip requires .NET 4.0 and PowerShell 3.0 (and this fits to Windows 8 and 2012 by default as they don't have .NET 3.5 and PowerShell 2.0 installed by default).\r<br />\nPackage UIAutomation.X.Y.Z.for.Metro/ModernUI.testing.zip is for Windows 8 and 2012 and requires that you imported the certificate packaged with it.\r<br />\n<br />\nAlex<br />\n",
+    "PostedDate": "2013-09-23T23:25:32.033-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

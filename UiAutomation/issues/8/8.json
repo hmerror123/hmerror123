@@ -1,0 +1,91 @@
+{
+  "WorkItem": {
+    "AffectedComponent": {
+      "Name": "",
+      "DisplayName": ""
+    },
+    "ClosedComment": "",
+    "ClosedDate": null,
+    "CommentCount": 9,
+    "Custom": null,
+    "Description": "For starters, I've written a very simple test PowerShell script:\r\n\r\n--------------8<----------------\r\nImport-Module -Name C:\\UIAutomation.0.8.5.NET40\\UIAutomation.dll -Verbose\r\n\r\n  # imput parameters: target process name and Title\r\n$tgProcessName = \"NotePad++\"\r\n\r\n# select the window\r\n$tgWnd = Get-UIAWindow -ProcessName $tgProcessName \r\nSave-UIAScreenshot -InputObject $tgWnd -Description $tgProcessName\r\n--------------8<----------------\r\n\r\nAnd I run this by hitting F5 within the PowerShell [3.0, running on Windows 7] ISE.\r\n\r\nThe best I get from this is a leftover \"red outline\" that stays around the captured window even if the application is closed, until I terminate the ISE (an hourglass is displayed when the mouse is hovered over that outline). In this \"best\" case control _does_ get returned to the ISE. (see screenshots)\r\n\r\nThe worst case, that happens quite often, is that control is never returned to the ISE. I have to terminate the powershell_ise.exe process.\r\n\r\nIs this a known issue?\r\n\r\nWhat am I doing wrong?\r\n",
+    "LastUpdatedDate": "2014-05-14T07:57:21.993-07:00",
+    "PlannedForRelease": "",
+    "ReleaseVisibleToPublic": false,
+    "Priority": {
+      "Name": "Unassigned",
+      "Severity": 0,
+      "Id": 0
+    },
+    "ProjectName": "UiAutomation",
+    "ReportedDate": "2013-11-21T04:29:19.15-08:00",
+    "Status": {
+      "Name": "Proposed",
+      "Id": 1
+    },
+    "ReasonClosed": {
+      "Name": "Unassigned"
+    },
+    "Summary": "PowerShell ISE often gets frozen",
+    "Type": {
+      "Name": "Unassigned",
+      "Id": 5
+    },
+    "VoteCount": 2,
+    "Id": 8
+  },
+  "FileAttachments": [
+    {
+      "FileId": 760874,
+      "FileName": "Screenshot of 'Windows PowerShell ISE' on 2013-11-21.png",
+      "DownloadUrl": ".\\760874"
+    }
+  ],
+  "Comments": [
+    {
+      "Message": "I could not say much about working in ISE as I write code mostly in SharpDevelop 4.3 (there's no intellisense, but excellent search and navigation across the number of files).\nI tried the current version (pre-alpha of 0.8.7 what is practically the same as [the last beta of 0.8.6](https://uiautomation.codeplex.com/releases/view/102214) (I heartily recommend you use the last version available).\nThe combination of ISE (3.0 on Windows 8 x64 I\"m sitting on now) and the latest version of UIA works well.\n\nThe 'frozen IDE' issue I saw the last time with PowerGUI 3.5 or 3.6 running from a flash disk. I think it was IDE's internal problem.\n\nRegarding the red rectangle, as well as pink and blue ones (and rectangles in the Show Execution mode) that are seen in certain situations, I was asked to turn them down after several seconds. Rectangles, of course, are unaware of what they round. Currently, I postponed auto-hiding of rectangles as I'm working on deep refactoring of UIA.",
+      "PostedDate": "2013-11-21T05:33:02.213-08:00",
+      "Id": 123760
+    },
+    {
+      "Message": "Well...\n\nISE is a very useful environment for PS development, and I cannot imagine coding in any language that supports introspection (a.k.a. reflection) without IntelliSense or a similar mechanism in the IDE.\n\nFor now, I'll check whether adding:\n\n[UIAutomation.Preferences]::Highlight = $false\n\nmakes the freezes disappear...",
+      "PostedDate": "2013-11-21T06:33:31.063-08:00",
+      "Id": 123763
+    },
+    {
+      "Message": "There is a special cmdlet: Hide-UIACurrentHighlighter\n\nThe Highlight setting works for the line of code next to the current pipeline (i.e., cmdlets in pipeline work as a bunch, and the new value of this variable would be probably available after the next line of code starts running. This is not a problem, usually, except for the case you ran a line of code from command line, thinking about the next line and watching the last red rectangle).\n\nIf the term 'frozen' was about the rectangle, this is not a problem as it seems to me. PowerGUI from a flash disk froze a couple of times to death, THIS is 'frozen' :)\n\nIf you have an idea how to switch the rectangle off wisely (i.e., after some (which?) time or after an event, etc), feel free to discuss. Timer is not a good solution as it is needed in manual execution and will definitely a surprise in scripts (imagine, after several seconds, highlighter suddenly turns off).\nThe most frequent usage of the highlighter is manual or automatic saving of screenshots with a rectangle around the last successfully captured AutomationElement.\n\nRegarding IDE, I'm working now on a monitoring product and generate actions via Exchange, Active Directory, SharePoint, etc cmdlets. I write a piece of code in powershell.exe, make it working, copy it from the console to a notepad or directly to SharpDevelop and generalize it there (i.e., change names to variables and functions). Excellent search/replace across tens of files makes me more happy than all other PowerShell IDEs features.",
+      "PostedDate": "2013-11-21T08:37:24.703-08:00",
+      "Id": 123773
+    },
+    {
+      "Message": "What I meant by \"frozen\" is that the PowerShell ISE doesn't respond to commands anymore, it doesn't redraw its UI anymore. The only way to regain control is to kill the process (e.g. using \"pskill powershell_ise\").\n\nGiven the name (with \"hide\" in it) I would think that Hide-UIACurrentHighlighter does just that: hide the highlighter, which IMO is not the same as disabling it (assuming that's what \"[UIAutomation.Preferences]::Highlight = $false\" does).\n\nHow would you explain that this lockup doesn't always occur?\n",
+      "PostedDate": "2013-11-22T00:24:15.677-08:00",
+      "Id": 123851
+    },
+    {
+      "Message": "Yes, settings [UIAutomation.Preferences]::Highlight, [UIAutomation.Preferences]::HighlightParent and [UIAutomation.Preferences]::HighlightCheckedControl turn off highlighter completely (the previous request from a user of the framework was about turning it off after an element was highlighted, so that I thought you wanted the same).\n\nI tried my current version (pre-0.8.7 that is approximately 0.8.6 Beta 5+) on ISE 3.0 on Windows 8 x64 Ent and on Windows 7 x64 Ent (both versions: for .NET 3.5 and .NET 4.0), and found no problems with the highlighter. 0.8.6 Beta 4 also works as expected. I suspect that yur problem could stem from your environment. Could it be that your ISE is running not in STA mode?\n\nI uploaded [the first alpha of 0.8.7](https://uiautomation.codeplex.com/releases/view/115225) - could you try this in your ISE with the highlighter on?",
+      "PostedDate": "2013-11-22T02:40:12.92-08:00",
+      "Id": 123862
+    },
+    {
+      "Message": "win2008 sp2 +ps ise 3.0 +uiautomation 0.8.7 beta2 often gets frozen\n\n![Image](http://ww2.sinaimg.cn/large/67298a01gw1ege3vdzclhg210g0nfjwv.gif)",
+      "PostedDate": "2014-05-14T06:09:59.437-07:00",
+      "Id": 146555
+    },
+    {
+      "Message": "\n[UIAutomation.Preferences]::Highlight=$false\n[UIAutomation.Preferences]::HighlightParent=$false\n[UIAutomation.Preferences]::HighlightCheckedControl =$false\n",
+      "PostedDate": "2014-05-14T06:15:44.01-07:00",
+      "Id": 146556
+    },
+    {
+      "Message": "```\n[UIAutomation.Preferences]::Highlight=$false\n[UIAutomation.Preferences]::HighlightParent=$false\n[UIAutomation.Preferences]::HighlightCheckedControl =$false\n\n```",
+      "PostedDate": "2014-05-14T06:20:35.817-07:00",
+      "Id": 146557
+    },
+    {
+      "Message": "Unfortunately, there's no solution right now.\n\nSome applications with PowerShell support often get frozen working with console thread and GUI thread simultaneously. I saw this on ISE and PowerGUI.\nProbably, this is caused by debugging: you are watching a value of variable and IDE gets its value from console and puts in in the GUI (tooltip).\n\nI can enulate this in powershell.exe too: via a static method of UIAutomation it's possible to create an AutomationElement in the console thread what is critical to powershell.exe (as I understand the problem).\n\nLooking at your code, I can recommend you cut out the part with UiAutomation and put it in another function (the 'Extract method' refactoring). This allows you to walk part with UIAutomation with Step Over (F10), not debugging this part. It' usually nothing to debug in UiAutomation: a control exists or doesn't, what to debug here?",
+      "PostedDate": "2014-05-14T07:57:21.993-07:00",
+      "Id": 146567
+    }
+  ]
+}

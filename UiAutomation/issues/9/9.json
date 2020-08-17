@@ -1,0 +1,65 @@
+{
+  "WorkItem": {
+    "AffectedComponent": {
+      "Name": "",
+      "DisplayName": ""
+    },
+    "ClosedComment": "",
+    "ClosedDate": null,
+    "CommentCount": 5,
+    "Custom": null,
+    "Description": "Hi, I have a Edit on a window, I can use \r\n```\r\nGet-UIAWindow xxx |\r\n    Get-UiaEdit |\r\n    Get-UiaEditText\r\n```\r\nto get its text, but setting text returns 'False'\r\n```\r\nGet-UIAWindow xxx |\r\n    Get-UiaEdit |\r\n    Set-UiaEditText -Text 'ABC'\r\n```\r\nMaybe it's a non-standard edit control. If that, how to set its text?",
+    "LastUpdatedDate": "2014-02-17T05:41:29.72-08:00",
+    "PlannedForRelease": "",
+    "ReleaseVisibleToPublic": false,
+    "Priority": {
+      "Name": "Unassigned",
+      "Severity": 0,
+      "Id": 0
+    },
+    "ProjectName": "UiAutomation",
+    "ReportedDate": "2014-02-16T07:15:20.837-08:00",
+    "Status": {
+      "Name": "Proposed",
+      "Id": 1
+    },
+    "ReasonClosed": {
+      "Name": "Unassigned"
+    },
+    "Summary": "Set-UiaEditText not work",
+    "Type": {
+      "Name": "Unassigned",
+      "Id": 5
+    },
+    "VoteCount": 1,
+    "Id": 9
+  },
+  "FileAttachments": [],
+  "Comments": [
+    {
+      "Message": "Hi, there are several ways:\n1) via ValuePattern if the control supports it\nSet-UiaEditText\nis the same as\n(Get-UiaWindow .... | Get-UiaEdit).Value = \"new value\"\n2) via control's handle\nGet-UiaWindow .... | Get-UiaEdit | Set-UiaControlText \"new value\"\n3) via SendKeys\nGet-UiaWindow .... | Get-UiaEdit | Set-UIAControlKeys \"new value\"\nThis way is critical to ownership of the focus, so that you may need to set focus\nGet-UiaWindow .... | Set-UiaFocus | Get-UiaEdit | Set-UiaControlKeys \"new value\"\nor\nGet-UiaWindow .... | Get-UiaEdit | Set-UiaFocus | Set-UiaControlKeys \"new value\"\n\nsince 0.8.7 Beta 2 (the next week) there'll be one more way:\n4) (Get-UiaWindow .... | Get-UiaEdit).Keyboard.TypeText(\"new value\")\nwhich is also sensitive to the focus\n\nI'd also recommend to check how many edits are returned after you ran the command\nGet-UiaWindow .... | Get-UiaEdit\nthere could be more than one control of such type even you see only one.\n",
+      "PostedDate": "2014-02-16T09:59:27.557-08:00",
+      "Id": 133715
+    },
+    {
+      "Message": "Thank you.\nCan them deal with all situation of custom controls?\nIf not, is calling Windows API the final method to deal with custom controls?\nIs there a set of cmdlet that map to Windows API?",
+      "PostedDate": "2014-02-16T23:57:15.663-08:00",
+      "Id": 133774
+    },
+    {
+      "Message": "Are you asking about UIA cmdlets or in general?\n\nI doubt that there is a framework that handles all types of custom controls. Big vendors support many custom control sets (HP QTP/UTF, TestComplete, IBM Func Tester, maybe Coded UI and Ranorex), however if a control is written by an independent programmer, it may not support the most of Automation calls.\n\nIn UIA there are 'generic' cmdlets with 'Control' in name: Invoke-UiaControlClick (can be used to set the focus on a control), Invoke-UiaControlContextMenu, Set-UiaControlText, Set-UiaControlKeys, Clear-UiaControlText, Move-UiaCursor.\nThere are a couple of old cmdlet for old Infragistics grids.\n\nSome 3rd party controls, especially old, don't support UI Automation in principle and vendors are not going to invest in automation of old controls. Bad examples are Infragistics Winforms and Sheridan (the property of Infragistics). We automated an Infragistic UltraGrid a couple of years ago without QTP of RFT add-in ($3k each), just selecting rows with control and click (initially it was script with tow cmdlets, later it became a special cmdlet).\n\nThe problem is that 3rd party controls use their own internal handles, which of course specific to them. There are several other frameworks you can try out:\nwhite.codeplex.com (not cmdlets, though can be used from PowerShell)\nWASP (cmdlets)\nAutoIt (not cmdlets, it's a popular library that (I believe) could be used from PowerShell)\n\nOr you could simply use Move-UiaCursor/Invoke-UiaControlClick and Set-UiaControlKeys/Set-UiaControlText to put a string to your control.\n",
+      "PostedDate": "2014-02-17T00:39:31.52-08:00",
+      "Id": 133785
+    },
+    {
+      "Message": "Yes, this reply meet all my question. Thank you very much!\nI think it's valuable to other people, too. I suggest you to add it to official FAQ :)",
+      "PostedDate": "2014-02-17T05:32:46.08-08:00",
+      "Id": 133799
+    },
+    {
+      "Message": "I added our discussion as a substitute for an article https://uiautomation.codeplex.com/wikipage?title=3rd%20party%20controls",
+      "PostedDate": "2014-02-17T05:41:29.72-08:00",
+      "Id": 133800
+    }
+  ]
+}

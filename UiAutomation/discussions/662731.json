@@ -1,0 +1,18 @@
+[
+  {
+    "Id": "1495868",
+    "ThreadId": "662731",
+    "Html": "After following the documentation for installing the uiautomation.dll i receive error saying other assemblies are not found such as pstestlibrary, ninject, windowsinput, and castle.core.\r<br />\n<br />\nAfter executing separate ipmo commands for those and then loading uiautomation the test commands recommended for trouble shooting in the documentation return 0 results.<br />\n",
+    "PostedDate": "2017-04-27T06:28:01.923-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1496253",
+    "ThreadId": "662731",
+    "Html": "Sorry brfitzge,<br />\nI missed your post. My steps on a standard Windows 10 Enterprise x64 v1511 are:<br />\n1) navigate to <a href=\"https://uiautomation.codeplex.com/releases/view/125358\" rel=\"nofollow\">https://uiautomation.codeplex.com/releases/view/125358</a> and download UIAutomation 0.8.7 Beta 3 .NET35<br />\n2) extract the content of the archive downloaded to d:\\test_uia_20170510\\ . I downloaded the archive via Chrome and there's nothing to unblock. Otherwise, you need to unblock the UIAutomation.dll.<br />\n3) then I run PowerShell that's shipped with my Windows OS. It's what PowerShell reports about itself:<br />\n<br />\n$PSVersionTable<br />\n<br />\nName                           Value<br />\n<hr />\nPSVersion                      5.0.10586.672<br />\nPSCompatibleVersions           {1.0, 2.0, 3.0, 4.0...}<br />\nBuildVersion                   10.0.10586.672<br />\nCLRVersion                     4.0.30319.42000<br />\nWSManStackVersion              3.0<br />\nPSRemotingProtocolVersion      2.3<br />\nSerializationVersion           1.1.0.1<br />\n<br />\n4) I import the module by issuing the command: ipmo D:\\test_uia_20170510\\UIAutomation.dll<br />\n5) then I run the following command<br />\nGet-UiaWindow -Name win<em>powersh</em> | Get-UiaButton | Read-UiaControlName<br />\nThe result is<br />\nBack by small amount<br />\nBack by large amount<br />\nForward by large amount<br />\nForward by small amount<br />\nMinimize<br />\nMaximize<br />\nClose<br />\n<br />\nI'm an administrator on my host and a regular Active Directory domain user in the organization.<br />\n<br />\nWorking on lower versions of Windows should be the same. What version of operating system are you using for the module?<br />\n",
+    "PostedDate": "2017-05-10T06:50:57.99-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

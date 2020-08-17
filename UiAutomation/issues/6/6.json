@@ -1,0 +1,45 @@
+{
+  "WorkItem": {
+    "AffectedComponent": {
+      "Name": "",
+      "DisplayName": ""
+    },
+    "ClosedComment": "",
+    "ClosedDate": null,
+    "CommentCount": 1,
+    "Custom": null,
+    "Description": "Hello,\r\n\r\nI am trying to use this library to install an app from the Windows Store.\r\n\r\nAfter launching the store via protocol, I get the window, then try to click the install button.\r\n\r\n```\r\nGet-UIAWindow -Name Store | Move-UIACursor -X 160 -Y 150 | Get-UIAButton -AutomationId pdpBuyButton | Invoke-UIAButtonClick;\r\n```\r\n\r\nThe window is grabbed successfully, but the error occurs at Get-UIAButton\r\n\r\n> Get-UIAButton : The input control or window has been lost\r\n\r\nHow can I click a button in a Metro App?\r\n\r\nThank you,\r\nKassy",
+    "LastUpdatedDate": "2013-10-14T15:26:19.697-07:00",
+    "PlannedForRelease": "",
+    "ReleaseVisibleToPublic": false,
+    "Priority": {
+      "Name": "Unassigned",
+      "Severity": 0,
+      "Id": 0
+    },
+    "ProjectName": "UiAutomation",
+    "ReportedDate": "2013-10-14T10:29:20.253-07:00",
+    "Status": {
+      "Name": "Proposed",
+      "Id": 1
+    },
+    "ReasonClosed": {
+      "Name": "Unassigned"
+    },
+    "Summary": "Metro Apps: The input control or window has been lost",
+    "Type": {
+      "Name": "Unassigned",
+      "Id": 5
+    },
+    "VoteCount": 1,
+    "Id": 6
+  },
+  "FileAttachments": [],
+  "Comments": [
+    {
+      "Message": "Hi Kassy,\nI suspect that the Move-UIACursor cmdlet works at the level of the Start Screen, not over the Store window - I tried the command Move-UIACursor -x xx -y yy | Get-ControlFromPoint and the command highlighted something on the Start Screen.\nIt seems to me that UI Automation v.1.0 (i.e., .NET version) works badly with the Store app. Tomorrow, I'll try to learn what's the problem.\n\nAlex",
+      "PostedDate": "2013-10-14T15:26:19.697-07:00",
+      "Id": 118401
+    }
+  ]
+}

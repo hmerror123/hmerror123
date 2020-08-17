@@ -1,0 +1,18 @@
+[
+  {
+    "Id": "995924",
+    "ThreadId": "431849",
+    "Html": "hi\r<br />\n<br />\nHow can I use extension control and spy Store App ,  is there good document or sample ?\r<br />\n<br />\nMay I develop Store App UIA by C++ and C# ?\r<br />\n<br />\nThank for your kind guidance .<br />\n",
+    "PostedDate": "2013-02-03T21:34:28.223-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1003317",
+    "ThreadId": "431849",
+    "Html": "Hi,\r<br />\nsorry for long delay, in short, I don't know what to answer. However, I'll try:<br />\n<ul>\n<li>version 0.8.5 that was released today brings more improvements to search for controls (easier to write code)</li>\n<li>to spy a store app, you could use UIAutomationSpy from the ***.for.Metro.testing package\r<br />\nFollow the [url:instruction|<a href=\"http://uiautomation.codeplex.com/wikipage?title=Installation%20for%20Metro%20UI%20testing&amp;referringTitle=Documentation]\" rel=\"nofollow\">http://uiautomation.codeplex.com/wikipage?title=Installation%20for%20Metro%20UI%20testing&referringTitle=Documentation]</a> to install the module</li>\n<li>the spy itself is more or less understandable app, it reports a control it is hovering over in code you can use in your script</li>\n<li>there is also a tool from Microsoft, Inspect.exe, that could be used to spy Metro apps</li>\n<li>\nabout languages to develop the app: there is no restriction. I think that many default and 3rd party apps are written in C++ or C#. They are easily spied and the ability to be automated is sooner a matter of developer's wish to make an accessible app, rather than a technology/language.<br />\n</li>\n</ul>\nI'll put a couple of examples soon.<br />\n",
+    "PostedDate": "2013-02-19T02:15:15.947-08:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

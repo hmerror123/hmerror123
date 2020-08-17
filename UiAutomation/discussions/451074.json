@@ -1,0 +1,42 @@
+[
+  {
+    "Id": "1072315",
+    "ThreadId": "451074",
+    "Html": "Hello,\r<br />\n<br />\nI was wondering if you would be able to help me with adding text to a textbox on  a website. Here is my line of code that i am trying to use:<br />\n<pre><code>Get-UIAWindow -ProcessName chrome | Get-UIATextBox -AutomationID 'textboxId' | Set-UIAControlText 'This is the text i am trying to insert'</code></pre>\n\nThe code above comes up with an error saying this:<br />\n<pre><code>Get-UIATextBox : Get-UIATextBox: timeout expired for control with class: + ' ', control type: 'Edit', title: ' ', automationId: 'textboxId', value: ' '\nat line:1 char:51\n+ Get-UIAWindow -ProcessName chrome | Get-UIATextBox &lt;&lt;&lt;&lt; -AutomationID 'textboxId' | Set-UIAControlText -Text 'This is the text i am trying to insert'\n+CategoryInfo            : OperationTimeout: (:) [Get-UIATextBox], Exception\n+FullyQualifiedErrorId   : ControlIsNull, UIAutomation.Commands.GetUIATextBoxCommand</code></pre>\n\nI am pretty new to using this so any input would be much appreciated!<br />\n",
+    "PostedDate": "2013-07-24T07:41:35.047-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1072386",
+    "ThreadId": "451074",
+    "Html": "Hi joepriff,\r<br />\nI can only disappoint you here: apart form IE and Firefox, Chrome's page content is unavailable for UI Automation. To observe this fact, you can run UIAutomationSpy.exe and hover over Chrome window. Only tabs and the window itself should be available to the spy.\r<br />\n<br />\nYou might choose IE or FF to automate you website, or use Selenium (SePSX, for example) to access controls in Chrome.\r<br />\n<br />\nAlexander<br />\n",
+    "PostedDate": "2013-07-24T09:33:22.117-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1072399",
+    "ThreadId": "451074",
+    "Html": "Alexander,\r<br />\nI was unaware that it is not available for chrome. I will just use IE (as much as I may dislike it). I was just using chrome to begin with since it is my default browser. \r<br />\n<br />\nI just tried running the same code:<br />\n<pre><code>Get-UIAWindow -ProcessName iexplore| Get-UIATextBox -AutomationID 'textboxId' | Set-UIAControlText 'This is the text i am trying to insert'</code></pre>\n\nBut it came up with the same error that I had above. Any suggestions with how i should proceed?\r<br />\n<br />\nThanks again for your help!\r<br />\n<br />\n-Joe<br />\n",
+    "PostedDate": "2013-07-24T10:12:45.463-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1097323",
+    "ThreadId": "451074",
+    "Html": "You need to enable accessibility features in Chrome first:\r<br />\n<a href=\"http://www.chromium.org/developers/design-documents/accessibility\" rel=\"nofollow\">http://www.chromium.org/developers/design-documents/accessibility</a>\r<br />\n<br />\nBasically start the browser with <strong>--force-renderer-accessibility</strong> parameter and you will be able to manipulate webpages via UIA.<br />\n",
+    "PostedDate": "2013-09-20T23:11:25.947-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1317860",
+    "ThreadId": "451074",
+    "Html": "To manipulate a textbox, you should know how to <a href=\"http://www.kettic.com/how-to/aspnet-ajax/controls-input/overview/\" rel=\"nofollow\">customize the input control</a> with this guide here.<br />\n",
+    "PostedDate": "2014-10-30T20:43:27.16-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

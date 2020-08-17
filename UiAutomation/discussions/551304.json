@@ -1,0 +1,58 @@
+[
+  {
+    "Id": "1264918",
+    "ThreadId": "551304",
+    "Html": "I am experiencing frequent Powershell crashes with extensive use of UIAutomation and try-catch blocks. Not sure if this is specific to UIAutomation but I sorely need some advice how to workaround this problem.\r<br />\n<br />\nPeriodically, I will get popup dialog box that Powershell has stopped working and the script will freeze. (Dismissing the dialog will exit the script.) Windows Application Event log will show WER (Windows Error Reporting) details with a reference to a local Report.wer file. The contents of the file describe crash because some item (not specified) is not found with &quot;Windows.Automation.ElementNotAvailable&quot; error. \r<br />\n<br />\nHowever running the script again crashes in another location in the script (with same kind of error), successfully getting past the place where the first crash was said to not find some unknown item.\r<br />\n<br />\nBecause I am dealing with an application where one or more dialogs will show up under certain circumstances in an unknown order, I use try-catch blocks. They seem to work, but I encounter these crashes seemingly only in a script when using several independent try-catch blocks.\r<br />\n<br />\nBecause the crash can occur in more than one place in the same script, I consider it <em>might</em> be a resource or memory issue, so I have increased the memory used by PowerShell, but that did not help.\r<br />\n<br />\nWhat to do? Any advice?\r<br />\n<br />\n(Is there a way to get the error report to indicate which item was not found?)\r<br />\n<br />\n============ Example of Report.wer file: =================\r<br />\nVersion=1\r<br />\nEventType=PowerShell\r<br />\nEventTime=130495710772338545\r<br />\nReportType=1\r<br />\nConsent=1\r<br />\nUploadTime=130495710772828545\r<br />\nReportIdentifier=92f53781-091b-11e4-bd2a-586d8f50ad6d\r<br />\nResponse.BucketId=50022624\r<br />\nResponse.BucketTable=21\r<br />\nResponse.type=4\r<br />\nSig[0].Name=NameOfExe\r<br />\nSig[0].Value=powershell.exe\r<br />\nSig[1].Name=FileVersionOfSystemManagementAutomation\r<br />\nSig[1].Value=6.1.7601.17514\r<br />\nSig[2].Name=InnermostExceptionType\r<br />\nSig[2].Value=m.Windows.Automation.ElementNotAvailable\r<br />\nSig[3].Name=OutermostExceptionType\r<br />\nSig[3].Value=m.Windows.Automation.ElementNotAvailable\r<br />\nSig[4].Name=DeepestPowerShellFrame\r<br />\nSig[4].Value=unknown\r<br />\nSig[5].Name=DeepestFrame\r<br />\nSig[5].Value=MS.Internal.Automation.UiaCoreApi.CheckError\r<br />\nSig[6].Name=ThreadName\r<br />\nSig[6].Value=unknown\r<br />\nDynamicSig[1].Name=OS Version\r<br />\nDynamicSig[1].Value=6.1.7601.2.1.0.256.4\r<br />\nDynamicSig[2].Name=Locale ID\r<br />\nDynamicSig[2].Value=1033\r<br />\nUI[3]=powershell has stopped working\r<br />\nUI[4]=Windows can check online for a solution to the problem.\r<br />\nUI[5]=Check online for a solution and close the program\r<br />\nUI[6]=Check online for a solution later and close the program\r<br />\nUI[7]=Close the program\r<br />\nState[0].Key=Transport.DoneStage1\r<br />\nState[0].Value=1\r<br />\nState[1].Key=DataRequest\r<br />\nState[1].Value=iData=1/nDumpFile=//Upload//iCab//423be1e6a77a4f8db0dee5bf8fe0fb75-caf65010b2c35e8de06a752cf0d52b18-5-90244335840-PowerShell-6-1-7601-2.cab/nDumpServer=watson.microsoft.com/nResponseServer=watson.microsoft.com/nResponseURL=//dw//GenericFour.asp?iBucket=90244335840&amp;szCab=423be1e6a77a4f8db0dee5bf8fe0fb75.cab&amp;EventType=PowerShell&amp;BucketHash=caf65010b2c35e8de06a752cf0d52b18&amp;MID=D904BD65-48DB-4029-86A7-02F23BB270BA/nBucket=50022624/nBucketTable=21/nResponse=1/n\r<br />\nFriendlyEventName=PowerShell\r<br />\nConsentKey=PowerShell\r<br />\nAppName=powershell\r<br />\nAppPath=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\r<br />\n=============== Example of Event log message: ============\r<br />\n<br />\nFault bucket 50022624, type 21\r<br />\nEvent Name: PowerShell\r<br />\nResponse: Not available\r<br />\nCab Id: 0\r<br />\n<br />\nProblem signature:\r<br />\nP1: powershell.exe\r<br />\nP2: 6.1.7601.17514\r<br />\nP3: m.Windows.Automation.ElementNotAvailable\r<br />\nP4: m.Windows.Automation.ElementNotAvailable\r<br />\nP5: unknown\r<br />\nP6: MS.Internal.Automation.UiaCoreApi.CheckError\r<br />\nP7: unknown\r<br />\nP8: \r<br />\nP9: \r<br />\nP10: \r<br />\n<br />\nAttached files:\r<br />\n<br />\nThese files may be available here:\r<br />\nC:\\Users\\&lt;username&gt;\\AppData\\Local\\Microsoft\\Windows\\WER\\ReportArchive\\Critical_powershell.exe_808458abe78775ed6aefed15d0db4b6d4e6794a_160194e1\r<br />\n<br />\nAnalysis symbol: \r<br />\nRechecking for solution: 0\r<br />\nReport Id: 92f53781-091b-11e4-bd2a-586d8f50ad6d<br />\n<h1>Report Status: 0</h1>\nThanks for any advice or help.<br />\n",
+    "PostedDate": "2014-07-11T10:53:02.28-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1264926",
+    "ThreadId": "551304",
+    "Html": "Hi joespr,\r<br />\nI believe I have fixed this or a very similar issue - right now I can't say whether it's published or not yet.\r<br />\nInitially the issue I faced grew from the wizard cmdlets, specifically the Invoke-UiaWizard cmdlet, but was not limited to these cmdlets.\r<br />\nThe issue, however, didn't throw a dialog, it threw an internal MS UI Automation exception that could suddenly spoil the script execution.\r<br />\n<br />\nFortunately, I have a keyboard at work with &quot;run a process&quot; button (a Microsoft's keyboard with the Calc button that runs calc.exe). I have even bought the same for home. :)\r<br />\nIf you run something like (I forgot the exact script I tested with :( ) Get-UiaWindow -n calc* -Seconds 300 and run and close some windows called calc* (I used my fingers and the MS keyboard), it often throws an internal exception, and go out of the waiting for a window.\r<br />\nProbably, it was fixed after I uploaded the last binaries - I'll build today a version and upload it as non-public beta to allow you to run the latest binaries in the hope that the issue could be fixed.<br />\n",
+    "PostedDate": "2014-07-11T11:14:52.593-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1265068",
+    "ThreadId": "551304",
+    "Html": "I uploaded the current binaries as <a href=\"https://uiautomation.codeplex.com/releases/view/125358\" rel=\"nofollow\">0.8.7 Beta 3</a>.\r<br />\nJust to learn whether the problem is fixed or still in the code.\r<br />\nUnfortunately, when I introduced new logging, calls to cmdlets and object model were added to the logging, but many failures like &quot;control not found&quot; weren't. I'll add failure output to the log ~next week.<br />\n",
+    "PostedDate": "2014-07-12T01:50:25.873-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1265562",
+    "ThreadId": "551304",
+    "Html": "Thanks apetrovsky for the quick response and the build.<br />\n<h1>When I attempt to run with this new 0.8.7 Beta 3, I get &quot;Could not load file or assembly &quot; messages:</h1>\nMicrosoft Windows [Version 6.1.7601]\r<br />\nCopyright (c) 2009 Microsoft Corporation.  All rights reserved.\r<br />\n<br />\nC:\\Tools\\PowerShell&gt;powershell\r<br />\nWindows PowerShell\r<br />\nCopyright (C) 2009 Microsoft Corporation. All rights reserved.\r<br />\n<br />\nPS C:\\Tools\\PowerShell&gt; ipmo ($env:USERPROFILE + &quot;\\Documents\\WindowsPowerShell\\M\r<br />\nodules\\UIAutomation\\UIAutomation.dll&quot;)\r<br />\nImport-Module : Could not load file or assembly 'file:///C:\\Users\\username\\\r<br />\nDocuments\\WindowsPowerShell\\Modules\\UIAutomation\\UIAutomation.dll' or one of it\r<br />\ns dependencies. Operation is not supported. (Exception from HRESULT: 0x80131515\r<br />\n)\r<br />\nAt line:1 char:5<br />\n<ul>\n<li>\nipmo &lt;&lt;&lt;&lt;  ($env:USERPROFILE + &quot;\\Documents\\WindowsPowerShell\\Modules\\UIAutoma\r<br />\ntion\\UIAutomation.dll&quot;)<br />\n<ul>\n<li>CategoryInfo          : NotSpecified: (:) [Import-Module], FileLoadExcep<br />\ntion</li>\n<li>\nFullyQualifiedErrorId : System.IO.FileLoadException,Microsoft.PowerShell<br />\n.Commands.ImportModuleCommand<br />\n</li>\n</ul>\n</li>\n</ul>\n<h1>PS C:\\Tools\\PowerShell&gt;</h1>\nThis of course worked with previous build (0.8.7 Beta 2).\r<br />\nPerhaps, is there some version dependency?\r<br />\n<br />\nThanks,\r<br />\njoespr<br />\n",
+    "PostedDate": "2014-07-14T09:09:44.067-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1265595",
+    "ThreadId": "551304",
+    "Html": "Have you unchecked the Unblock button in the file Properties dialog of the archive you have downloaded?\r<br />\nIt's default security feature of contemporary Windows systems, to block files users downloaded from the Internet.\r<br />\nJust to unblock the archive, unpack and the contents of the archive is also unblocked.<br />\n",
+    "PostedDate": "2014-07-14T10:58:10.877-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1265655",
+    "ThreadId": "551304",
+    "Html": "Thanks apetrovsky, for the reminder. Yes, the download security feature stopped the loading of the module. Once I &quot;unblocked&quot; the files, I can load the module. \r<br />\n<br />\nI am running the automation now to see the state of things. So far I have not encountered the original error condition, but I need to do more testing. I will comment here when I have done more testing.\r<br />\n<br />\nThanks\r<br />\njoespr<br />\n",
+    "PostedDate": "2014-07-14T14:09:49.717-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1273748",
+    "ThreadId": "551304",
+    "Html": "Thanks for the build. \r<br />\n<br />\nI do not see the worst of these errors, &quot;Windows.Automation.ElementNotAvailable &quot;, in the new build\r<br />\n<br />\nI still get errors, but it appears that the application being tested also has a memory leak or some other instabilities. Therefore it is hard to pin down where or what is going on, and where the root cause is. But it seems UIAutomation is more stable.\r<br />\n<br />\nThanks\r<br />\njoespr<br />\n",
+    "PostedDate": "2014-07-17T15:29:28.77-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]

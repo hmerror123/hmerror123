@@ -1,0 +1,26 @@
+[
+  {
+    "Id": "1271761",
+    "ThreadId": "551780",
+    "Html": "Hi!<br />\n<br />\nI can't understand the logic of Wait-UiaNoWindow cmdlet — should it wait until an existing window closes? Please provide some details on this cmdlet with usage examples.<br />\n<br />\nMy task is:<br />\n<ul>\n<li>\nTo pause script execution until a specific window appears. I do it this way:<br />\n</li>\n</ul>\n<pre><code>While ((Wait-UiaWindow -Name 'Calculator' -Seconds 0) -eq $False) {Out-Null}</code></pre>\n\n<ul>\n<li>\nThen continue execution until the same window closes. I tried to do it this the same way with Wait-UiaNoWindow cmdlet, but it does not work as I expect:<br />\n</li>\n</ul>\n<pre><code>While ((Wait-UiaNoWindow -Name 'Calculator' -Seconds 0) -eq $False) {Out-Null}</code></pre>\n\nPlease correct me if I'm wrong or is there another solution?<br />\nThanks!<br />\n",
+    "PostedDate": "2014-07-16T23:08:52.883-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1272373",
+    "ThreadId": "551780",
+    "Html": "HI ymarushchenko,<br />\nit seems to me that the Wait-UiaNoWindow cmdlet that is based on Get-UiaWindow cmdlet needs re-thinking. It's rarely used and I'll review its meaning soon.<br />\n<br />\nRegarding your task, for <strong>the first part</strong> the easiest way is to take the Get-UiaWindow/Wait-UiaWindow cmdlet (the former returns object or throw exception, the latter returns true/false).<br />\nFor example:<br />\n<pre><code>Get-UiaWindow -n *calc* -Seconds 300\nWait-UiaWindow -Name *calc* -sec 3600</code></pre>\n\nThese cmdlets use smart enough sleeping algorithm aiming not to overload your system with Automation queries. In practice, this means that the longer waiting time (the -Seconds parameter) you use, the rarer the cmdlet queries for a window. You could see how often it queries in the log (by default, it is here $env:USERPROFILE\\Documents\\Uia.log):<br />\n<br />\n[2014-07-17 11:01:27.1603] [INFO] Get-UiaWindow -Win32 $false -Name <em>calc</em> -First $false -Recurse $false -Timeout 300000 -Seconds 300 -IsCritical $false -Highlight $true -HighlightParent $true<br />\n[2014-07-17 11:01:27.2123] [INFO] OnSleepHook()<br />\n[2014-07-17 11:01:30.2647] [INFO] OnSleepHook()<br />\n[2014-07-17 11:01:56.8714] [INFO] Wait-UiaWindow -Win32 $false -Name <em>calc</em> -First $false -Recurse $false -Timeout 3600000 -Seconds 3600 -IsCritical $false -Highlight $true -HighlightParent $true<br />\n[2014-07-17 11:01:56.9674] [INFO] OnSleepHook()<br />\n[2014-07-17 11:02:15.1038] [INFO] OnSleepHook()<br />\n<br />\nIf you choose long enough time interval, the cmdlet will get the window in several seconds after it appeared.<br />\n<br />\nThere is also another way to approach this task - you can get the appropriate event:<br />\n<pre><code>Get-UiaDesktop | Register-UiaWindowOpenedEvent -EventAction { param($src, $e) [System.Windows.Forms.MessageBox]::Show(&quot;window has opened: &quot; + $src.Current.Name); }</code></pre>\n\nHowever, the code that you can you in scripblock is limited (it's on another thread), you could see from the code only global variables, you can't work with console like via the Write-Host cmdlet. It could also be late for several seconds. Sometimes, MS UI Automation doubles events...<br />\n<br />\nAnyway, both ways are working are are widely used in my tests (the first way is used much more often).<br />\n<br />\nNow, <strong>the second part</strong>:<br />\n<pre><code>Get-UiaWindow -n *calc* -sec 300 | Register-UiaWindowClosedEvent -EventAction { param($src, $e) [System.Windows.Forms.MessageBox]::Show(&quot;window has been closed: &quot; + $src.Current.Name); }</code></pre>\n\nYou need to pass the window to the Register-UiaWindowClosedEvent cmdlet because this event fires from the window itself. Moreover, the Current set of properties would not work as the window is gone. You coul use, probably, $src.Cached.<br />\nIf you need just to be signaled about the event, it could be enough.<br />\n<br />\nAlexander<br />\n",
+    "PostedDate": "2014-07-17T00:29:59.52-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  },
+  {
+    "Id": "1272533",
+    "ThreadId": "551780",
+    "Html": "The Wait-UiaNoWindow cmdlet works in the following manner: it waits for the time you have chosen in the -Seconds parameter (by default, 5 seconds). If all the time of waiting there was no window the supplied parameters expected, it returns false.\r<br />\nIf a window has appeared during the work of the cmdlet, it returns true.\r<br />\nNow, it seems to me odd (it's just as the Wait-UiaWindow cmdlet works).\r<br />\n<br />\nFor example,<br />\n<pre><code>Wait-UiaWindow -Name *calc* -Seconds 30</code></pre>\n\nIf no calc.exe was running, it returns $false.\r<br />\n<br />\nHmm, there's a need to make it another way.\r<br />\n<br />\nYou could try for the second part of your task the following:<br />\n<pre><code>Wait-UiaWindow -n *your*window* -Seconds NNN\n# close the window\nif( -not (Wait-UiaNoWindow -n *your window* -sec [the time window needs to be properly closed])) { &quot;that's okay&quot;; }</code></pre>\n\n",
+    "PostedDate": "2014-07-17T00:53:07.137-07:00",
+    "UserRole": null,
+    "MarkedAsAnswerDate": null
+  }
+]
